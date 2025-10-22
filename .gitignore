@@ -1,0 +1,43 @@
+# dependencies
+node_modules
+**/node_modules
+.pnp
+.pnp.js
+.swc
+
+# testing
+coverage
+
+# misc
+.env*
+.DS_Store
+*.pem
+-*.log
+-dist
+dist/
+tsconfig.tsbuildinfo
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Vercel
+.vercel
+
+# Next.js
+.next
+next-env.d.ts
+
+# turbo
+.turbo
+
+# E2E Tests
+e2e-test-results/
+
+# Vite
+vite.config.ts.timestamp-*
+
+# Module Federation
+.__mf__temp

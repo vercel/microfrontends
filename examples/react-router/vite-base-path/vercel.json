@@ -1,0 +1,10 @@
+{
+  "buildCommand": "pnpm --workspace-root exec turbo --no-daemon --filter react-router-vite-base-path-different-than-vercel-project-name build --env-mode loose",
+  "installCommand": "node -v && pnpm --workspace-root --filter react-router-vite-base-path-different-than-vercel-project-name... install --config.dedupe-peer-dependents=false",
+  "rewrites": [
+    {
+      "source": "/:path*",
+      "destination": "/vite-base-path"
+    }
+  ]
+}

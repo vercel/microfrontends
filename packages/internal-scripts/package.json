@@ -1,0 +1,18 @@
+{
+  "name": "internal-scripts",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test-routing": "tsx src/test-routing.ts",
+    "test-local-proxy-start": "tsx src/test-local-proxy-start.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "20.11.30",
+    "path-to-regexp": "6.2.1",
+    "ts-config": "workspace:*",
+    "tsx": "^4.6.2",
+    "typescript": "5.7.3"
+  }
+}

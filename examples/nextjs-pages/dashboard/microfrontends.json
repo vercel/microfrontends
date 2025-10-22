@@ -1,0 +1,21 @@
+{
+  "$schema": "https://openapi.vercel.sh/microfrontends.json",
+  "applications": {
+    "nextjs-pages-dashboard": {
+      "development": {
+        "fallback": "nextjs-pages-dashboard.vercel.app"
+      }
+    },
+    "nextjs-pages-blog": {
+      "routing": [
+        {
+          "paths": ["/blog", "/blog/:path*"]
+        },
+        {
+          "flag": "enable-flagged-blog-page",
+          "paths": ["/flagged/blog"]
+        }
+      ]
+    }
+  }
+}

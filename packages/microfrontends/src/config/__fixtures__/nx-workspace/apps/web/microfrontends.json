@@ -1,0 +1,15 @@
+{
+  "$schema": "https://openapi.vercel.sh/microfrontends.json",
+  "applications": {
+    "web": {
+      "development": { "fallback": "nothingtest.com" }
+    },
+    "marketing-for-test": {
+      "routing": [
+        {
+          "paths": ["/home"]
+        }
+      ]
+    }
+  }
+}

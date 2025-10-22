@@ -1,0 +1,42 @@
+name: E2E Tests
+
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types:
+      - 'vercel.deployment.success'
+
+concurrency:
+  group: ${{ github.event_name }}-${{ github.workflow }}-${{ github.event_name == 'repository_dispatch' && github.event.client_payload.environment }}-${{ github.event_name == 'repository_dispatch' && github.event.client_payload.project.id }}-${{ github.ref || github.event.client_payload.git.ref }}
+  cancel-in-progress: ${{ (github.ref || github.event.client_payload.git.ref) != 'refs/heads/main' }}
+
+jobs:
+  e2e-nextjs-app-marketing:
+    name: 'E2E Tests (nextjs-app-marketing)'
+    uses: ./.github/workflows/e2e-tests-reusable.yml
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.client_payload.project.id == 'prj_VpckqSodoXlv5Np8jvg4SfJ7wsH8' }}
+    with:
+      project-id: 'prj_VpckqSodoXlv5Np8jvg4SfJ7wsH8'
+      project-name: 'nextjs-app-marketing'
+      production-base-url: 'https://vercel-microfrontends-example.vercel.app'
+    secrets: inherit
+
+  e2e-react-router-docs:
+    name: 'E2E Tests (react-router-docs)'
+    uses: ./.github/workflows/e2e-tests-reusable.yml
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.client_payload.project.id == 'prj_kBVstNWw8qmXt4KYESuNbQqFVC9p' }}
+    with:
+      project-id: 'prj_kBVstNWw8qmXt4KYESuNbQqFVC9p'
+      project-name: 'react-router-docs'
+      production-base-url: 'https://react-router-docs-delta.vercel.app'
+    secrets: inherit
+
+  e2e-react-router-web:
+    name: 'E2E Tests (react-router-web)'
+    uses: ./.github/workflows/e2e-tests-reusable.yml
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.client_payload.project.id == 'prj_5HDJLa6HONeMa9leemwsbOf9AJWv' }}
+    with:
+      project-id: 'prj_5HDJLa6HONeMa9leemwsbOf9AJWv'
+      project-name: 'react-router-web'
+      production-base-url: 'https://react-router-web-sage.vercel.app'
+    secrets: inherit

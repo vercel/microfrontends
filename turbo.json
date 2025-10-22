@@ -1,0 +1,37 @@
+{
+  "$schema": "https://turborepo.org/schema.json",
+  "globalPassThroughEnv": ["MFE_DEBUG"],
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**"]
+    },
+    "dev": {
+      "dependsOn": ["^build"],
+      "cache": false,
+      "persistent": true
+    },
+    "lint": {
+      "dependsOn": ["^build"]
+    },
+    "pretest": {},
+    "start": {
+      "cache": false,
+      "dependsOn": ["^build"],
+      "persistent": true
+    },
+    "typecheck": {
+      "dependsOn": ["^build"]
+    },
+    "test": {
+      "cache": false,
+      "dependsOn": ["^build"]
+    },
+    "test:e2e": {
+      "cache": false,
+      "dependsOn": ["^pretest", "^build"],
+      "env": ["BASE_URL", "DEPLOYMENT_PROTECTION_BYPASS", "FLAGS_SECRET"]
+    },
+    "//#test:local-proxy-turbo-integration": {}
+  }
+}

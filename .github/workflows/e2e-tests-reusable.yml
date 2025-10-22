@@ -1,0 +1,97 @@
+name: E2E Tests Reusable
+
+on:
+  workflow_call:
+    inputs:
+      project-id:
+        required: true
+        type: string
+        description: 'The project ID for the Vercel project to run tests for.'
+      project-name:
+        required: true
+        type: string
+        description: 'The project name for the Vercel project to run tests for.'
+      production-base-url:
+        required: true
+        type: string
+        description: 'The fallback base URL to use for the tests if not running in a deployment context.'
+
+jobs:
+  run:
+    name: 'E2E Tests'
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.client_payload.project.id == inputs.project-id }}
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Update E2E Status
+        uses: actions/github-script@v7
+        env:
+          GHA_RUN_ID: ${{ github.run_id }}
+          SHA: ${{ (github.event_name == 'workflow_dispatch' && github.sha) || github.event.client_payload.git.sha }}
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            await github.rest.repos.createCommitStatus({
+              owner: 'vercel',
+              repo: 'microfrontends',
+              sha: process.env.SHA,
+              state: 'pending',
+              context: 'E2E Tests (${{ inputs.project-name }})',
+              description: 'In progress',
+              target_url: `https://github.com/vercel/microfrontends/actions/runs/${process.env.GHA_RUN_ID}`
+            });
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ (github.event_name == 'workflow_dispatch' && github.sha) || github.event.client_payload.git.sha }}
+
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
+        id: pnpm-setup
+        with:
+          version: 9.4.0
+          run_install: false
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.node-version'
+
+      - name: Install Dependencies
+        id: pnpm-install
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Playwright Browsers
+        run: pnpm -F ${{ inputs.project-name }} exec playwright install chromium
+      - name: Install Playwright System Dependencies
+        run: pnpm -F ${{ inputs.project-name }} exec playwright install-deps chromium
+
+      - name: Run CI
+        id: e2e-tests
+        run: pnpm turbo test:e2e --filter=${{ inputs.project-name }}
+        env:
+          BASE_URL: ${{ github.event_name == 'repository_dispatch' && github.event.client_payload.url || inputs.production-base-url }}
+          DEPLOYMENT_PROTECTION_BYPASS: ${{ secrets.DEPLOYMENT_PROTECTION_BYPASS }}
+          FLAGS_SECRET: ${{ secrets.FLAGS_SECRET }}
+
+      - name: Update E2E Status
+        if: ${{ always() }}
+        uses: actions/github-script@v7
+        env:
+          GHA_RUN_ID: ${{ github.run_id }}
+          TESTS_OUTCOME: ${{ steps.e2e-tests.outcome }}
+          SHA: ${{ (github.event_name == 'workflow_dispatch' && github.sha) || github.event.client_payload.git.sha }}
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            await github.rest.repos.createCommitStatus({
+              owner: 'vercel',
+              repo: 'microfrontends',
+              sha: process.env.SHA,
+              state: process.env.TESTS_OUTCOME === 'success' ? 'success' : 'failure',
+              context: 'E2E Tests (${{ inputs.project-name }})',
+              description: 'All tests passed',
+              target_url: `https://github.com/vercel/microfrontends/actions/runs/${process.env.GHA_RUN_ID}`
+            });

@@ -1,0 +1,77 @@
+{
+  "workspace": false,
+  "versionGroups": [
+    {
+      "dependencies": ["@playwright/test"],
+      "packages": ["**"],
+      "pinVersion": "1.50.1"
+    },
+    {
+      "dependencies": ["@types/node"],
+      "packages": ["**"],
+      "pinVersion": "20.11.30"
+    },
+    {
+      "dependencies": [
+        "react",
+        "react-dom",
+        "@types/react",
+        "@types/react-dom"
+      ],
+      "packages": ["single-spa-*"],
+      "pinVersion": "^19"
+    },
+    {
+      "dependencies": ["vite"],
+      "packages": ["single-spa-*"],
+      "pinVersion": "^7"
+    },
+    {
+      "dependencies": ["@types/react"],
+      "packages": ["**"],
+      "pinVersion": "18.3.1"
+    },
+    {
+      "dependencies": ["@types/react-dom"],
+      "packages": ["**"],
+      "pinVersion": "18.3.0"
+    },
+    {
+      "dependencies": ["next", "@next/**"],
+      "dependencyTypes": ["!peer"],
+      "packages": ["**"],
+      "pinVersion": "15.5.4"
+    },
+    {
+      "dependencies": ["react", "react-dom"],
+      "dependencyTypes": ["!peer"],
+      "pinVersion": "19.0.0"
+    },
+    {
+      "dependencies": ["lucide-react"],
+      "packages": ["**"],
+      "pinVersion": "0.542.0"
+    },
+    {
+      "dependencies": ["typescript"],
+      "packages": ["**"],
+      "pinVersion": "5.7.3"
+    },
+    {
+      "dependencies": ["vite"],
+      "dependencyTypes": ["!peer"],
+      "packages": ["**"],
+      "pinVersion": "5.4.11"
+    },
+    {
+      "dependencies": ["@vercel/toolbar"],
+      "packages": ["**"],
+      "pinVersion": "0.1.37"
+    },
+    {
+      "dependencies": ["**"],
+      "isIgnored": true,
+      "packages": ["**"]
+    }
+  ]
+}

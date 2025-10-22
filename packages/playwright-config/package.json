@@ -1,0 +1,30 @@
+{
+  "name": "playwright-config",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/config.js",
+      "default": "./dist/config.cjs"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./dist/config.d.ts"
+      ]
+    }
+  },
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.50.1",
+    "@types/node": "20.11.30",
+    "ts-config": "workspace:*",
+    "tsup": "^6.6.2",
+    "typescript": "5.7.3"
+  }
+}

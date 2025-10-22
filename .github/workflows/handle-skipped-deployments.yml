@@ -1,0 +1,25 @@
+name: Update E2E Test Statuses on Skipped Deployments
+
+on:
+  repository_dispatch:
+    types:
+      - 'vercel.deployment.skipped'
+
+jobs:
+  update-e2e-status-nextjs-app-marketing:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.client_payload.project.id == 'prj_VpckqSodoXlv5Np8jvg4SfJ7wsH8' }}
+    steps:
+      - name: Update E2E Status
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            await github.rest.repos.createCommitStatus({
+              owner: 'vercel',
+              repo: 'microfrontends',
+              sha: context.payload.client_payload.git.sha,
+              state: 'success',
+              context: 'E2E Tests (nextjs-app-marketing)',
+              description: 'Skipped - Project Not affected'
+            });

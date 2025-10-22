@@ -1,0 +1,30 @@
+{
+  "$schema": "https://openapi.vercel.sh/microfrontends.json",
+  "applications": {
+    "web": {
+      "development": { "fallback": "nothingtest.com" }
+    },
+    "docs-for-test": {
+      "routing": [
+        {
+          "paths": ["/docs"]
+        }
+      ]
+    },
+    "vercel-microfrontends-pull": {
+      "routing": [
+        {
+          "paths": ["/vercel-microfrontends-pull"]
+        }
+      ]
+    },
+    "app-with-packagename": {
+      "packageName": "app-with-packagename-another",
+      "routing": [
+        {
+          "paths": ["/app-with-packagename"]
+        }
+      ]
+    }
+  }
+}

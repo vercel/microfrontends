@@ -1,0 +1,25 @@
+{
+  "$schema": "https://openapi.vercel.sh/microfrontends.json",
+  "applications": {
+    "react-router-web": {
+      "development": {
+        "fallback": "react-router-web-sage.vercel.app"
+      }
+    },
+    "react-router-docs": {
+      "routing": [
+        {
+          "paths": ["/docs", "/docs/:path*"]
+        }
+      ]
+    },
+    "react-router-vite-base-path": {
+      "packageName": "react-router-vite-base-path-different-than-vercel-project-name",
+      "routing": [
+        {
+          "paths": ["/vite-base-path", "/vite-base-path/:path*"]
+        }
+      ]
+    }
+  }
+}

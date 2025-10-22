@@ -1,0 +1,59 @@
+{
+  "name": "microfrontends",
+  "version": "0.0.0",
+  "description": "Monorepo containing the @vercel/microfrontends package and examples.",
+  "bugs": {
+    "url": "https://github.com/vercel/microfrontends/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vercel/microfrontends"
+  },
+  "license": "MIT",
+  "scripts": {
+    "build": "turbo build",
+    "build:releasable": "turbo @vercel/microfrontends#build",
+    "build:single-spa-example": "turbo build -F single-spa-root -F single-spa-web -F single-spa-shared",
+    "changeset": "changeset",
+    "checks": "turbo run build lint test typecheck --continue",
+    "dev:nextjs-app": "turbo dev -F nextjs-app-docs -F nextjs-app-marketing",
+    "dev:nextjs-pages": "turbo dev -F nextjs-pages-dashboard -F nextjs-pages-blog",
+    "dev:react-router": "turbo dev -F react-router-web -F react-router-docs -F react-router-vite-base-path-different-than-vercel-project-name",
+    "dev:single-spa": "turbo dev -F single-spa-root -F single-spa-web -F single-spa-shared",
+    "dev:sveltekit": "turbo dev -F sveltekit-web -F sveltekit-docs",
+    "format": "prettier --write \"**/*.{ts,tsx,md,json,jsonc}\"",
+    "lint": "turbo lint --continue",
+    "release": "pnpm build:releasable && changeset publish",
+    "start:single-spa-example": "turbo start -F single-spa-microfrontends-root -F single-spa-microfrontends-web -F single-spa-microfrontends-shared",
+    "test": "turbo test --continue",
+    "test:e2e": "turbo test:e2e",
+    "test:local-proxy-turbo-integration": "pnpm run -F internal-scripts test-local-proxy-start",
+    "typecheck": "turbo typecheck --continue",
+    "version-packages": "changeset version"
+  },
+  "lint-staged": {
+    "*": [
+      "prettier --write \"**/*.{ts,tsx,md,json,jsonc}\""
+    ]
+  },
+  "prettier": "@vercel/style-guide/prettier",
+  "resolutions": {
+    "sharp": "0.34.1"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.27.12",
+    "@vercel/style-guide": "^6.0.0",
+    "cross-env": "^7.0.3",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.4.3",
+    "prettier": "^3.4.2",
+    "syncpack": "^13.0.1",
+    "turbo": "2.5.2-canary.0",
+    "typescript": "5.7.3"
+  },
+  "packageManager": "pnpm@9.4.0",
+  "engines": {
+    "node": "20.x",
+    "pnpm": "9.4.0"
+  }
+}

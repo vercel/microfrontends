@@ -1,0 +1,10 @@
+{
+  "extends": "ts-config/tsconfig.next",
+  "compilerOptions": {
+    "noUncheckedIndexedAccess": true,
+    "isolatedModules": false,
+    "jsx": "react-jsx",
+    "tsBuildInfoFile": "node_modules/.cache/tsbuildinfo.json"
+  },
+  "exclude": ["node_modules", "dist", "examples"]
+}

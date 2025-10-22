@@ -1,0 +1,12 @@
+{
+  "extends": "ts-config/tsconfig.next",
+  "compilerOptions": {
+    "allowJs": true,
+    "strict": true,
+    "moduleResolution": "bundler",
+    "module": "ESNext",
+    "tsBuildInfoFile": "node_modules/.cache/tsbuildinfo.json"
+  },
+  "include": ["**/*.ts", "**/*.tsx", "global.d.ts"],
+  "exclude": ["node_modules"]
+}

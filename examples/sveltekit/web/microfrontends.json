@@ -1,0 +1,17 @@
+{
+  "$schema": "https://openapi.vercel.sh/microfrontends.json",
+  "applications": {
+    "sveltekit-web": {
+      "development": {
+        "fallback": "vercel-microfrontends-sveltekit.vercel.app"
+      }
+    },
+    "sveltekit-docs": {
+      "routing": [
+        {
+          "paths": ["/docs", "/docs/:path*"]
+        }
+      ]
+    }
+  }
+}

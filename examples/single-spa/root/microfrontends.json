@@ -1,0 +1,24 @@
+{
+  "$schema": "https://openapi.vercel.sh/microfrontends.json",
+  "applications": {
+    "single-spa-root": {
+      "development": {
+        "fallback": "single-spa-microfrontends-root.vercel.app"
+      }
+    },
+    "single-spa-web": {
+      "routing": [
+        {
+          "paths": ["/_web/:path*"]
+        }
+      ]
+    },
+    "single-spa-shared": {
+      "routing": [
+        {
+          "paths": ["/_shared/:path*"]
+        }
+      ]
+    }
+  }
+}

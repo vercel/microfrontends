@@ -1,0 +1,1 @@
+export { withMicrofrontends } from './config';

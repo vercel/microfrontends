@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`validateSchema invalid configs throw errors additional root field 1`] = `
+"Invalid microfrontends config:
+ - Property 'unnecessaryField' is not allowed at the root
+
+See https://openapi.vercel.sh/microfrontends.json for the schema."
+`;
+
+exports[`validateSchema invalid configs throw errors invalid local field 1`] = `
+"Invalid microfrontends config:
+ - Property 'fallback' is required in field applications/app1/development
+ - Unable to infer if applications/app1 is the default app or a child app. This usually means that there is another error in the configuration.
+
+See https://openapi.vercel.sh/microfrontends.json for the schema."
+`;
+
+exports[`validateSchema invalid configs throw errors invalid routing 1`] = `
+"Invalid microfrontends config:
+ - Property 'flagg' is not allowed in field applications/app1/routing/0
+
+See https://openapi.vercel.sh/microfrontends.json for the schema."
+`;
+
+exports[`validateSchema invalid configs throw errors missing applications 1`] = `
+"Invalid microfrontends config:
+ - Property 'applications' is required at the root
+
+See https://openapi.vercel.sh/microfrontends.json for the schema."
+`;

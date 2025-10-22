@@ -1,0 +1,48 @@
+{
+  "name": "nextjs-app-marketing",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "next build",
+    "dev": "next dev --turbo --port $(microfrontends port)",
+    "lint": "next typegen && eslint .",
+    "lint-fix": "eslint . --fix",
+    "start": "next start",
+    "pretest": "playwright install chromium",
+    "test": "jest",
+    "test:e2e": "playwright test",
+    "typecheck": "next typegen && tsc --noEmit"
+  },
+  "dependencies": {
+    "@radix-ui/react-slot": "^1.1.1",
+    "@vercel/analytics": "^1.5.0",
+    "@vercel/microfrontends": "workspace:*",
+    "@vercel/speed-insights": "^1.2.0",
+    "@vercel/toolbar": "0.1.37",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "flags": "^3.2.0",
+    "lucide-react": "0.542.0",
+    "next": "15.5.4",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "tailwind-merge": "^2.6.0",
+    "tailwindcss-animate": "^1.0.7"
+  },
+  "devDependencies": {
+    "@next/env": "15.5.4",
+    "@playwright/test": "1.50.1",
+    "@types/jest": "^29.2.0",
+    "@types/node": "20.11.30",
+    "@types/react": "18.3.1",
+    "@types/react-dom": "18.3.0",
+    "autoprefixer": "^10.4.20",
+    "eslint-config-custom": "workspace:*",
+    "jest": "^29.7.0",
+    "playwright-config": "workspace:*",
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.4.14",
+    "ts-config": "workspace:*",
+    "typescript": "5.7.3"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "extends": "ts-config/tsconfig.next",
+  "compilerOptions": {
+    "noUncheckedIndexedAccess": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "paths": {
+      "@/*": ["./*"]
+    },
+    "tsBuildInfoFile": "node_modules/.cache/tsbuildinfo.json",
+    "allowJs": true
+  },
+  "exclude": ["node_modules", "dist", "examples"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"]
+}

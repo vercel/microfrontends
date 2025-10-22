@@ -1,0 +1,17 @@
+{
+  "$schema": "https://openapi.vercel.sh/microfrontends.json",
+  "applications": {
+    "@vercel/microfrontends": {
+      "development": {
+        "fallback": "https://vercel.com"
+      }
+    },
+    "some-other-app": {
+      "routing": [
+        {
+          "paths": ["/some-other-app", "/some/other/app"]
+        }
+      ]
+    }
+  }
+}

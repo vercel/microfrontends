@@ -1,0 +1,12 @@
+{
+  "extends": "ts-config/tsconfig.next",
+  "compilerOptions": {
+    "allowJs": true,
+    "strict": true,
+    "moduleResolution": "bundler",
+    "module": "es2015",
+    "tsBuildInfoFile": "node_modules/.cache/tsbuildinfo.json"
+  },
+  "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"]
+}

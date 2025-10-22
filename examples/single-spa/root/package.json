@@ -1,0 +1,33 @@
+{
+  "name": "single-spa-root",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite --port $(microfrontends port)",
+    "start": "vite preview --port $(microfrontends port)",
+    "start:proxy": "microfrontends proxy ./microfrontends.json --local-apps single-spa-microfrontends-root single-spa-microfrontends-web single-spa-microfrontends-shared"
+  },
+  "dependencies": {
+    "@vercel/microfrontends": "workspace:*",
+    "@vercel/toolbar": "0.1.37",
+    "react": "^19",
+    "react-dom": "^19",
+    "single-spa": "^6.0.3"
+  },
+  "devDependencies": {
+    "@module-federation/vite": "^1.2.7",
+    "@tailwindcss/postcss": "^4",
+    "@tailwindcss/vite": "^4",
+    "@types/node": "20.11.30",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@vitejs/plugin-react": "^4.3.4",
+    "eslint-config-custom": "workspace:*",
+    "tailwindcss": "^4",
+    "ts-config": "workspace:*",
+    "typescript": "5.7.3",
+    "vite": "^7"
+  }
+}

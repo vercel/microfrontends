@@ -1,0 +1,45 @@
+{
+  "name": "react-router-web",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "react-router build",
+    "dev": "react-router dev",
+    "start": "react-router-serve ./build/server/index.js",
+    "pretest": "playwright install chromium",
+    "test:e2e": "playwright test",
+    "typecheck": "react-router typegen && tsc"
+  },
+  "dependencies": {
+    "@radix-ui/react-slot": "^1.1.1",
+    "@react-router/node": "^7.3.0",
+    "@react-router/serve": "^7.3.0",
+    "@vercel/microfrontends": "workspace:*",
+    "@vercel/react-router": "^1.1.0",
+    "@vercel/toolbar": "0.1.37",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "isbot": "^5.1.17",
+    "lucide-react": "0.542.0",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "react-router": "^7.3.0",
+    "tailwind-merge": "^3.0.2",
+    "tailwindcss-animate": "^1.0.7"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.50.1",
+    "@react-router/dev": "^7.3.0",
+    "@tailwindcss/vite": "^4.0.0",
+    "@types/node": "20.11.30",
+    "@types/react": "18.3.1",
+    "@types/react-dom": "18.3.0",
+    "playwright-config": "workspace:*",
+    "react-router-devtools": "^1.1.0",
+    "tailwindcss": "^4.0.0",
+    "typescript": "5.7.3",
+    "vite": "5.4.11",
+    "vite-tsconfig-paths": "^5.1.4"
+  }
+}

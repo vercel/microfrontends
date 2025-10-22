@@ -1,0 +1,13 @@
+{
+  "extends": "./node_modules/@vercel/style-guide/typescript/tsconfig.node16.json",
+  "compilerOptions": {
+    "incremental": true,
+    "lib": ["ESNext"],
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "noEmit": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "allowArbitraryExtensions": true
+  }
+}

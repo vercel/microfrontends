@@ -1,0 +1,13 @@
+{
+  "$schema": "https://openapi.vercel.sh/microfrontends.json",
+  "applications": {
+    "web": {},
+    "docs-for-test": {
+      "routing": [
+        {
+          "paths": ["/docs"]
+        }
+      ]
+    }
+  }
+}
