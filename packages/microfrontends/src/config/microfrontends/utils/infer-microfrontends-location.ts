@@ -83,7 +83,10 @@ function findPackageWithMicrofrontendsConfig({
         }
       }
       throw new MicrofrontendError(
-        `Could not find a \`microfrontends.json\` file in the repository that contains the "${applicationName}" application.${additionalErrorMessage}\n\nIf your Vercel Microfrontends configuration is not in this repository, you can use the Vercel CLI to pull the Vercel Microfrontends configuration using the "vercel microfrontends pull" command, or you can specify the path manually using the VC_MICROFRONTENDS_CONFIG environment variable.\n\nIf you suspect this is thrown in error, please reach out to the Vercel team.`,
+        `Could not find a \`microfrontends.json\` file in the repository that contains the "${applicationName}" application.${additionalErrorMessage}\n\n` +
+          `If your Vercel Microfrontends configuration is not in this repository, you can use the Vercel CLI to pull the Vercel Microfrontends configuration using the "vercel microfrontends pull" command, or you can specify the path manually using the VC_MICROFRONTENDS_CONFIG environment variable.\n\n` +
+          `If your Vercel Microfrontends configuration has a custom name, ensure the VC_MICROFRONTENDS_CONFIG_FILE_NAME environment variable is set, you can pull the vercel project environment variables using the "vercel env pull" command.\n\n` +
+          `If you suspect this is thrown in error, please reach out to the Vercel team.`,
         { type: 'config', subtype: 'inference_failed' },
       );
     }

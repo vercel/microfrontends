@@ -1,4 +1,4 @@
-export const customConfigFilenameEnvVar = 'VC_MICROFRONTENDS_CONFIG_FILE_NAME';
+import { customConfigFilenameEnvVar } from '../../constants';
 
 const DEFAULT_CONFIGURATION_FILENAMES = [
   'microfrontends.jsonc',
@@ -21,3 +21,5 @@ export function getPossibleConfigurationFilenames({
   }
   return DEFAULT_CONFIGURATION_FILENAMES;
 }
+
+export { customConfigFilenameEnvVar };
