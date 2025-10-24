@@ -106,7 +106,7 @@ export function inferMicrofrontendsLocation(
   opts: FindDefaultMicrofrontendPackageArgs,
 ): string {
   // cache this with name to support multiple configurations in the same repository
-  const cacheKey = `${opts.repositoryRoot}-${opts.applicationContext.name}`;
+  const cacheKey = `${opts.repositoryRoot}-${opts.applicationContext.name}${opts.customConfigFilename ? `-${opts.customConfigFilename}` : ''}`;
 
   // Check if we have a cached result
   if (configCache[cacheKey]) {
