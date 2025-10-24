@@ -1,4 +1,3 @@
-// TODO: delete this file when the build container support custom microfrontends.json naming
 {
   "$schema": "https://openapi.vercel.sh/microfrontends.json",
   "applications": {

@@ -143,8 +143,14 @@ class MicrofrontendsServer {
         packageRoot,
       });
 
+      const customConfigFilename =
+        process.env.VC_MICROFRONTENDS_CONFIG_FILE_NAME;
+
       // see if we have a config file at the package root
-      const maybeConfig = findConfig({ dir: packageRoot });
+      const maybeConfig = findConfig({
+        dir: packageRoot,
+        customConfigFilename,
+      });
       if (maybeConfig) {
         return MicrofrontendsServer.fromFile({
           filePath: maybeConfig,
@@ -155,12 +161,10 @@ class MicrofrontendsServer {
       // if we don't have a microfrontends configuration file, see if we have another package in the repo that references this one
       const repositoryRoot = findRepositoryRoot();
       const isMonorepo = isRepositoryMonorepo({ repositoryRoot });
+      const configFromEnv = process.env.VC_MICROFRONTENDS_CONFIG;
       // the environment variable, if specified, takes precedence over other inference methods
-      if (typeof process.env.VC_MICROFRONTENDS_CONFIG === 'string') {
-        const maybeConfigFromEnv = resolve(
-          packageRoot,
-          process.env.VC_MICROFRONTENDS_CONFIG,
-        );
+      if (typeof configFromEnv === 'string') {
+        const maybeConfigFromEnv = resolve(packageRoot, configFromEnv);
         if (maybeConfigFromEnv) {
           return MicrofrontendsServer.fromFile({
             filePath: maybeConfigFromEnv,
@@ -171,6 +175,7 @@ class MicrofrontendsServer {
         // when the VC_MICROFRONTENDS_CONFIG environment variable is not set, try to find the config in the .vercel directory first
         const maybeConfigFromVercel = findConfig({
           dir: join(packageRoot, '.vercel'),
+          customConfigFilename,
         });
         if (maybeConfigFromVercel) {
           return MicrofrontendsServer.fromFile({
@@ -184,10 +189,14 @@ class MicrofrontendsServer {
           const defaultPackage = inferMicrofrontendsLocation({
             repositoryRoot,
             applicationContext,
+            customConfigFilename,
           });
 
           // see if we have a config file at the package root
-          const maybeConfigFromDefault = findConfig({ dir: defaultPackage });
+          const maybeConfigFromDefault = findConfig({
+            dir: defaultPackage,
+            customConfigFilename,
+          });
           if (maybeConfigFromDefault) {
             return MicrofrontendsServer.fromFile({
               filePath: maybeConfigFromDefault,

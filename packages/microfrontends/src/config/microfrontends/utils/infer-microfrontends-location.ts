@@ -3,8 +3,8 @@ import { readFileSync } from 'node:fs';
 import { parse } from 'jsonc-parser';
 import fg from 'fast-glob';
 import type { Config } from '../../schema/types';
-import { CONFIGURATION_FILENAMES } from '../../constants';
 import { MicrofrontendError } from '../../errors';
+import { getPossibleConfigurationFilenames } from './get-config-file-name';
 import type { ApplicationContext } from './get-application-context';
 
 // cache the path to default configuration to avoid having to walk the file system multiple times
@@ -13,6 +13,7 @@ const configCache: Record<string, string> = {};
 interface FindDefaultMicrofrontendPackageArgs {
   repositoryRoot: string;
   applicationContext: ApplicationContext;
+  customConfigFilename: string | undefined;
 }
 
 /**
@@ -24,12 +25,13 @@ interface FindDefaultMicrofrontendPackageArgs {
 function findPackageWithMicrofrontendsConfig({
   repositoryRoot,
   applicationContext,
+  customConfigFilename,
 }: FindDefaultMicrofrontendPackageArgs): string | null {
   const applicationName = applicationContext.name;
   try {
     // eslint-disable-next-line import/no-named-as-default-member
     const microfrontendsJsonPaths = fg.globSync(
-      `**/{${CONFIGURATION_FILENAMES.join(',')}}`,
+      `**/{${getPossibleConfigurationFilenames({ customConfigFilename }).join(',')}}`,
       {
         cwd: repositoryRoot,
         absolute: true,
@@ -81,7 +83,10 @@ function findPackageWithMicrofrontendsConfig({
         }
       }
       throw new MicrofrontendError(
-        `Could not find a \`microfrontends.json\` file in the repository that contains the "${applicationName}" application.${additionalErrorMessage}\n\nIf your Vercel Microfrontends configuration is not in this repository, you can use the Vercel CLI to pull the Vercel Microfrontends configuration using the "vercel microfrontends pull" command, or you can specify the path manually using the VC_MICROFRONTENDS_CONFIG environment variable.\n\nIf you suspect this is thrown in error, please reach out to the Vercel team.`,
+        `Could not find a \`microfrontends.json\` file in the repository that contains the "${applicationName}" application.${additionalErrorMessage}\n\n` +
+          `If your Vercel Microfrontends configuration is not in this repository, you can use the Vercel CLI to pull the Vercel Microfrontends configuration using the "vercel microfrontends pull" command, or you can specify the path manually using the VC_MICROFRONTENDS_CONFIG environment variable.\n\n` +
+          `If your Vercel Microfrontends configuration has a custom name, ensure the VC_MICROFRONTENDS_CONFIG_FILE_NAME environment variable is set, you can pull the vercel project environment variables using the "vercel env pull" command.\n\n` +
+          `If you suspect this is thrown in error, please reach out to the Vercel team.`,
         { type: 'config', subtype: 'inference_failed' },
       );
     }
@@ -104,7 +109,7 @@ export function inferMicrofrontendsLocation(
   opts: FindDefaultMicrofrontendPackageArgs,
 ): string {
   // cache this with name to support multiple configurations in the same repository
-  const cacheKey = `${opts.repositoryRoot}-${opts.applicationContext.name}`;
+  const cacheKey = `${opts.repositoryRoot}-${opts.applicationContext.name}${opts.customConfigFilename ? `-${opts.customConfigFilename}` : ''}`;
 
   // Check if we have a cached result
   if (configCache[cacheKey]) {
