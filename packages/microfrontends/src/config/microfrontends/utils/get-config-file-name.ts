@@ -15,7 +15,9 @@ export function getPossibleConfigurationFilenames({
     customConfigFilename?.endsWith('.json') ||
     customConfigFilename?.endsWith('.jsonc')
   ) {
-    return [customConfigFilename, ...DEFAULT_CONFIGURATION_FILENAMES];
+    return Array.from(
+      new Set([customConfigFilename, ...DEFAULT_CONFIGURATION_FILENAMES]),
+    );
   }
   return DEFAULT_CONFIGURATION_FILENAMES;
 }
