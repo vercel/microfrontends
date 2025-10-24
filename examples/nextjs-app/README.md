@@ -12,3 +12,11 @@ Docs serves `/docs` and `/docs/:path*` (any route that starts with the `/docs` p
 ## Running locally
 
 To run this example locally, run `pnpm dev:nextjs-app` from the root of the repository. Then visit `http://localhost:3024` and click around.
+
+## Env
+
+This example uses `VC_MICROFRONTENDS_CONFIG_FILE_NAME`. Ensure the env var is set in each project using `vc env pull`, or by creating a `.env` file in the root of each project with the following content:
+
+```.env
+VC_MICROFRONTENDS_CONFIG_FILE_NAME="microfrontends-custom.jsonc"
+```

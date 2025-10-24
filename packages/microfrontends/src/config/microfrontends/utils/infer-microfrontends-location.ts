@@ -3,8 +3,8 @@ import { readFileSync } from 'node:fs';
 import { parse } from 'jsonc-parser';
 import fg from 'fast-glob';
 import type { Config } from '../../schema/types';
-import { CONFIGURATION_FILENAMES } from '../../constants';
 import { MicrofrontendError } from '../../errors';
+import { getPossibleConfigurationFilenames } from './get-config-file-name';
 import type { ApplicationContext } from './get-application-context';
 
 // cache the path to default configuration to avoid having to walk the file system multiple times
@@ -13,6 +13,7 @@ const configCache: Record<string, string> = {};
 interface FindDefaultMicrofrontendPackageArgs {
   repositoryRoot: string;
   applicationContext: ApplicationContext;
+  customConfigFilename: string | undefined;
 }
 
 /**
@@ -24,12 +25,13 @@ interface FindDefaultMicrofrontendPackageArgs {
 function findPackageWithMicrofrontendsConfig({
   repositoryRoot,
   applicationContext,
+  customConfigFilename,
 }: FindDefaultMicrofrontendPackageArgs): string | null {
   const applicationName = applicationContext.name;
   try {
     // eslint-disable-next-line import/no-named-as-default-member
     const microfrontendsJsonPaths = fg.globSync(
-      `**/{${CONFIGURATION_FILENAMES.join(',')}}`,
+      `**/{${getPossibleConfigurationFilenames({ customConfigFilename }).join(',')}}`,
       {
         cwd: repositoryRoot,
         absolute: true,

@@ -1,9 +1,17 @@
 import fs from 'node:fs';
 import { join } from 'node:path';
-import { CONFIGURATION_FILENAMES } from '../../constants';
+import { getPossibleConfigurationFilenames } from './get-config-file-name';
 
-export function findConfig({ dir }: { dir: string }): string | null {
-  for (const filename of CONFIGURATION_FILENAMES) {
+export function findConfig({
+  dir,
+  customConfigFilename,
+}: {
+  dir: string;
+  customConfigFilename: string | undefined;
+}): string | null {
+  for (const filename of getPossibleConfigurationFilenames({
+    customConfigFilename,
+  })) {
     const maybeConfig = join(dir, filename);
     if (fs.existsSync(maybeConfig)) {
       return maybeConfig;

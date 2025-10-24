@@ -13,6 +13,7 @@ import { findPackageRoot } from '../utils/find-package-root';
 import { findConfig } from '../utils/find-config';
 import { MicrofrontendConfigIsomorphic } from '../../microfrontends-config/isomorphic';
 import { getApplicationContext } from '../utils/get-application-context';
+import { customConfigFilenameEnvVar } from '../utils/get-config-file-name';
 import { getOutputFilePath } from './utils/get-output-file-path';
 import { validateSchema } from './validation';
 
@@ -143,8 +144,13 @@ class MicrofrontendsServer {
         packageRoot,
       });
 
+      const customConfigFilename = process.env[customConfigFilenameEnvVar];
+
       // see if we have a config file at the package root
-      const maybeConfig = findConfig({ dir: packageRoot });
+      const maybeConfig = findConfig({
+        dir: packageRoot,
+        customConfigFilename,
+      });
       if (maybeConfig) {
         return MicrofrontendsServer.fromFile({
           filePath: maybeConfig,
@@ -171,6 +177,7 @@ class MicrofrontendsServer {
         // when the VC_MICROFRONTENDS_CONFIG environment variable is not set, try to find the config in the .vercel directory first
         const maybeConfigFromVercel = findConfig({
           dir: join(packageRoot, '.vercel'),
+          customConfigFilename,
         });
         if (maybeConfigFromVercel) {
           return MicrofrontendsServer.fromFile({
@@ -184,10 +191,14 @@ class MicrofrontendsServer {
           const defaultPackage = inferMicrofrontendsLocation({
             repositoryRoot,
             applicationContext,
+            customConfigFilename,
           });
 
           // see if we have a config file at the package root
-          const maybeConfigFromDefault = findConfig({ dir: defaultPackage });
+          const maybeConfigFromDefault = findConfig({
+            dir: defaultPackage,
+            customConfigFilename,
+          });
           if (maybeConfigFromDefault) {
             return MicrofrontendsServer.fromFile({
               filePath: maybeConfigFromDefault,
