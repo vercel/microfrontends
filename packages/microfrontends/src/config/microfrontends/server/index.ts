@@ -13,8 +13,6 @@ import { findPackageRoot } from '../utils/find-package-root';
 import { findConfig } from '../utils/find-config';
 import { MicrofrontendConfigIsomorphic } from '../../microfrontends-config/isomorphic';
 import { getApplicationContext } from '../utils/get-application-context';
-import { customConfigFilenameEnvVar } from '../utils/get-config-file-name';
-import { configAsEnvVar } from '../../constants';
 import { getOutputFilePath } from './utils/get-output-file-path';
 import { validateSchema } from './validation';
 
@@ -145,7 +143,8 @@ class MicrofrontendsServer {
         packageRoot,
       });
 
-      const customConfigFilename = process.env[customConfigFilenameEnvVar];
+      const customConfigFilename =
+        process.env.VC_MICROFRONTENDS_CONFIG_FILE_NAME;
 
       // see if we have a config file at the package root
       const maybeConfig = findConfig({
@@ -162,7 +161,7 @@ class MicrofrontendsServer {
       // if we don't have a microfrontends configuration file, see if we have another package in the repo that references this one
       const repositoryRoot = findRepositoryRoot();
       const isMonorepo = isRepositoryMonorepo({ repositoryRoot });
-      const configFromEnv = process.env[configAsEnvVar];
+      const configFromEnv = process.env.VC_MICROFRONTENDS_CONFIG;
       // the environment variable, if specified, takes precedence over other inference methods
       if (typeof configFromEnv === 'string') {
         const maybeConfigFromEnv = resolve(packageRoot, configFromEnv);
