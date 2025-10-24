@@ -1,10 +1,17 @@
 # @vercel/microfrontends
 
+## 2.1.0
+
+### Minor Changes
+
+- c856a5d: - Add support for custom `microfrontends.json` file names. This enables a single application to be deployed as multiple different vercel projects / microfrontends.
+  - Strip asset prefix from Vercel Firewall rate limit paths. Support Vercel Firewall rate limit requests when they go to a child application.
+
 ## 2.0.1
 
 ### Patch Changes
 
-- 8c11bdc: 
+- 8c11bdc:
   - Support hyphens and escaped special characters in supported path matching regex https://vercel.com/docs/microfrontends/path-routing#supported-path-expressions
   - Improve error message for when local development proxy can't determine the port
   - Update local proxy double slash routing behaviour to match the production proxy
