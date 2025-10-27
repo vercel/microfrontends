@@ -609,7 +609,7 @@ export class LocalProxy {
         headers: {
           ...req.headers,
           host: hostname,
-          cookie: req.headers.cookie
+          cookie: req.headers.cookie?.includes('VERCEL_MFE_DEBUG')
             ? `${req.headers.cookie};VERCEL_MFE_DEBUG=;` // strip VERCEL_MFE_DEBUG cookie if present, as this causes an auth redirect
             : req.headers.cookie,
           ...(automationBypass
