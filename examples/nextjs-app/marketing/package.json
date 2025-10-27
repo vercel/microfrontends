@@ -11,7 +11,7 @@
     "pretest": "playwright install chromium",
     "test": "jest",
     "test:e2e": "playwright test",
-    "typecheck": "next typegen && tsc --noEmit"
+    "typecheck": "VC_MICROFRONTENDS_CONFIG_FILE_NAME=microfrontends-custom.jsonc next typegen && tsc --noEmit"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.1.1",
