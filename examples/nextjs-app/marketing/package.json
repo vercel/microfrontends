@@ -9,7 +9,7 @@
     "lint-fix": "VC_MICROFRONTENDS_CONFIG_FILE_NAME=microfrontends-custom.jsonc eslint . --fix",
     "start": "next start",
     "pretest": "playwright install chromium",
-    "test": "jest",
+    "test": "VC_MICROFRONTENDS_CONFIG_FILE_NAME=microfrontends-custom.jsonc jest",
     "test:e2e": "playwright test",
     "typecheck": "VC_MICROFRONTENDS_CONFIG_FILE_NAME=microfrontends-custom.jsonc next typegen && tsc --noEmit"
   },
