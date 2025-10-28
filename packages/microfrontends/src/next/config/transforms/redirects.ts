@@ -2,7 +2,7 @@ import { routeToLocalProxy } from '../../utils/route-to-local-proxy';
 import type { TransformConfigInput, TransformConfigResponse } from './types';
 
 export function transform(args: TransformConfigInput): TransformConfigResponse {
-  const { next, microfrontend, opts } = args;
+  const { next, microfrontend, opts, app } = args;
   const isProduction = opts?.isProduction ?? false;
 
   const requireLocalProxyHeader =
@@ -11,18 +11,15 @@ export function transform(args: TransformConfigInput): TransformConfigResponse {
     !process.env.MFE_DISABLE_LOCAL_PROXY_REWRITE;
 
   if (requireLocalProxyHeader) {
+    const assetPrefix = app.getAssetPrefix();
     // If local proxy is running, redirect all requests without the header set by the local proxy to the local proxy.
     const proxyRedirects = [
       {
-        source: '/:path*',
+        source: `/((?!${assetPrefix ? `${assetPrefix}/` : ''}_next/static).*)`,
         destination: `http://localhost:${microfrontend.getLocalProxyPort()}/:path*`,
         permanent: false,
         missing: [
-          { type: 'header', key: 'x-vercel-mfe-local-proxy-origin' },
-          {
-            type: 'host',
-            value: `localhost:${microfrontend.getLocalProxyPort()}`, // if it's already on the host, we don't need to redirect
-          } as const,
+          { type: 'header', key: 'x-vercel-mfe-local-proxy-origin' } as const,
         ],
       },
     ];

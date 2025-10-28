@@ -39,13 +39,40 @@ describe('withMicrofrontends: redirects', () => {
         : undefined;
       expect(redirects).toEqual([
         {
-          source: '/:path*',
+          source: '/((?!_next/static).*)',
           destination: 'http://localhost:3324/:path*',
           permanent: false,
-          missing: [
-            { type: 'header', key: 'x-vercel-mfe-local-proxy-origin' },
-            { type: 'host', value: 'localhost:3324' },
-          ],
+          missing: [{ type: 'header', key: 'x-vercel-mfe-local-proxy-origin' }],
+        },
+      ]);
+    });
+
+    it('redirects when enabled non-prod child app', async () => {
+      const mfConfig = MicrofrontendsServer.fromFile({
+        filePath: join(fixtures, 'simple.jsonc'),
+      }).config;
+
+      const nextConfig: NextConfig = {};
+
+      const app = mfConfig.getApplication('vercel-marketing');
+
+      const { next: newConfig } = transform({
+        next: nextConfig,
+        app,
+        microfrontend: mfConfig,
+        opts: { isProduction: false },
+      });
+
+      expect(newConfig.redirects).toBeDefined();
+      const redirects = newConfig.redirects
+        ? await newConfig.redirects()
+        : undefined;
+      expect(redirects).toEqual([
+        {
+          source: '/((?!vc-ap-6a379c/_next/static).*)',
+          destination: 'http://localhost:3324/:path*',
+          permanent: false,
+          missing: [{ type: 'header', key: 'x-vercel-mfe-local-proxy-origin' }],
         },
       ]);
     });
@@ -81,13 +108,10 @@ describe('withMicrofrontends: redirects', () => {
         : undefined;
       expect(redirects).toEqual([
         {
-          source: '/:path*',
+          source: '/((?!_next/static).*)',
           destination: 'http://localhost:3324/:path*',
           permanent: false,
-          missing: [
-            { type: 'header', key: 'x-vercel-mfe-local-proxy-origin' },
-            { type: 'host', value: 'localhost:3324' },
-          ],
+          missing: [{ type: 'header', key: 'x-vercel-mfe-local-proxy-origin' }],
         },
         {
           source: '/blog/alpha',
@@ -176,13 +200,10 @@ describe('withMicrofrontends: redirects', () => {
         : undefined;
       expect(redirects).toEqual([
         {
-          source: '/:path*',
+          source: '/((?!_next/static).*)',
           destination: 'http://localhost:3324/:path*',
           permanent: false,
-          missing: [
-            { type: 'header', key: 'x-vercel-mfe-local-proxy-origin' },
-            { type: 'host', value: 'localhost:3324' },
-          ],
+          missing: [{ type: 'header', key: 'x-vercel-mfe-local-proxy-origin' }],
         },
       ]);
     });
