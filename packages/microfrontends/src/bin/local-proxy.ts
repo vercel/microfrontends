@@ -2,7 +2,7 @@
 import * as http from 'node:http';
 import * as https from 'node:https';
 import { URL } from 'node:url';
-import { parse } from 'cookie';
+import { parse, serialize } from 'cookie';
 import { pathToRegexp } from 'path-to-regexp';
 import Server from 'http-proxy';
 import { MicrofrontendConfigIsomorphic } from '../config/microfrontends-config/isomorphic';
@@ -10,7 +10,10 @@ import type {
   Application,
   ChildApplication,
 } from '../config/microfrontends-config/isomorphic/application';
-import { parseOverrides } from '../config/overrides';
+import {
+  getAppEnvOverrideCookieName,
+  parseOverrides,
+} from '../config/overrides';
 import { MicrofrontendsServer } from '../config/microfrontends/server';
 import { hashApplicationName } from '../config/microfrontends-config/isomorphic/utils/hash-application-name';
 import cliPkg from '../../package.json';
@@ -602,6 +605,10 @@ export class LocalProxy {
       const app = this.router.config.getApplication(target.application);
       const automationBypass = process.env[app.getAutomationBypassEnvVarName()];
 
+      const cookies = parse(req.headers.cookie || '');
+      const overrideCookieName = getAppEnvOverrideCookieName(
+        target.application,
+      );
       const requestOptions = {
         hostname,
         path,
@@ -609,9 +616,21 @@ export class LocalProxy {
         headers: {
           ...req.headers,
           host: hostname,
-          cookie: req.headers.cookie?.includes('VERCEL_MFE_DEBUG')
-            ? `${req.headers.cookie};VERCEL_MFE_DEBUG=;` // strip VERCEL_MFE_DEBUG cookie if present, as this causes an auth redirect
-            : req.headers.cookie,
+          cookie: Object.entries(cookies)
+            .reduce<string[]>((acc, [name, value]) => {
+              if (
+                value &&
+                // strip the override cookie if present, as this causes an auth redirect. The
+                // override is handled by the local proxy.
+                name !== overrideCookieName &&
+                // strip the VERCEL_MFE_DEBUG cookie if present, as this causes an auth redirect
+                name !== 'VERCEL_MFE_DEBUG'
+              ) {
+                acc.push(serialize(name, value));
+              }
+              return acc;
+            }, [])
+            .join('; '),
           ...(automationBypass
             ? { 'x-vercel-protection-bypass': automationBypass }
             : {}),
@@ -628,7 +647,6 @@ export class LocalProxy {
             cookie.startsWith('_vercel_sso_nonce='),
           )
         ) {
-          const cookies = parse(req.headers.cookie || '');
           const defaultApp = this.router.config.getDefaultApplication();
           return res.end(
             localAuthHtml({
@@ -637,10 +655,7 @@ export class LocalProxy {
               defaultApp: defaultApp.packageName || defaultApp.name,
               automationBypassEnvVarName: app.getAutomationBypassEnvVarName(),
               automationBypass,
-              override:
-                cookies[
-                  `vercel-micro-frontends-override:env:${target.application}`
-                ],
+              override: cookies[overrideCookieName],
             }),
           );
         }
