@@ -628,6 +628,7 @@ export class LocalProxy {
             cookie.startsWith('_vercel_sso_nonce='),
           )
         ) {
+          const cookies = parse(req.headers.cookie || '');
           const defaultApp = this.router.config.getDefaultApplication();
           return res.end(
             localAuthHtml({
@@ -636,6 +637,10 @@ export class LocalProxy {
               defaultApp: defaultApp.packageName || defaultApp.name,
               automationBypassEnvVarName: app.getAutomationBypassEnvVarName(),
               automationBypass,
+              override:
+                cookies[
+                  `vercel-micro-frontends-override:env:${target.application}`
+                ],
             }),
           );
         }
