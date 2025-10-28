@@ -7,16 +7,26 @@ export const localAuthHtml = ({
   defaultApp,
   automationBypassEnvVarName,
   automationBypass,
+  override,
 }: {
   app: string;
   hostname: string;
   defaultApp: string;
   automationBypassEnvVarName: string;
   automationBypass?: string;
+  override: string | undefined;
 }) => {
+  const intro = override
+    ? `<b><code>${app}</code></b> is overriding to a protected deployment <a target="_blank" href="https://${override}">${override}</a>.`
+    : `<b><code>${app}</code></b> is falling back to a protected deployment <a target="_blank" href="https://${hostname}">${hostname}</a>.`;
+
   const content = automationBypass
     ? `<b><code>${automationBypassEnvVarName}</code></b> is set with the value <b><code>${automationBypass}</code></b>, please verify this value equals the <a href="https://vercel.com/docs/deployment-protection/methods-to-bypass-deployment-protection/protection-bypass-automation">Protection Bypass for Automation</a> for the Vercel project hosting the deployment.`
     : `To access, set a local environment variable <b><code>${automationBypassEnvVarName}</code></b> with the value of the <a href="https://vercel.com/docs/deployment-protection/methods-to-bypass-deployment-protection/protection-bypass-automation">Protection Bypass for Automation</a> for the Vercel project hosting the deployment.`;
+
+  const action = override
+    ? `<buttton onClick="clearOverride()" class="button">Clear Override</button>`
+    : '';
 
   return `<!DOCTYPE html>
 	<html lang="en">
@@ -62,12 +72,32 @@ export const localAuthHtml = ({
 		  ::-moz-selection {
 			background: #79FFE1;
 		  }
+
+		  .button {
+		    border: 1px solid black;
+		    padding: 10px 20px;
+		    text-align: center;
+		    text-decoration: none;
+		    display: inline-block;
+		    font-size: 16px;
+		    margin: 4px 2px;
+		    cursor: pointer;
+			border-radius: 5px;
+			align-self: flex-end;
+			font-size: 14px;
+			line-height: 1.8;
+		  }	
+
+		  .button:hover {
+		    background-color: #ddd;
+		  }
 	
 		  a {
 			cursor: pointer;
 			color: #0070f3;
 			text-decoration: none;
 			transition: all .2s ease;
+			border-radius: 5px;
 			border-bottom: 1px solid transparent
 		  }
 	
@@ -117,7 +147,10 @@ export const localAuthHtml = ({
 		  main {
 			max-width: 80rem;
 			padding: 4rem 6rem;
-			margin: auto
+			margin: auto;
+			display: flex;
+			flex-direction: column;
+			row-gap: 32px;
 		  }
 	
 		  ul {
@@ -149,7 +182,7 @@ export const localAuthHtml = ({
 			padding: 2rem;
 			display: flex;
 			flex-direction: column;
-			margin-bottom: 32px
+			margin: 0px;
 		  }
 	
 		  .error-code {
@@ -296,18 +329,26 @@ export const localAuthHtml = ({
 		  }
 		</style>
 	  </head>
+	  <script>
+		  function clearOverride() {
+			document.cookie = 'vercel-micro-frontends-override:env:${app}=; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+			window.location.reload();
+		  }
+	  </script>
 	  <body>
 		<div class="container">
 		  <main>
 			<p class="devinfo-container">
-			  <span><b><code>${app}</code></b> is falling back to a protected deployment <a target="_blank" href="https://${hostname}">${hostname}</a>.</span>
-        <br>
-        <span>${content}</span>
-        <br>
-        <span>The environment variable should be set in the default app <b><code>${defaultApp}</code></b>, where the local proxy is running.</span>
+			  	<span>${intro}</span>
+				<br/>
+				<span>${content}</span>
+				<br/>
+				<span>The environment variable should be set in the default app <b><code>${defaultApp}</code></b>, where the local proxy is running.</span>
 			</p>
 		
 			<a href="https://vercel.com/docs/microfrontends/local-development#falling-back-to-protected-deployments"><div class="note">Click here to learn more about setting up the environment variable.</div></a>
+		
+			${action}
 		  </main>	
 		</div>
 	  </body>
