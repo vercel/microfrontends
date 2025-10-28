@@ -15,7 +15,7 @@ export function transform(args: TransformConfigInput): TransformConfigResponse {
     // If local proxy is running, redirect all requests without the header set by the local proxy to the local proxy.
     const proxyRedirects = [
       {
-        source: `/((?!${assetPrefix ? `${assetPrefix}/` : ''}_next).*)`,
+        source: `/((?!${assetPrefix ? `${assetPrefix}/` : ''}_next/static).*)`,
         destination: `http://localhost:${microfrontend.getLocalProxyPort()}/:path*`,
         permanent: false,
         missing: [
