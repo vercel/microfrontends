@@ -17,7 +17,13 @@ export function transform(args: TransformConfigInput): TransformConfigResponse {
         source: '/:path*',
         destination: `http://localhost:${microfrontend.getLocalProxyPort()}/:path*`,
         permanent: false,
-        missing: [{ type: 'header', key: 'x-vercel-mfe-local-proxy-origin' }],
+        missing: [
+          { type: 'header', key: 'x-vercel-mfe-local-proxy-origin' },
+          {
+            type: 'host',
+            value: `localhost:${microfrontend.getLocalProxyPort()}`, // if it's already on the host, we don't need to redirect
+          } as const,
+        ],
       },
     ];
     if (next.redirects && typeof next.redirects === 'function') {
