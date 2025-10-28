@@ -42,7 +42,10 @@ describe('withMicrofrontends: redirects', () => {
           source: '/:path*',
           destination: 'http://localhost:3324/:path*',
           permanent: false,
-          missing: [{ type: 'header', key: 'x-vercel-mfe-local-proxy-origin' }],
+          missing: [
+            { type: 'header', key: 'x-vercel-mfe-local-proxy-origin' },
+            { type: 'host', value: 'localhost:3324' },
+          ],
         },
       ]);
     });
@@ -81,7 +84,10 @@ describe('withMicrofrontends: redirects', () => {
           source: '/:path*',
           destination: 'http://localhost:3324/:path*',
           permanent: false,
-          missing: [{ type: 'header', key: 'x-vercel-mfe-local-proxy-origin' }],
+          missing: [
+            { type: 'header', key: 'x-vercel-mfe-local-proxy-origin' },
+            { type: 'host', value: 'localhost:3324' },
+          ],
         },
         {
           source: '/blog/alpha',
@@ -173,7 +179,10 @@ describe('withMicrofrontends: redirects', () => {
           source: '/:path*',
           destination: 'http://localhost:3324/:path*',
           permanent: false,
-          missing: [{ type: 'header', key: 'x-vercel-mfe-local-proxy-origin' }],
+          missing: [
+            { type: 'header', key: 'x-vercel-mfe-local-proxy-origin' },
+            { type: 'host', value: 'localhost:3324' },
+          ],
         },
       ]);
     });
