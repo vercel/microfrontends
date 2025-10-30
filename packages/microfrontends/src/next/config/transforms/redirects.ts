@@ -11,6 +11,7 @@ export function transform(args: TransformConfigInput): TransformConfigResponse {
     !process.env.MFE_DISABLE_LOCAL_PROXY_REWRITE;
 
   if (requireLocalProxyHeader) {
+    // If local proxy is running, redirect all requests without the header set by the local proxy to the local proxy.
     const proxyRedirects = [
       {
         source: `/:path*`,
