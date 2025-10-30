@@ -39,10 +39,11 @@ describe('withMicrofrontends: redirects', () => {
         : undefined;
       expect(redirects).toEqual([
         {
-          source: '/((?!_next/static).*)',
+          source: '/:path*',
           destination: 'http://localhost:3324/:path*',
           permanent: false,
           missing: [{ type: 'header', key: 'x-vercel-mfe-local-proxy-origin' }],
+          has: [{ type: 'header', key: 'host' }],
         },
       ]);
     });
@@ -69,10 +70,11 @@ describe('withMicrofrontends: redirects', () => {
         : undefined;
       expect(redirects).toEqual([
         {
-          source: '/((?!vc-ap-6a379c/_next/static).*)',
+          source: '/:path*',
           destination: 'http://localhost:3324/:path*',
           permanent: false,
           missing: [{ type: 'header', key: 'x-vercel-mfe-local-proxy-origin' }],
+          has: [{ type: 'header', key: 'host' }],
         },
       ]);
     });
@@ -108,10 +110,11 @@ describe('withMicrofrontends: redirects', () => {
         : undefined;
       expect(redirects).toEqual([
         {
-          source: '/((?!_next/static).*)',
+          source: '/:path*',
           destination: 'http://localhost:3324/:path*',
           permanent: false,
           missing: [{ type: 'header', key: 'x-vercel-mfe-local-proxy-origin' }],
+          has: [{ type: 'header', key: 'host' }],
         },
         {
           source: '/blog/alpha',
@@ -200,10 +203,11 @@ describe('withMicrofrontends: redirects', () => {
         : undefined;
       expect(redirects).toEqual([
         {
-          source: '/((?!_next/static).*)',
+          source: '/:path*',
           destination: 'http://localhost:3324/:path*',
           permanent: false,
           missing: [{ type: 'header', key: 'x-vercel-mfe-local-proxy-origin' }],
+          has: [{ type: 'header', key: 'host' }],
         },
       ]);
     });
