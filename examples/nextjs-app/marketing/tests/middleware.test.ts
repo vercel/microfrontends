@@ -13,13 +13,16 @@ jest.mock('flags/next', () => ({
 describe('middleware', () => {
   test('matches microfrontends paths', () => {
     expect(() =>
-      validateMiddlewareConfig(config, './microfrontends.jsonc'),
+      validateMiddlewareConfig(config, './microfrontends-custom.jsonc'),
     ).not.toThrow();
   });
 
   test('rewrites for flagged paths', async () => {
     await expect(
-      validateMiddlewareOnFlaggedPaths('./microfrontends.jsonc', middleware),
+      validateMiddlewareOnFlaggedPaths(
+        './microfrontends-custom.jsonc',
+        middleware,
+      ),
     ).resolves.not.toThrow();
   });
 });

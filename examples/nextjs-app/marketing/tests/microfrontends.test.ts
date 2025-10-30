@@ -5,7 +5,7 @@ import { validateRouting } from '@vercel/microfrontends/next/testing';
 describe('microfrontends', () => {
   test('routing', () => {
     expect(() =>
-      validateRouting('./microfrontends.jsonc', {
+      validateRouting('./microfrontends-custom.jsonc', {
         'nextjs-app-marketing': ['/', '/city/amsterdam', '/flagged/docs'],
         'nextjs-app-docs': [
           '/docs',

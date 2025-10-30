@@ -34,7 +34,7 @@ describe('next.config.ts', () => {
 
       it('next.config.js redirects and rewrites should not match any microfrontend path', async () => {
         const mfeConfig = loadMicrofrontendConfigForEdge(
-          './microfrontends.jsonc',
+          './microfrontends-custom.jsonc',
         );
         const allPaths = [...getAllMicrofrontendPaths(mfeConfig)];
         const errors = [];
