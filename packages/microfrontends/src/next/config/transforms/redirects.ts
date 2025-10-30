@@ -2,7 +2,7 @@ import { routeToLocalProxy } from '../../utils/route-to-local-proxy';
 import type { TransformConfigInput, TransformConfigResponse } from './types';
 
 export function transform(args: TransformConfigInput): TransformConfigResponse {
-  const { next, microfrontend, opts, app } = args;
+  const { next, microfrontend, opts } = args;
   const isProduction = opts?.isProduction ?? false;
 
   const requireLocalProxyHeader =
@@ -11,16 +11,21 @@ export function transform(args: TransformConfigInput): TransformConfigResponse {
     !process.env.MFE_DISABLE_LOCAL_PROXY_REWRITE;
 
   if (requireLocalProxyHeader) {
-    const assetPrefix = app.getAssetPrefix();
     // If local proxy is running, redirect all requests without the header set by the local proxy to the local proxy.
     const proxyRedirects = [
       {
-        source: `/((?!${assetPrefix ? `${assetPrefix}/` : ''}_next/static).*)`,
+        source: `/:path*`,
         destination: `http://localhost:${microfrontend.getLocalProxyPort()}/:path*`,
         permanent: false,
         missing: [
           { type: 'header', key: 'x-vercel-mfe-local-proxy-origin' } as const,
         ],
+        // this fixes relative path Next.js images locally. A security fix removed the headers from the image request,
+        // https://github.com/vercel/next.js/pull/82114, and locally the image fetch does not follow redirects. This
+        // means the header x-vercel-mfe-local-proxy-origin is stripped, and the redirect to then add the header back
+        // in is not followed. As all headers are stripped, there is also no host header, so this check will ensure
+        // relative path Next.js images are not redirected to the local proxy.
+        has: [{ type: 'header', key: 'host' } as const],
       },
     ];
     if (next.redirects && typeof next.redirects === 'function') {
