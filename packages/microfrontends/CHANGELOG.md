@@ -1,5 +1,11 @@
 # @vercel/microfrontends
 
+## 2.1.3
+
+### Patch Changes
+
+- 93506f2: Fix Next.js image optimization locally for any image path
+
 ## 2.1.2
 
 ### Patch Changes
