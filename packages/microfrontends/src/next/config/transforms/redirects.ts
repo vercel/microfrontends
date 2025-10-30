@@ -20,7 +20,7 @@ export function transform(args: TransformConfigInput): TransformConfigResponse {
           { type: 'header', key: 'x-vercel-mfe-local-proxy-origin' } as const,
         ],
         // this fixes relative path Next.js images locally. A security fix removed the headers from the image request,
-        // https://github.com/vercel/next.js/pull/82114., and locally the image fetch does not follow redirects. This
+        // https://github.com/vercel/next.js/pull/82114, and locally the image fetch does not follow redirects. This
         // means the header x-vercel-mfe-local-proxy-origin is stripped, and the redirect to then add the header back
         // in is not followed. As all headers are stripped, there is also no host header, so this check will ensure
         // relative path Next.js images are not redirected to the local proxy.
