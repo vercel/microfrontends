@@ -9,6 +9,10 @@ Split apart large applications and develop faster with microfrontends. This pack
 
 See the [full documentation](https://vercel.com/docs/microfrontends) and [examples](https://vercel.com/templates/microfrontends) to learn more.
 
+## Changelog
+
+See the [changelog](./packages/microfrontends/CHANGELOG.md) for a list of changes.
+
 ## Getting Started
 
 Follow the [quickstart](https://vercel.com/docs/microfrontends/quickstart) documentation to get started.
