@@ -163,7 +163,7 @@ describe('withMicrofrontends: redirects', () => {
     });
 
     it('no redirects if non dev env', () => {
-      process.env.VERCEL_ENV = 'staging';
+      process.env.TURBO_TASK_HAS_MFE_PROXY = undefined;
       const mfConfig = MicrofrontendsServer.fromFile({
         filePath: join(fixtures, 'simple.jsonc'),
       }).config;
@@ -181,8 +181,8 @@ describe('withMicrofrontends: redirects', () => {
       expect(newConfig.redirects).toBeUndefined();
     });
 
-    it('redirects if dev env', async () => {
-      process.env.VERCEL_ENV = 'development';
+    it('redirects if turbo is running mfe proxy', async () => {
+      process.env.TURBO_TASK_HAS_MFE_PROXY = '1';
       const mfConfig = MicrofrontendsServer.fromFile({
         filePath: join(fixtures, 'simple.jsonc'),
       }).config;
