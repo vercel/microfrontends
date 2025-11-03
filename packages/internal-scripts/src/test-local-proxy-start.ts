@@ -4,15 +4,23 @@ import { join } from 'node:path';
 const WORKSPACE_ROOT = join(process.cwd(), '..', '..');
 
 const DEV_TASKS = [
-  'nextjs-app-docs#dev',
-  'nextjs-app-marketing#dev',
-  'nextjs-pages-blog#dev',
-  'nextjs-pages-dashboard#dev',
-  'react-router-docs#dev',
-  'react-router-vite-base-path-different-than-vercel-project-name#dev',
-  'react-router-web#dev',
-  'sveltekit-docs#dev',
-  'sveltekit-web#dev',
+  {
+    task: 'nextjs-app-docs#dev',
+    env: { VC_MICROFRONTENDS_CONFIG_FILE_NAME: 'microfrontends-custom.jsonc' },
+  },
+  {
+    task: 'nextjs-app-marketing#dev',
+    env: { VC_MICROFRONTENDS_CONFIG_FILE_NAME: 'microfrontends-custom.jsonc' },
+  },
+  { task: 'nextjs-pages-blog#dev' },
+  { task: 'nextjs-pages-dashboard#dev' },
+  { task: 'react-router-docs#dev' },
+  {
+    task: 'react-router-vite-base-path-different-than-vercel-project-name#dev',
+  },
+  { task: 'react-router-web#dev' },
+  { task: 'sveltekit-docs#dev' },
+  { task: 'sveltekit-web#dev' },
 ];
 
 interface DryRunOutput {
@@ -27,7 +35,7 @@ function main() {
   const missingProxyTask = [];
   const failed = [];
   for (const { devTask, hasProxyTask, errorMessage } of DEV_TASKS.map(
-    checkDevTask,
+    ({ task, env }) => checkDevTask(task, env),
   )) {
     if (errorMessage) {
       failed.push(`${devTask}: turbo dry run failed: ${errorMessage}`);
@@ -45,7 +53,10 @@ function main() {
   }
 }
 
-function checkDevTask(devTask: string): {
+function checkDevTask(
+  devTask: string,
+  env: Record<string, string> | undefined,
+): {
   devTask: string;
   hasProxyTask: boolean;
   errorMessage?: string;
@@ -54,6 +65,7 @@ function checkDevTask(devTask: string): {
     stdio: 'pipe',
     encoding: 'utf8',
     cwd: WORKSPACE_ROOT,
+    env: { ...process.env, ...env },
   });
   if (result.error) {
     return { devTask, hasProxyTask: false, errorMessage: result.error.message };
