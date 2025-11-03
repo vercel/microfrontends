@@ -11,12 +11,13 @@ export function getPossibleConfigurationFilenames({
   customConfigFilename: string | undefined;
 }) {
   if (customConfigFilename) {
-    const filename = customConfigFilename.split('/').pop();
-    // Turborepo depends on the filename being microfrontends*.json(c)
-    if (!filename?.match(/^microfrontends[^.]*.(?:json|jsonc)$/g)) {
+    if (
+      !customConfigFilename.endsWith('.json') &&
+      !customConfigFilename.endsWith('.jsonc')
+    ) {
       throw new Error(
         `Found VC_MICROFRONTENDS_CONFIG_FILE_NAME but the name is invalid. Received: ${customConfigFilename}.` +
-          ` The file name must start with microfrontends and end with '.json' or '.jsonc'.` +
+          ` The file name must end with '.json' or '.jsonc'.` +
           ` It's also possible for the env var to include the path, eg microfrontends-dev.json or /path/to/microfrontends-dev.json.`,
       );
     }

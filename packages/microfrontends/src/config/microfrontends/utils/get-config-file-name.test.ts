@@ -32,28 +32,19 @@ describe('getPossibleConfigurationFilenames', () => {
     },
     {
       customConfigFilename: 'mfe-dev.jsonc',
+      expected: [
+        'mfe-dev.jsonc',
+        'microfrontends.json',
+        'microfrontends.jsonc',
+      ],
     },
   ])(
     'returns the filenames or throws an error if the filename is invalid',
     ({ customConfigFilename, expected }) => {
-      if (expected) {
-        const result = getPossibleConfigurationFilenames({
-          customConfigFilename,
-        });
-        // eslint-disable-next-line jest/no-conditional-expect
-        expect(result).toEqual(expected);
-      } else {
-        // eslint-disable-next-line jest/no-conditional-expect
-        expect(() =>
-          getPossibleConfigurationFilenames({
-            customConfigFilename,
-          }),
-        ).toThrow(
-          `Found VC_MICROFRONTENDS_CONFIG_FILE_NAME but the name is invalid. Received: ${customConfigFilename}.` +
-            ` The file name must start with microfrontends and end with '.json' or '.jsonc'.` +
-            ` It's also possible for the env var to include the path, eg microfrontends-dev.json or /path/to/microfrontends-dev.json.`,
-        );
-      }
+      const result = getPossibleConfigurationFilenames({
+        customConfigFilename,
+      });
+      expect(result).toEqual(expected);
     },
   );
 });
