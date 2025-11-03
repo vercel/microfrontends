@@ -1,69 +1,68 @@
-// TODO: delete this file when the build container support custom microfrontends.json naming
 {
   "$schema": "https://openapi.vercel.sh/microfrontends.json",
   "applications": {
     "nextjs-app-marketing": {
       "development": {
         "local": 3000,
-        "fallback": "nextjs-app-marketing.vercel.app",
-      },
+        "fallback": "nextjs-app-marketing.vercel.app"
+      }
     },
     "nextjs-app-docs": {
       "assetPrefix": "nextjs-app-docs",
       "development": {
-        "local": 3001,
+        "local": 3001
       },
       "routing": [
         {
           "group": "docs",
-          "paths": ["/docs", "/docs/:path*", "/nextjs-app-docs/:path*"],
+          "paths": ["/docs", "/docs/:path*", "/nextjs-app-docs/:path*"]
         },
         {
           "group": "flagged-docs-paths",
           "flag": "is-flagged-docs-path-enabled",
-          "paths": ["/flagged/docs"],
+          "paths": ["/flagged/docs"]
         },
         {
           "group": "mid-path-wildcard",
-          "paths": ["/some-:hash.js"],
+          "paths": ["/some-:hash.js"]
         },
         {
           "group": "excluding regex",
-          "paths": ["/city/:path((?!berlin|amsterdam).*)"],
+          "paths": ["/city/:path((?!berlin|amsterdam).*)"]
         },
         {
           "group": "special characters",
-          "paths": ["/foo/hello\\(world\\)"],
+          "paths": ["/foo/hello\\(world\\)"]
         },
         {
           "group": "dashes",
-          "paths": ["/foo/hello-world", "/foo/hello~world", "/foo/hello_world"],
+          "paths": ["/foo/hello-world", "/foo/hello~world", "/foo/hello_world"]
         },
         {
           "group": "regex with numbers",
-          "paths": ["/foo/:path(hello1|hello2)"],
+          "paths": ["/foo/:path(hello1|hello2)"]
         },
         {
           "group": "regex with dashes",
-          "paths": ["/foo/:path(hello-1|hello-2)"],
+          "paths": ["/foo/:path(hello-1|hello-2)"]
         },
         {
           "group": "regex with escaped characters",
-          "paths": ["/foo/:path(hello\\(1\\)|1)"],
+          "paths": ["/foo/:path(hello\\(1\\)|1)"]
         },
         {
           "group": "excluding regex with dashes",
-          "paths": ["/foo/:path((?!hello\\-3).*)"],
+          "paths": ["/foo/:path((?!hello\\-3).*)"]
         },
         {
           "group": "path with escaped characters",
-          "paths": ["/bar/hello\\(3\\)"],
+          "paths": ["/bar/hello\\(3\\)"]
         },
         {
           "group": "child rate limit",
-          "paths": ["/api/check-rate-limit"],
-        },
-      ],
-    },
-  },
+          "paths": ["/api/check-rate-limit"]
+        }
+      ]
+    }
+  }
 }

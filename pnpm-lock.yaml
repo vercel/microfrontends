@@ -33,8 +33,8 @@ importers:
         specifier: ^13.0.1
         version: 13.0.1(typescript@5.7.3)
       turbo:
-        specifier: 2.5.2-canary.0
-        version: 2.5.2-canary.0
+        specifier: 2.6.0
+        version: 2.6.0
       typescript:
         specifier: 5.7.3
         version: 5.7.3
@@ -7570,41 +7570,41 @@ packages:
     engines: {node: '>=18.0.0'}
     hasBin: true
 
-  turbo-darwin-64@2.5.2-canary.0:
-    resolution: {integrity: sha512-JO65xZrLyXdGYfv/XsvEF9vxtltO4kB/us2XP6tKCXCiNflmvSi+OTmqljLeW/gkMjblhy31t8B+FLKESdtFfg==}
+  turbo-darwin-64@2.6.0:
+    resolution: {integrity: sha512-6vHnLAubHj8Ib45Knu+oY0ZVCLO7WcibzAvt5b1E72YHqAs4y8meMAGMZM0jLqWPh/9maHDc16/qBCMxtW4pXg==}
     cpu: [x64]
     os: [darwin]
 
-  turbo-darwin-arm64@2.5.2-canary.0:
-    resolution: {integrity: sha512-S6D5uOw6cIVmUkF3iiiFQSW43A/xGBMxrAGq3hGt+khsQBD+3USzJw4xCi/U2Vhgx6nhqkqbT6wQikp888SDKw==}
+  turbo-darwin-arm64@2.6.0:
+    resolution: {integrity: sha512-IU+gWMEXNBw8H0pxvE7nPEa5p6yahxbN8g/Q4Bf0AHymsAFqsScgV0peeNbWybdmY9jk1LPbALOsF2kY1I7ZiQ==}
     cpu: [arm64]
     os: [darwin]
 
-  turbo-linux-64@2.5.2-canary.0:
-    resolution: {integrity: sha512-Ec2r/SiO5Ld+S+/hdBg8k7k/qLZD9TKWvWGPfpeUUM+s+EZkkSYqTYXp1aeB8mbdfVYBmP2YXcWZyH9+VoaQ4g==}
+  turbo-linux-64@2.6.0:
+    resolution: {integrity: sha512-CKoiJ2ZFJLCDsWdRlZg+ew1BkGn8iCEGdePhISVpjsGwkJwSVhVu49z2zKdBeL1IhcSKS2YALwp9ellNZANJxw==}
     cpu: [x64]
     os: [linux]
 
-  turbo-linux-arm64@2.5.2-canary.0:
-    resolution: {integrity: sha512-mHcQ2XRfW7S2OuZlh6z3gneC3yndLngtzR17w5xPa856LYYGky7OhLX05uds42oUt7v3S8KJa/FRI1P3EuGJtw==}
+  turbo-linux-arm64@2.6.0:
+    resolution: {integrity: sha512-WroVCdCvJbrhNxNdw7XB7wHAfPPJPV+IXY+ZKNed+9VdfBu/2mQNfKnvqTuFTH7n+Pdpv8to9qwhXRTJe26upg==}
     cpu: [arm64]
     os: [linux]
 
   turbo-stream@2.4.0:
     resolution: {integrity: sha512-FHncC10WpBd2eOmGwpmQsWLDoK4cqsA/UT/GqNoaKOQnT8uzhtCbg3EoUDMvqpOSAI0S26mr0rkjzbOO6S3v1g==}
 
-  turbo-windows-64@2.5.2-canary.0:
-    resolution: {integrity: sha512-DB+7qwuc0U66F/kLnBT8U4GNQMnd0zvuqCMNVTVx89+/BQ5M5S0ybOJ9yVwwnuF8aZ4PB9fn8+xItzvlPAXkAA==}
+  turbo-windows-64@2.6.0:
+    resolution: {integrity: sha512-7pZo5aGQPR+A7RMtWCZHusarJ6y15LQ+o3jOmpMxTic/W6Bad+jSeqo07TWNIseIWjCVzrSv27+0odiYRYtQdA==}
     cpu: [x64]
     os: [win32]
 
-  turbo-windows-arm64@2.5.2-canary.0:
-    resolution: {integrity: sha512-Gj9CTE/XU58KQxuYCKl3I20XiQ31GYzm9MmKsSgRATHPl+SFge8/FVzMrTgQT3Cjke47+rzkl6gx1JQ/XaE4Mw==}
+  turbo-windows-arm64@2.6.0:
+    resolution: {integrity: sha512-1Ty+NwIksQY7AtFUCPrTpcKQE7zmd/f7aRjdT+qkqGFQjIjFYctEtN7qo4vpQPBgCfS1U3ka83A2u/9CfJQ3wQ==}
     cpu: [arm64]
     os: [win32]
 
-  turbo@2.5.2-canary.0:
-    resolution: {integrity: sha512-e8dN0h5kwDyafq2VS4VzAgVlIiXIHuTFMyHNRLgUTrnl3KQvMBm/ILPH4vdWM4njN9DWjOamH0esen10AQC2HA==}
+  turbo@2.6.0:
+    resolution: {integrity: sha512-kC5VJqOXo50k0/0jnJDDjibLAXalqT9j7PQ56so0pN+81VR4Fwb2QgIE9dTzT3phqOTQuEXkPh3sCpnv5Isz2g==}
     hasBin: true
 
   type-check@0.4.0:
@@ -15751,34 +15751,34 @@ snapshots:
     optionalDependencies:
       fsevents: 2.3.3
 
-  turbo-darwin-64@2.5.2-canary.0:
+  turbo-darwin-64@2.6.0:
     optional: true
 
-  turbo-darwin-arm64@2.5.2-canary.0:
+  turbo-darwin-arm64@2.6.0:
     optional: true
 
-  turbo-linux-64@2.5.2-canary.0:
+  turbo-linux-64@2.6.0:
     optional: true
 
-  turbo-linux-arm64@2.5.2-canary.0:
+  turbo-linux-arm64@2.6.0:
     optional: true
 
   turbo-stream@2.4.0: {}
 
-  turbo-windows-64@2.5.2-canary.0:
+  turbo-windows-64@2.6.0:
     optional: true
 
-  turbo-windows-arm64@2.5.2-canary.0:
+  turbo-windows-arm64@2.6.0:
     optional: true
 
-  turbo@2.5.2-canary.0:
+  turbo@2.6.0:
     optionalDependencies:
-      turbo-darwin-64: 2.5.2-canary.0
-      turbo-darwin-arm64: 2.5.2-canary.0
-      turbo-linux-64: 2.5.2-canary.0
-      turbo-linux-arm64: 2.5.2-canary.0
-      turbo-windows-64: 2.5.2-canary.0
-      turbo-windows-arm64: 2.5.2-canary.0
+      turbo-darwin-64: 2.6.0
+      turbo-darwin-arm64: 2.6.0
+      turbo-linux-64: 2.6.0
+      turbo-linux-arm64: 2.6.0
+      turbo-windows-64: 2.6.0
+      turbo-windows-arm64: 2.6.0
 
   type-check@0.4.0:
     dependencies:
