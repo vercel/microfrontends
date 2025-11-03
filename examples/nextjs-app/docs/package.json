@@ -4,11 +4,11 @@
   "private": true,
   "scripts": {
     "build": "MFE_DEBUG=1 next build",
-    "dev": "VC_MICROFRONTENDS_CONFIG_FILE_NAME=microfrontends-custom.jsonc next dev --turbo --port $(microfrontends port)",
-    "lint": "VC_MICROFRONTENDS_CONFIG_FILE_NAME=microfrontends-custom.jsonc next typegen && eslint .",
-    "lint-fix": "VC_MICROFRONTENDS_CONFIG_FILE_NAME=microfrontends-custom.jsonc eslint . --fix",
+    "dev": "next dev --turbo --port $(microfrontends port)",
+    "lint": "next typegen && eslint .",
+    "lint-fix": "eslint . --fix",
     "start": "next start",
-    "typecheck": "VC_MICROFRONTENDS_CONFIG_FILE_NAME=microfrontends-custom.jsonc next typegen && tsc --noEmit"
+    "typecheck": "next typegen && tsc --noEmit",
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.1.1",

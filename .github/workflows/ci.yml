@@ -34,11 +34,23 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'pnpm'
+          cache: "pnpm"
 
       - name: Install Dependencies
         id: pnpm-install
         run: pnpm install --frozen-lockfile
+
+      - name: Pull Vercel Environment Variables for nextjs-app example
+        run: |
+          echo "Fetching env for nextjs-app/docs..."
+          vercel link --cwd examples/nextjs-app/docs --scope microfrontends-vtest314 --project nextjs-app-docs --yes --token ${{ secrets.VERCEL_TOKEN_E2E }}
+          cd examples/nextjs-app/docs
+          vercel env pull --token ${{ secrets.VERCEL_TOKEN_E2E }}
+          cd ../../../
+          echo "Fetching env for appjs-app/marketing..."
+          vercel link --cwd examples/nextjs-app/marketing --scope microfrontends-vtest314 --project nextjs-app-marketing --yes --token ${{ secrets.VERCEL_TOKEN_E2E }}
+          cd examples/nextjs-app/marketing
+          vercel env pull --token ${{ secrets.VERCEL_TOKEN_E2E }}
 
       - name: Run CI
         run: pnpm turbo typecheck lint test test:local-proxy-turbo-integration --continue
