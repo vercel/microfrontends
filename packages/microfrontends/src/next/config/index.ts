@@ -12,14 +12,6 @@ function typedEntries<T extends Record<string, unknown>>(
   return Object.entries(obj) as [keyof T, T[keyof T]][];
 }
 
-function isProduction(opts?: WithMicrofrontendsOptions): boolean {
-  if (opts?.isProduction) {
-    return opts.isProduction();
-  }
-
-  return process.env.VERCEL_ENV === 'production';
-}
-
 /**
  * Automatically configures your Next.js application to work with microfrontends.
  *
@@ -72,7 +64,6 @@ export function withMicrofrontends(
         next,
         microfrontend: microfrontends.config,
         opts: {
-          isProduction: isProduction(opts),
           supportPagesRouter: opts?.supportPagesRouter,
         },
       });

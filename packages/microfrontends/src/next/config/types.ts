@@ -10,7 +10,6 @@ export interface WithMicrofrontendsOptions {
    * if it differs from the project name.
    */
   appName?: string;
-  isProduction?: () => boolean;
   debug?: boolean;
   skipTransforms?: TransformKeys[];
   /**

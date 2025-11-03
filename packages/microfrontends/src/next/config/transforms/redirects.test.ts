@@ -30,7 +30,6 @@ describe('withMicrofrontends: redirects', () => {
         next: nextConfig,
         app,
         microfrontend: mfConfig,
-        opts: { isProduction: false },
       });
 
       expect(newConfig.redirects).toBeDefined();
@@ -61,7 +60,6 @@ describe('withMicrofrontends: redirects', () => {
         next: nextConfig,
         app,
         microfrontend: mfConfig,
-        opts: { isProduction: false },
       });
 
       expect(newConfig.redirects).toBeDefined();
@@ -101,7 +99,6 @@ describe('withMicrofrontends: redirects', () => {
         next: nextConfig,
         app,
         microfrontend: mfConfig,
-        opts: { isProduction: false },
       });
 
       expect(newConfig.redirects).toBeDefined();
@@ -125,6 +122,7 @@ describe('withMicrofrontends: redirects', () => {
     });
 
     it('no redirects prod', () => {
+      process.env.TURBO_TASK_HAS_MFE_PROXY = undefined;
       const mfConfig = MicrofrontendsServer.fromFile({
         filePath: join(fixtures, 'simple.jsonc'),
       }).config;
@@ -137,7 +135,6 @@ describe('withMicrofrontends: redirects', () => {
         next: nextConfig,
         app,
         microfrontend: mfConfig,
-        opts: { isProduction: true },
       });
 
       expect(newConfig.redirects).toBeUndefined();
@@ -231,7 +228,6 @@ describe('withMicrofrontends: redirects', () => {
         next: nextConfig,
         app,
         microfrontend: mfConfig,
-        opts: { isProduction: false },
       });
 
       expect(newConfig.redirects).toBeUndefined();

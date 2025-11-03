@@ -153,9 +153,8 @@ describe('runMicrofrontendsMiddleware', () => {
     expect(response).toBeUndefined();
   });
 
-  it('does not use flag value if in production', async () => {
-    process.env.TURBO_TASK_HAS_MFE_PROXY = '1';
-    process.env.VERCEL_ENV = 'production';
+  it('does not use flag value if the local proxy is not running', async () => {
+    process.env.TURBO_TASK_HAS_MFE_PROXY = undefined;
     modifyRouting(config.applications.docs, {
       group: 'flagged',
       paths: ['/docs/flagged'],
