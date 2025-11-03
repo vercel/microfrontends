@@ -16,7 +16,7 @@
     "build:single-spa-example": "turbo build -F single-spa-root -F single-spa-web -F single-spa-shared",
     "changeset": "changeset",
     "checks": "turbo run build lint test typecheck --continue",
-    "dev:nextjs-app": "turbo dev -F nextjs-app-docs -F nextjs-app-marketing",
+    "dev:nextjs-app": "VC_MICROFRONTENDS_CONFIG_FILE_NAME='microfrontends-custom.jsonc' turbo dev -F nextjs-app-docs -F nextjs-app-marketing",
     "dev:nextjs-pages": "turbo dev -F nextjs-pages-dashboard -F nextjs-pages-blog",
     "dev:react-router": "turbo dev -F react-router-web -F react-router-docs -F react-router-vite-base-path-different-than-vercel-project-name",
     "dev:single-spa": "turbo dev -F single-spa-root -F single-spa-web -F single-spa-shared",
