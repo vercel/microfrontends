@@ -48,12 +48,12 @@ jobs:
           echo "Fetching env for nextjs-app/docs..."
           vercel link --cwd examples/nextjs-app/docs --scope microfrontends-vtest314 --project nextjs-app-docs --yes --token $VERCEL_TOKEN_E2E
           cd examples/nextjs-app/docs
-          vercel env pull --token $VERCEL_TOKEN_E2E
+          vercel env pull .env --token $VERCEL_TOKEN_E2E
           cd ../../../
           echo "Fetching env for appjs-app/marketing..."
           vercel link --cwd examples/nextjs-app/marketing --scope microfrontends-vtest314 --project nextjs-app-marketing --yes --token $VERCEL_TOKEN_E2E
           cd examples/nextjs-app/marketing
-          vercel env pull --token $VERCEL_TOKEN_E2E
+          vercel env pull .env --token $VERCEL_TOKEN_E2E
           cd ../../../
 
       - name: Run CI
