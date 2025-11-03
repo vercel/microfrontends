@@ -51,6 +51,7 @@ jobs:
           vercel link --cwd examples/nextjs-app/marketing --scope microfrontends-vtest314 --project nextjs-app-marketing --yes --token ${{ secrets.VERCEL_TOKEN_E2E }}
           cd examples/nextjs-app/marketing
           vercel env pull --token ${{ secrets.VERCEL_TOKEN_E2E }}
+          cd ../../../
 
       - name: Run CI
         run: pnpm turbo typecheck lint test test:local-proxy-turbo-integration --continue
