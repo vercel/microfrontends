@@ -25,7 +25,8 @@
     },
     "test": {
       "cache": false,
-      "dependsOn": ["^build"]
+      "dependsOn": ["^build"],
+      "env": ["VC_MICROFRONTENDS_CONFIG_FILE_NAME"]
     },
     "test:e2e": {
       "cache": false,
