@@ -14,7 +14,7 @@ describe('withMicrofrontends: redirects', () => {
   describe('local proxy running', () => {
     beforeEach(() => {
       process.env = { ...OLD_ENV };
-      process.env.TURBO_TASK_HAS_MFE_PROXY = '1';
+      process.env.TURBO_TASK_HAS_MFE_PROXY = 'true';
     });
 
     it('redirects when enabled non-prod', async () => {
@@ -179,7 +179,7 @@ describe('withMicrofrontends: redirects', () => {
     });
 
     it('redirects if turbo is running mfe proxy', async () => {
-      process.env.TURBO_TASK_HAS_MFE_PROXY = '1';
+      process.env.TURBO_TASK_HAS_MFE_PROXY = 'true';
       const mfConfig = MicrofrontendsServer.fromFile({
         filePath: join(fixtures, 'simple.jsonc'),
       }).config;
