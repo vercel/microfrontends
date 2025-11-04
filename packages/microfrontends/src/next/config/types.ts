@@ -10,6 +10,11 @@ export interface WithMicrofrontendsOptions {
    * if it differs from the project name.
    */
   appName?: string;
+  /**
+   * @deprecated this is a no-op, and will be removed in a future version.
+   * It is not necessary to specify this option.
+   */
+  isProduction?: boolean;
   debug?: boolean;
   skipTransforms?: TransformKeys[];
   /**
