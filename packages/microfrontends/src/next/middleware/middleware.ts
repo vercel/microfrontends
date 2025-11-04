@@ -6,7 +6,7 @@ import { pathToRegexp } from 'path-to-regexp';
 import type { ChildApplication } from '../../config/microfrontends-config/isomorphic/application';
 import { getWellKnownClientData } from '../../config/well-known/endpoints';
 import type { WellKnownClientData } from '../../config/well-known/types';
-import { routeToLocalProxy } from '../utils/route-to-local-proxy';
+import { localProxyIsRunning } from '../../bin/local-proxy-is-running';
 import { MicrofrontendConfigIsomorphic } from '../../config/microfrontends-config/isomorphic';
 import type {
   MicrofrontendsMiddleware,
@@ -43,9 +43,9 @@ function getFlagHandler({
   return async (req: NextRequest): Promise<NextResponse | undefined> => {
     try {
       const pathname = req.nextUrl.pathname;
-
+      const localProxyRunning = localProxyIsRunning();
       // If the pattern doesn't match, we don't need to execute the flag
-      const flagValueFromHeader = routeToLocalProxy()
+      const flagValueFromHeader = localProxyRunning
         ? getMfeFlagHeader(req)
         : null;
       if (pattern.test(pathname) && (flagValueFromHeader ?? (await flagFn()))) {
@@ -63,7 +63,7 @@ function getFlagHandler({
             headers,
           },
         };
-        if (routeToLocalProxy()) {
+        if (localProxyRunning) {
           if (process.env.MFE_DEBUG) {
             // eslint-disable-next-line no-console
             console.log(

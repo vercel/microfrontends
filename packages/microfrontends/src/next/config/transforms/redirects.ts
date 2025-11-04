@@ -1,14 +1,11 @@
-import { routeToLocalProxy } from '../../utils/route-to-local-proxy';
+import { localProxyIsRunning } from '../../../bin/local-proxy-is-running';
 import type { TransformConfigInput, TransformConfigResponse } from './types';
 
 export function transform(args: TransformConfigInput): TransformConfigResponse {
-  const { next, microfrontend, opts } = args;
-  const isProduction = opts?.isProduction ?? false;
+  const { next, microfrontend } = args;
 
   const requireLocalProxyHeader =
-    routeToLocalProxy() &&
-    !isProduction &&
-    !process.env.MFE_DISABLE_LOCAL_PROXY_REWRITE;
+    localProxyIsRunning() && !process.env.MFE_DISABLE_LOCAL_PROXY_REWRITE;
 
   if (requireLocalProxyHeader) {
     // If local proxy is running, redirect all requests without the header set by the local proxy to the local proxy.

@@ -6,7 +6,11 @@ import type {
 } from '../../../config/microfrontends-config/isomorphic/application';
 
 export interface TransformConfigOptions {
-  isProduction: boolean;
+  /**
+   * @deprecated this is a no-op, and will be removed in a future version.
+   * It is not necessary to specify this option.
+   */
+  isProduction?: boolean;
   supportPagesRouter?: boolean;
   // Prefer the legacy behavior of using webpack.EnvironmentPlugin instead of
   // Next.js's `defineServer` option, even when Next.js is new enough to support it.

@@ -37,7 +37,6 @@ describe('withMicrofrontends: rewrites', () => {
       next: nextConfig,
       app,
       microfrontend: mfConfig,
-      opts: { isProduction: true },
     });
 
     expect(newConfig.env).toEqual({
@@ -77,7 +76,6 @@ describe('withMicrofrontends: rewrites', () => {
       next: nextConfig,
       app,
       microfrontend: mfConfig,
-      opts: { isProduction: true },
     });
 
     expect(newConfig.env).toEqual({
@@ -136,7 +134,6 @@ describe('withMicrofrontends: rewrites', () => {
       next: nextConfig,
       app,
       microfrontend: mfConfig,
-      opts: { isProduction: true },
     });
 
     expect(newConfig.env).toEqual({
@@ -209,7 +206,6 @@ describe('withMicrofrontends: rewrites', () => {
       next: nextConfig,
       app,
       microfrontend: mfConfig,
-      opts: { isProduction: true },
     });
 
     expect(newConfig.env).toEqual({
@@ -257,7 +253,6 @@ describe('withMicrofrontends: rewrites', () => {
       next: nextConfig,
       app,
       microfrontend: mfConfig,
-      opts: { isProduction: true },
     });
 
     expect(newConfig.env).toEqual({
@@ -305,7 +300,6 @@ describe('withMicrofrontends: rewrites', () => {
       next: nextConfig,
       app,
       microfrontend: mfConfig,
-      opts: { isProduction: true },
     });
 
     expect(newConfig.env).toEqual({
@@ -349,7 +343,6 @@ describe('withMicrofrontends: rewrites', () => {
       next: nextConfig,
       app,
       microfrontend: mfConfig,
-      opts: { isProduction: true },
     });
 
     expect(newConfig.rewrites).toBeDefined();
@@ -375,9 +368,6 @@ describe('withMicrofrontends: rewrites', () => {
       next: nextConfig,
       app,
       microfrontend: mfConfig,
-      opts: {
-        isProduction: false,
-      },
     });
 
     expect(newConfig).toMatchObject({});
@@ -399,7 +389,6 @@ describe('withMicrofrontends: rewrites', () => {
       next: nextConfig,
       app,
       microfrontend: mfConfig,
-      opts: { isProduction: true },
     });
 
     expect(newConfig.rewrites).toBeDefined();

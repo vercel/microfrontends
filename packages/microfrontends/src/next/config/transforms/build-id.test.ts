@@ -23,7 +23,6 @@ describe('withMicrofrontends: buildId', () => {
       app: childApp,
       microfrontend: microfrontends.config,
       opts: {
-        isProduction: true,
         supportPagesRouter: true,
       },
     });
@@ -52,7 +51,6 @@ describe('withMicrofrontends: buildId', () => {
       app: defaultApp,
       microfrontend: microfrontends.config,
       opts: {
-        isProduction: true,
         supportPagesRouter: true,
       },
     });
@@ -69,7 +67,6 @@ describe('withMicrofrontends: buildId', () => {
         app: defaultApp,
         microfrontend: microfrontends.config,
         opts: {
-          isProduction: true,
           supportPagesRouter: true,
         },
       }),
@@ -86,7 +83,6 @@ describe('withMicrofrontends: buildId', () => {
       app: childApp,
       microfrontend: microfrontends.config,
       opts: {
-        isProduction: true,
         supportPagesRouter: true,
       },
     });

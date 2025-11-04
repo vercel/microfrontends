@@ -116,7 +116,7 @@ describe('runMicrofrontendsMiddleware', () => {
   });
 
   it('rewrites requests to local proxy if running', async () => {
-    process.env.TURBO_TASK_HAS_MFE_PROXY = '1';
+    process.env.TURBO_TASK_HAS_MFE_PROXY = 'true';
     modifyRouting(config.applications.docs, {
       group: 'flagged',
       paths: ['/docs/flagged'],
@@ -138,7 +138,7 @@ describe('runMicrofrontendsMiddleware', () => {
   });
 
   it('does not rewrites to local proxy if disabled', async () => {
-    process.env.TURBO_TASK_HAS_MFE_PROXY = '1';
+    process.env.TURBO_TASK_HAS_MFE_PROXY = 'true';
     modifyRouting(config.applications.docs, {
       group: 'flagged',
       paths: ['/docs/flagged'],
@@ -153,9 +153,8 @@ describe('runMicrofrontendsMiddleware', () => {
     expect(response).toBeUndefined();
   });
 
-  it('does not use flag value if in production', async () => {
-    process.env.TURBO_TASK_HAS_MFE_PROXY = '1';
-    process.env.VERCEL_ENV = 'production';
+  it('does not use flag value if the local proxy is not running', async () => {
+    process.env.TURBO_TASK_HAS_MFE_PROXY = undefined;
     modifyRouting(config.applications.docs, {
       group: 'flagged',
       paths: ['/docs/flagged'],
@@ -175,7 +174,7 @@ describe('runMicrofrontendsMiddleware', () => {
   });
 
   it('does not execute flag if flag value header present', async () => {
-    process.env.TURBO_TASK_HAS_MFE_PROXY = '1';
+    process.env.TURBO_TASK_HAS_MFE_PROXY = 'true';
     modifyRouting(config.applications.docs, {
       group: 'flagged',
       paths: ['/docs/flagged'],
@@ -195,7 +194,7 @@ describe('runMicrofrontendsMiddleware', () => {
   });
 
   it('does rewrites if flag value header true', async () => {
-    process.env.TURBO_TASK_HAS_MFE_PROXY = '1';
+    process.env.TURBO_TASK_HAS_MFE_PROXY = 'true';
     modifyRouting(config.applications.docs, {
       group: 'flagged',
       paths: ['/docs/flagged'],
@@ -219,7 +218,7 @@ describe('runMicrofrontendsMiddleware', () => {
   });
 
   it('does not rewrites if flag value header true and mismatched path', async () => {
-    process.env.TURBO_TASK_HAS_MFE_PROXY = '1';
+    process.env.TURBO_TASK_HAS_MFE_PROXY = 'true';
     modifyRouting(config.applications.docs, {
       group: 'flagged',
       paths: ['/docs/flagged'],

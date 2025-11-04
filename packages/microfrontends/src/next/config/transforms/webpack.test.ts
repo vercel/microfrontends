@@ -64,7 +64,6 @@ describe('transform function', () => {
           app: currentApplication,
           microfrontend: microfrontends.config,
           opts: {
-            isProduction: true,
             preferWebpackEnvironmentPlugin,
           },
         });
@@ -102,7 +101,6 @@ describe('transform function', () => {
           app: currentApplication,
           microfrontend: microfrontends.config,
           opts: {
-            isProduction: true,
             preferWebpackEnvironmentPlugin,
           },
         });
@@ -145,7 +143,6 @@ describe('transform function', () => {
           app: currentApplication,
           microfrontend: microfrontends.config,
           opts: {
-            isProduction: true,
             preferWebpackEnvironmentPlugin,
           },
         });
