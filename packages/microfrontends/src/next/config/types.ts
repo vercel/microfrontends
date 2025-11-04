@@ -23,6 +23,7 @@ export interface WithMicrofrontendsOptions {
    * @deprecated Use VC_MICROFRONTENDS_CONFIG_FILE_NAME instead. This option is
    * deprecated and will be removed in a future release. The env var enables the
    * vercel build to also read the custom config file / path.
+   * @see https://vercel.com/docs/microfrontends/configuration#file-naming
    */
   configPath?: string;
 }
