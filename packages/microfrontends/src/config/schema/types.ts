@@ -1,4 +1,9 @@
 /**
+ * Any exported type from this file has it's own heading in vercel.com/docs/microfrontends/configuration 📚
+ * 👉 Be careful when changing exports, ensure the docs support the updated generated schema
+ */
+
+/**
  * The microfrontends configuration schema.
  * @see https://vercel.com/docs/microfrontends/configuration
  */
@@ -39,7 +44,7 @@ export type ApplicationId = string;
 /**
  * A list of path groups that are routed to this application.
  */
-export type Routing = PathGroup[];
+type Routing = PathGroup[];
 
 /**
  * A group of paths that is routed to this application.
@@ -61,7 +66,7 @@ export interface PathGroup {
   paths: string[];
 }
 
-export interface Development {
+interface Development {
   /**
    * A local port number or host that this application runs on when it is running locally.
    * If passing a string, include the protocol (optional), host (required) and port (optional).
@@ -94,7 +99,7 @@ export interface Development {
   fallback?: string;
 }
 
-export interface DefaultDevelopment extends Development {
+interface DefaultDevelopment extends Development {
   /**
    * Fallback for local development, could point to any environment. This is required for the default
    * app. This value is used as the fallback for child apps as well if they do not have a fallback.
