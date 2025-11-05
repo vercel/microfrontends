@@ -27,8 +27,7 @@
         "applications"
       ],
       "additionalProperties": false,
-      "description": "The microfrontends configuration schema.",
-      "see": "https://vercel.com/docs/microfrontends/configuration"
+      "description": "The microfrontends configuration schema. https://vercel.com/docs/microfrontends/configuration"
     },
     "ApplicationRouting": {
       "type": "object",
@@ -36,8 +35,7 @@
         "$ref": "#/definitions/Application"
       },
       "propertyNames": {
-        "description": "The Vercel project name of the microfrontend application.\n\nNote: If this name does not also match the name `name` from the `package.json`, set `packageName` with the name used in `package.json`.",
-        "see": "https://vercel.com/docs/microfrontends/configuration#application-naming"
+        "description": "The Vercel project name of the microfrontend application.\n\nNote: If this name does not also match the name `name` from the `package.json`, set `packageName` with the name used in `package.json`.\n\nhttps://vercel.com/docs/microfrontends/configuration#application-naming"
       },
       "description": "Mapping of Vercel project names to their microfrontend configurations."
     },
@@ -57,8 +55,7 @@
       "properties": {
         "packageName": {
           "type": "string",
-          "description": "The name used to run the application, e.g. the `name` field in the `package.json`.\n\nThis is used by the local proxy to map the application config to the locally running app.\n\nThis is only necessary when the application name does not match the `name` used in `package.json`.",
-          "see": "https://vercel.com/docs/microfrontends/configuration#application-naming"
+          "description": "The name used to run the application, e.g. the `name` field in the `package.json`.\n\nThis is used by the local proxy to map the application config to the locally running app.\n\nThis is only necessary when the application name does not match the `name` used in `package.json`.\n\nhttps://vercel.com/docs/microfrontends/configuration#application-naming"
         },
         "development": {
           "type": "object",
@@ -68,20 +65,15 @@
                 "number",
                 "string"
               ],
-              "description": "A local port number or host that this application runs on when it is running locally. If passing a string, include the protocol (optional), host (required) and port (optional).\n\nExamples of valid values: 8080, my.localhost.me, my.localhost.me:8080, https://my.localhost.me, https://my.localhost.me:8080",
-              "defaultValue": "http://localhost:<port> where port is a stable, unique port number (based on the application name)",
-              "see": "https://vercel.com/docs/microfrontends/local-development"
+              "description": "A local port number or host that this application runs on when it is running locally. If passing a string, include the protocol (optional), host (required) and port (optional).\n\nExamples of valid values: 8080, my.localhost.me, my.localhost.me:8080, https://my.localhost.me, https://my.localhost.me:8080\n\nThe default value is http://localhost:<port> where port is a stable, unique port number (based on the application name)\n\nhttps://vercel.com/docs/microfrontends/local-development"
             },
             "task": {
               "type": "string",
-              "description": "The task to run when starting the development server. Should reference a script in the package.json of the application.",
-              "defaultValue": "dev",
-              "see": "https://vercel.com/docs/microfrontends/local-development"
+              "description": "The task to run when starting the development server. Should reference a script in the package.json of the application.\n\nThe default value is \"dev\"\n\nhttps://vercel.com/docs/microfrontends/local-development"
             },
             "fallback": {
               "type": "string",
-              "description": "Fallback for local development, could point to any environment. This is required for the default app. This value is used as the fallback for child apps as well if they do not have a fallback.\n\nIf passing a string, include the protocol (optional), host (required) and port (optional). For example: `https://this.ismyhost:8080`. If omitted, the protocol defaults to HTTPS. If omitted, the port defaults to `80` for HTTP and `443` for HTTPS.",
-              "see": "https://vercel.com/docs/microfrontends/local-development"
+              "description": "Fallback for local development, could point to any environment. This is required for the default app. This value is used as the fallback for child apps as well if they do not have a fallback.\n\nIf passing a string, include the protocol (optional), host (required) and port (optional). For example: `https://this.ismyhost:8080`. If omitted, the protocol defaults to HTTPS. If omitted, the port defaults to `80` for HTTP and `443` for HTTPS.\n\nhttps://vercel.com/docs/microfrontends/local-development"
             }
           },
           "required": [
@@ -101,8 +93,7 @@
       "properties": {
         "packageName": {
           "type": "string",
-          "description": "The name used to run the application, e.g. the `name` field in the `package.json`.\n\nThis is used by the local proxy to map the application config to the locally running app.\n\nThis is only necessary when the application name does not match the `name` used in `package.json`.",
-          "see": "https://vercel.com/docs/microfrontends/configuration#application-naming"
+          "description": "The name used to run the application, e.g. the `name` field in the `package.json`.\n\nThis is used by the local proxy to map the application config to the locally running app.\n\nThis is only necessary when the application name does not match the `name` used in `package.json`.\n\nhttps://vercel.com/docs/microfrontends/configuration#application-naming"
         },
         "development": {
           "type": "object",
@@ -112,20 +103,15 @@
                 "number",
                 "string"
               ],
-              "description": "A local port number or host that this application runs on when it is running locally. If passing a string, include the protocol (optional), host (required) and port (optional).\n\nExamples of valid values: 8080, my.localhost.me, my.localhost.me:8080, https://my.localhost.me, https://my.localhost.me:8080",
-              "defaultValue": "http://localhost:<port> where port is a stable, unique port number (based on the application name)",
-              "see": "https://vercel.com/docs/microfrontends/local-development"
+              "description": "A local port number or host that this application runs on when it is running locally. If passing a string, include the protocol (optional), host (required) and port (optional).\n\nExamples of valid values: 8080, my.localhost.me, my.localhost.me:8080, https://my.localhost.me, https://my.localhost.me:8080\n\nThe default value is http://localhost:<port> where port is a stable, unique port number (based on the application name)\n\nhttps://vercel.com/docs/microfrontends/local-development"
             },
             "task": {
               "type": "string",
-              "description": "The task to run when starting the development server. Should reference a script in the package.json of the application.",
-              "defaultValue": "dev",
-              "see": "https://vercel.com/docs/microfrontends/local-development"
+              "description": "The task to run when starting the development server. Should reference a script in the package.json of the application.\n\nThe default value is \"dev\"\n\nhttps://vercel.com/docs/microfrontends/local-development"
             },
             "fallback": {
               "type": "string",
-              "description": "Fallback for local development, could point to any environment. If not provided for child apps, the fallback of the default app will be used.\n\nIf passing a string, include the protocol (optional), host (required) and port (optional). For example: `https://this.ismyhost:8080`. If omitted, the protocol defaults to HTTPS. If omitted, the port defaults to `80` for HTTP and `443` for HTTPS.",
-              "see": "https://vercel.com/docs/microfrontends/local-development"
+              "description": "Fallback for local development, could point to any environment. If not provided for child apps, the fallback of the default app will be used.\n\nIf passing a string, include the protocol (optional), host (required) and port (optional). For example: `https://this.ismyhost:8080`. If omitted, the protocol defaults to HTTPS. If omitted, the port defaults to `80` for HTTP and `443` for HTTPS.\n\nhttps://vercel.com/docs/microfrontends/local-development"
             }
           },
           "additionalProperties": false,
@@ -136,14 +122,11 @@
           "items": {
             "$ref": "#/definitions/PathGroup"
           },
-          "description": "Groups of path expressions that are routed to this application.",
-          "see": "https://vercel.com/docs/microfrontends/path-routing"
+          "description": "Groups of path expressions that are routed to this application.\n\nhttps://vercel.com/docs/microfrontends/path-routing"
         },
         "assetPrefix": {
           "type": "string",
-          "description": "The name of the asset prefix to use instead of the auto-generated name.\n\nThe asset prefix is used to prefix all paths to static assets, such as JS, CSS, or images that are served by a specific application. It is necessary to ensure there are no conflicts with other applications on the same domain.\n\nAn auto-generated asset prefix of the form `vc-ap-<hash>` is used when this field is not provided.\n\nWhen this field is provided, `/${assetPrefix}/:path*` must also be added to the list of paths in the `routing` field. Changing the asset prefix after a microfrontend application has already been deployed is not a forwards and backwards compatible change, and the asset prefix should be added to the `routing` field and deployed before setting the `assetPrefix` field.",
-          "defaultValue": "The auto-generated asset prefix of the form `vc-ap-<hash>`",
-          "see": "https://vercel.com/docs/microfrontends/path-routing#asset-prefix"
+          "description": "The name of the asset prefix to use instead of the auto-generated name.\n\nThe asset prefix is used to prefix all paths to static assets, such as JS, CSS, or images that are served by a specific application. It is necessary to ensure there are no conflicts with other applications on the same domain.\n\nAn auto-generated asset prefix of the form `vc-ap-<hash>` is used when this field is not provided.\n\nWhen this field is provided, `/${assetPrefix}/:path*` must also be added to the list of paths in the `routing` field. Changing the asset prefix after a microfrontend application has already been deployed is not a forwards and backwards compatible change, and the asset prefix should be added to the `routing` field and deployed before setting the `assetPrefix` field.\n\nThe default value is the auto-generated asset prefix of the form `vc-ap-<hash>`\n\nhttps://vercel.com/docs/microfrontends/path-routing#asset-prefix"
         }
       },
       "required": [
@@ -160,16 +143,14 @@
         },
         "flag": {
           "type": "string",
-          "description": "The name of the feature flag that controls routing for this group of paths.",
-          "see": "https://vercel.com/docs/microfrontends/path-routing#routing-changes-safely-with-flags"
+          "description": "The name of the feature flag that controls routing for this group of paths. https://vercel.com/docs/microfrontends/path-routing#routing-changes-safely-with-flags"
         },
         "paths": {
           "type": "array",
           "items": {
             "type": "string"
           },
-          "description": "A list of path expressions that are routed to this application.",
-          "see": "https://vercel.com/docs/microfrontends/path-routing#supported-path-expressions"
+          "description": "A list of path expressions that are routed to this application. https://vercel.com/docs/microfrontends/path-routing#supported-path-expressions"
         }
       },
       "required": [
@@ -183,14 +164,11 @@
       "properties": {
         "disableOverrides": {
           "type": "boolean",
-          "description": "If you want to disable the overrides for the site. For example, if you are managing rewrites between applications externally, you may wish to disable the overrides on the toolbar as they will have no effect.",
-          "see": "https://vercel.com/docs/microfrontends/managing-microfrontends/vercel-toolbar#routing-overrides"
+          "description": "If you want to disable the overrides for the site. For example, if you are managing rewrites between applications externally, you may wish to disable the overrides on the toolbar as they will have no effect.\n\nhttps://vercel.com/docs/microfrontends/managing-microfrontends/vercel-toolbar#routing-overrides"
         },
         "localProxyPort": {
           "type": "number",
-          "description": "The port number used by the local proxy server.",
-          "defaultValue": 3024,
-          "see": "https://vercel.com/docs/microfrontends/local-development"
+          "description": "The port number used by the local proxy server.\n\nThe default value is 3024.\n\nhttps://vercel.com/docs/microfrontends/local-development"
         }
       },
       "additionalProperties": false

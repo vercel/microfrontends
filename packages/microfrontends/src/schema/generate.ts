@@ -19,7 +19,6 @@ export function generateSchema({ destination }: { destination: string }): void {
     // allow additional properties for backwards compatibility
     skipTypeCheck: true,
     additionalProperties: false,
-    extraTags: ['see', 'defaultValue', 'deprecated'],
   });
 
   // generate schema

@@ -5,7 +5,7 @@
 
 /**
  * The microfrontends configuration schema.
- * @see https://vercel.com/docs/microfrontends/configuration
+ * https://vercel.com/docs/microfrontends/configuration
  */
 export interface Config {
   /**
@@ -37,7 +37,7 @@ export type ApplicationRouting = Record<ApplicationId, Application>;
  * Note: If this name does not also match the name `name` from the `package.json`,
  * set `packageName` with the name used in `package.json`.
  *
- * @see https://vercel.com/docs/microfrontends/configuration#application-naming
+ * https://vercel.com/docs/microfrontends/configuration#application-naming
  */
 export type ApplicationId = string;
 
@@ -56,12 +56,12 @@ export interface PathGroup {
   group?: string;
   /**
    * The name of the feature flag that controls routing for this group of paths.
-   * @see https://vercel.com/docs/microfrontends/path-routing#routing-changes-safely-with-flags
+   * https://vercel.com/docs/microfrontends/path-routing#routing-changes-safely-with-flags
    */
   flag?: string;
   /**
    * A list of path expressions that are routed to this application.
-   * @see https://vercel.com/docs/microfrontends/path-routing#supported-path-expressions
+   * https://vercel.com/docs/microfrontends/path-routing#supported-path-expressions
    */
   paths: string[];
 }
@@ -73,17 +73,17 @@ interface Development {
    *
    * Examples of valid values: 8080, my.localhost.me, my.localhost.me:8080, https://my.localhost.me, https://my.localhost.me:8080
    *
-   * @defaultValue http://localhost:<port> where port is a stable, unique port number (based on the application name)
+   * The default value is http://localhost:<port> where port is a stable, unique port number (based on the application name)
    *
-   * @see https://vercel.com/docs/microfrontends/local-development
+   * https://vercel.com/docs/microfrontends/local-development
    */
   local?: number | string;
   /**
    * The task to run when starting the development server. Should reference a script in the package.json of the application.
    *
-   * @defaultValue "dev"
+   * The default value is "dev"
    *
-   * @see https://vercel.com/docs/microfrontends/local-development
+   * https://vercel.com/docs/microfrontends/local-development
    */
   task?: string;
   /**
@@ -94,7 +94,7 @@ interface Development {
    * For example: `https://this.ismyhost:8080`. If omitted, the protocol defaults to HTTPS. If
    * omitted, the port defaults to `80` for HTTP and `443` for HTTPS.
    *
-   * @see https://vercel.com/docs/microfrontends/local-development
+   * https://vercel.com/docs/microfrontends/local-development
    */
   fallback?: string;
 }
@@ -108,7 +108,7 @@ interface DefaultDevelopment extends Development {
    * For example: `https://this.ismyhost:8080`. If omitted, the protocol defaults to HTTPS. If
    * omitted, the port defaults to `80` for HTTP and `443` for HTTPS.
    *
-   * @see https://vercel.com/docs/microfrontends/local-development
+   * https://vercel.com/docs/microfrontends/local-development
    */
   fallback: string;
 }
@@ -126,7 +126,7 @@ interface CommonApplication {
    *
    * This is only necessary when the application name does not match the `name` used in `package.json`.
    *
-   * @see https://vercel.com/docs/microfrontends/configuration#application-naming
+   * https://vercel.com/docs/microfrontends/configuration#application-naming
    */
   packageName?: string;
 }
@@ -146,7 +146,7 @@ export interface ChildApplication extends CommonApplication {
   /**
    * Groups of path expressions that are routed to this application.
    *
-   * @see https://vercel.com/docs/microfrontends/path-routing
+   * https://vercel.com/docs/microfrontends/path-routing
    */
   routing: Routing;
 
@@ -164,9 +164,9 @@ export interface ChildApplication extends CommonApplication {
    * has already been deployed is not a forwards and backwards compatible change, and the asset prefix
    * should be added to the `routing` field and deployed before setting the `assetPrefix` field.
    *
-   * @defaultValue The auto-generated asset prefix of the form `vc-ap-<hash>`
+   * The default value is the auto-generated asset prefix of the form `vc-ap-<hash>`
    *
-   * @see https://vercel.com/docs/microfrontends/path-routing#asset-prefix
+   * https://vercel.com/docs/microfrontends/path-routing#asset-prefix
    */
   assetPrefix?: string;
 }
@@ -177,15 +177,15 @@ export interface Options {
    * between applications externally, you may wish to disable the overrides on the toolbar as
    * they will have no effect.
    *
-   * @see https://vercel.com/docs/microfrontends/managing-microfrontends/vercel-toolbar#routing-overrides
+   * https://vercel.com/docs/microfrontends/managing-microfrontends/vercel-toolbar#routing-overrides
    */
   disableOverrides?: boolean;
   /**
    * The port number used by the local proxy server.
    *
-   * @defaultValue 3024
+   * The default value is 3024.
    *
-   * @see https://vercel.com/docs/microfrontends/local-development
+   * https://vercel.com/docs/microfrontends/local-development
    */
   localProxyPort?: number;
 }
