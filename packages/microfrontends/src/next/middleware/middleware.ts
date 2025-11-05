@@ -8,11 +8,11 @@ import { getWellKnownClientData } from '../../config/well-known/endpoints';
 import type { WellKnownClientData } from '../../config/well-known/types';
 import { localProxyIsRunning } from '../../bin/local-proxy-is-running';
 import { MicrofrontendConfigIsomorphic } from '../../config/microfrontends-config/isomorphic';
+import { logger } from '../../bin/logger';
 import type {
   MicrofrontendsMiddleware,
   MicrofrontendsMiddlewareHandler,
 } from './types';
-import { logger } from '../../bin/logger';
 
 // Extracts the flag value override if one is present in the headers
 function getMfeFlagHeader(req: NextRequest): boolean | null {
