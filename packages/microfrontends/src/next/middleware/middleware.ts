@@ -12,6 +12,7 @@ import type {
   MicrofrontendsMiddleware,
   MicrofrontendsMiddlewareHandler,
 } from './types';
+import { logger } from '../../bin/logger';
 
 // Extracts the flag value override if one is present in the headers
 function getMfeFlagHeader(req: NextRequest): boolean | null {
@@ -64,27 +65,20 @@ function getFlagHandler({
           },
         };
         if (localProxyRunning) {
-          if (process.env.MFE_DEBUG) {
-            // eslint-disable-next-line no-console
-            console.log(
-              `Routing flagged path "${pathname}" to local proxy for application "${application.name}"`,
-            );
-          }
+          logger.debug(
+            `Routing flagged path "${pathname}" to local proxy for application "${application.name}"`,
+          );
           const url = req.nextUrl;
           url.host = `localhost:${localProxyPort}`;
           return NextResponse.rewrite(url, middlewareResponseInit);
         }
-        if (process.env.MFE_DEBUG) {
-          // eslint-disable-next-line no-console
-          console.log(
-            `Routing flagged path "${pathname}" to application "${application.name}"`,
-          );
-        }
+        logger.debug(
+          `Routing flagged path "${pathname}" to application "${application.name}"`,
+        );
         return NextResponse.next(middlewareResponseInit);
       }
     } catch (e) {
-      // eslint-disable-next-line no-console
-      console.error(
+      logger.error(
         `An error occured in the microfrontends middleware evaluating the flag "${flagName}":`,
         e,
       );

@@ -1,4 +1,5 @@
 import { localProxyIsRunning } from '../../../bin/local-proxy-is-running';
+import { logger } from '../../../bin/logger';
 import type { TransformConfigInput, TransformConfigResponse } from './types';
 
 export function transform(args: TransformConfigInput): TransformConfigResponse {
@@ -37,16 +38,13 @@ export function transform(args: TransformConfigInput): TransformConfigResponse {
       // eslint-disable-next-line @typescript-eslint/require-await
       next.redirects = async () => proxyRedirects;
     }
-    if (process.env.MFE_DEBUG) {
-      const indent = ' '.repeat(4);
-      const header = 'redirects';
-      const separator = '⎯'.repeat(header.length);
+    const indent = ' '.repeat(4);
+    const header = 'redirects';
+    const separator = '⎯'.repeat(header.length);
 
-      // eslint-disable-next-line no-console
-      console.log(
-        `${indent}${header}\n${indent}${separator}\n${indent} - Automatically redirecting all requests to local microfrontends proxy\n`,
-      );
-    }
+    logger.debug(
+      `${indent}${header}\n${indent}${separator}\n${indent} - Automatically redirecting all requests to local microfrontends proxy\n`,
+    );
   }
 
   return { next };

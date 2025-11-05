@@ -1,6 +1,7 @@
 import { cwd } from 'node:process';
 import { mfePort } from '../utils/mfe-port';
 import type { MicrofrontendsPort } from '../utils/mfe-port';
+import { logger } from './logger';
 
 /**
  * Prints port for current application to stdout along with a header on stderr.
@@ -9,8 +10,7 @@ import type { MicrofrontendsPort } from '../utils/mfe-port';
 export function displayPort(): void {
   const portInfo = mfePort(cwd());
   header(portInfo);
-  // eslint-disable-next-line no-console
-  console.log(portInfo.port);
+  logger.info(portInfo.port);
 }
 
 /**
@@ -18,8 +18,7 @@ export function displayPort(): void {
  * output of the command.
  */
 function header({ name, version, port }: MicrofrontendsPort): void {
-  // eslint-disable-next-line no-console
-  console.error(`
+  logger.error(`
   ▲ ${name}@${version}
     · setting port to ${port}
   `);

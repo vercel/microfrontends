@@ -2,6 +2,7 @@ import type { NextConfig } from 'next';
 import { displayLocalProxyInfo } from '../../bin/check-proxy';
 import { MicrofrontendsServer } from '../../config/microfrontends/server';
 import { getApplicationContext } from '../../config/microfrontends/utils/get-application-context';
+import { logger } from '../../bin/logger';
 import { transforms } from './transforms';
 import { setEnvironment } from './env';
 import type { WithMicrofrontendsOptions } from './types';
@@ -53,8 +54,7 @@ export function withMicrofrontends(
 
   for (const [key, transform] of typedEntries(transforms)) {
     if (opts?.skipTransforms?.includes(key)) {
-      // eslint-disable-next-line no-console
-      console.log(`Skipping ${key} transform`);
+      logger.info(`Skipping ${key} transform`);
       continue;
     }
 
@@ -69,8 +69,7 @@ export function withMicrofrontends(
       });
       next = transformedConfig.next;
     } catch (e) {
-      // eslint-disable-next-line no-console
-      console.error('Error transforming next config', e);
+      logger.error('Error transforming next config', e);
       // Fail the build
       throw e;
     }

@@ -4,24 +4,22 @@ import type {
   DefaultApplication,
 } from '../../config/microfrontends-config/isomorphic/application';
 import { hashApplicationName } from '../../config/microfrontends-config/isomorphic/utils/hash-application-name';
+import { logger } from '../../bin/logger';
 
 function debugEnv(env: Record<string, string>): void {
-  if (process.env.MFE_DEBUG) {
-    const indent = ' '.repeat(4);
-    const header = 'env (key → val)';
-    const separator = '⎯'.repeat(header.length);
+  const indent = ' '.repeat(4);
+  const header = 'env (key → val)';
+  const separator = '⎯'.repeat(header.length);
 
-    const maxKeyLength = Math.max(...Object.keys(env).map((key) => key.length));
-    const table = Object.keys(env)
-      .map((key, idx) => {
-        const paddedKey = key.padEnd(maxKeyLength);
-        return `${indent} ${idx + 1}. ${paddedKey} =   ${env[key]}`;
-      })
-      .join('\n');
+  const maxKeyLength = Math.max(...Object.keys(env).map((key) => key.length));
+  const table = Object.keys(env)
+    .map((key, idx) => {
+      const paddedKey = key.padEnd(maxKeyLength);
+      return `${indent} ${idx + 1}. ${paddedKey} =   ${env[key]}`;
+    })
+    .join('\n');
 
-    // eslint-disable-next-line no-console
-    console.log(`${indent}${header}\n${indent}${separator}\n${table}\n`);
-  }
+  logger.debug(`${indent}${header}\n${indent}${separator}\n${table}\n`);
 } /**
  * Default application
  *  - MFE_CURRENT_APPLICATION

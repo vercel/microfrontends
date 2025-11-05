@@ -1,6 +1,7 @@
 import type { Plugin, UserConfig } from 'vite';
 import { MicrofrontendsServer } from '../config/microfrontends/server';
 import { getApplicationContext } from '../config/microfrontends/utils/get-application-context';
+import { logger } from '../bin/logger';
 import { detectFramework } from './detect-framework';
 
 interface MicrofrontendsViteOptions {
@@ -92,13 +93,10 @@ export function microfrontends(opts?: MicrofrontendsViteOptions): Plugin {
       port: app.development.local.port,
     };
   }
-  if (process.env.MFE_DEBUG) {
-    // eslint-disable-next-line no-console
-    console.log(
-      '[@vercel/microfrontends] Updating Vite configuration with the following changes:',
-      additionalConfigOptions,
-    );
-  }
+  logger.debug(
+    '[@vercel/microfrontends] Updating Vite configuration with the following changes:',
+    additionalConfigOptions,
+  );
   return {
     name: 'vite-plugin-vercel-microfrontends',
     config: () => {
