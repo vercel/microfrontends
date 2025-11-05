@@ -58,33 +58,36 @@
           "description": "The name used to run the application, e.g. the `name` field in the `package.json`.\n\nThis is used by the local proxy to map the application config to the locally running app.\n\nThis is only necessary when the application name does not match the `name` used in `package.json`.\n\nhttps://vercel.com/docs/microfrontends/configuration#application-naming"
         },
         "development": {
-          "type": "object",
-          "properties": {
-            "local": {
-              "type": [
-                "number",
-                "string"
-              ],
-              "description": "A local port number or host that this application runs on when it is running locally. If passing a string, include the protocol (optional), host (required) and port (optional).\n\nExamples of valid values: 8080, my.localhost.me, my.localhost.me:8080, https://my.localhost.me, https://my.localhost.me:8080\n\nThe default value is http://localhost:<port> where port is a stable, unique port number (based on the application name)\n\nhttps://vercel.com/docs/microfrontends/local-development"
-            },
-            "task": {
-              "type": "string",
-              "description": "The task to run when starting the development server. Should reference a script in the package.json of the application.\n\nThe default value is \"dev\"\n\nhttps://vercel.com/docs/microfrontends/local-development"
-            },
-            "fallback": {
-              "type": "string",
-              "description": "Fallback for local development, could point to any environment. This is required for the default app. This value is used as the fallback for child apps as well if they do not have a fallback.\n\nIf passing a string, include the protocol (optional), host (required) and port (optional). For example: `https://this.ismyhost:8080`. If omitted, the protocol defaults to HTTPS. If omitted, the port defaults to `80` for HTTP and `443` for HTTPS.\n\nhttps://vercel.com/docs/microfrontends/local-development"
-            }
-          },
-          "required": [
-            "fallback"
-          ],
-          "additionalProperties": false,
+          "$ref": "#/definitions/DefaultDevelopment",
           "description": "Development configuration for the default application."
         }
       },
       "required": [
         "development"
+      ],
+      "additionalProperties": false
+    },
+    "DefaultDevelopment": {
+      "type": "object",
+      "properties": {
+        "local": {
+          "type": [
+            "number",
+            "string"
+          ],
+          "description": "A local port number or host that this application runs on when it is running locally. If passing a string, include the protocol (optional), host (required) and port (optional).\n\nExamples of valid values: 8080, my.localhost.me, my.localhost.me:8080, https://my.localhost.me, https://my.localhost.me:8080\n\nThe default value is http://localhost:<port> where port is a stable, unique port number (based on the application name)\n\nhttps://vercel.com/docs/microfrontends/local-development"
+        },
+        "task": {
+          "type": "string",
+          "description": "The task to run when starting the development server. Should reference a script in the package.json of the application.\n\nThe default value is \"dev\"\n\nhttps://vercel.com/docs/microfrontends/local-development"
+        },
+        "fallback": {
+          "type": "string",
+          "description": "Fallback for local development, could point to any environment. This is required for the default app. This value is used as the fallback for child apps as well if they do not have a fallback.\n\nIf passing a string, include the protocol (optional), host (required) and port (optional). For example: `https://this.ismyhost:8080`. If omitted, the protocol defaults to HTTPS. If omitted, the port defaults to `80` for HTTP and `443` for HTTPS.\n\nhttps://vercel.com/docs/microfrontends/local-development"
+        }
+      },
+      "required": [
+        "fallback"
       ],
       "additionalProperties": false
     },
@@ -96,32 +99,11 @@
           "description": "The name used to run the application, e.g. the `name` field in the `package.json`.\n\nThis is used by the local proxy to map the application config to the locally running app.\n\nThis is only necessary when the application name does not match the `name` used in `package.json`.\n\nhttps://vercel.com/docs/microfrontends/configuration#application-naming"
         },
         "development": {
-          "type": "object",
-          "properties": {
-            "local": {
-              "type": [
-                "number",
-                "string"
-              ],
-              "description": "A local port number or host that this application runs on when it is running locally. If passing a string, include the protocol (optional), host (required) and port (optional).\n\nExamples of valid values: 8080, my.localhost.me, my.localhost.me:8080, https://my.localhost.me, https://my.localhost.me:8080\n\nThe default value is http://localhost:<port> where port is a stable, unique port number (based on the application name)\n\nhttps://vercel.com/docs/microfrontends/local-development"
-            },
-            "task": {
-              "type": "string",
-              "description": "The task to run when starting the development server. Should reference a script in the package.json of the application.\n\nThe default value is \"dev\"\n\nhttps://vercel.com/docs/microfrontends/local-development"
-            },
-            "fallback": {
-              "type": "string",
-              "description": "Fallback for local development, could point to any environment. If not provided for child apps, the fallback of the default app will be used.\n\nIf passing a string, include the protocol (optional), host (required) and port (optional). For example: `https://this.ismyhost:8080`. If omitted, the protocol defaults to HTTPS. If omitted, the port defaults to `80` for HTTP and `443` for HTTPS.\n\nhttps://vercel.com/docs/microfrontends/local-development"
-            }
-          },
-          "additionalProperties": false,
+          "$ref": "#/definitions/Development",
           "description": "Development configuration for the child application."
         },
         "routing": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/PathGroup"
-          },
+          "$ref": "#/definitions/Routing",
           "description": "Groups of path expressions that are routed to this application.\n\nhttps://vercel.com/docs/microfrontends/path-routing"
         },
         "assetPrefix": {
@@ -133,6 +115,34 @@
         "routing"
       ],
       "additionalProperties": false
+    },
+    "Development": {
+      "type": "object",
+      "properties": {
+        "local": {
+          "type": [
+            "number",
+            "string"
+          ],
+          "description": "A local port number or host that this application runs on when it is running locally. If passing a string, include the protocol (optional), host (required) and port (optional).\n\nExamples of valid values: 8080, my.localhost.me, my.localhost.me:8080, https://my.localhost.me, https://my.localhost.me:8080\n\nThe default value is http://localhost:<port> where port is a stable, unique port number (based on the application name)\n\nhttps://vercel.com/docs/microfrontends/local-development"
+        },
+        "task": {
+          "type": "string",
+          "description": "The task to run when starting the development server. Should reference a script in the package.json of the application.\n\nThe default value is \"dev\"\n\nhttps://vercel.com/docs/microfrontends/local-development"
+        },
+        "fallback": {
+          "type": "string",
+          "description": "Fallback for local development, could point to any environment. If not provided for child apps, the fallback of the default app will be used.\n\nIf passing a string, include the protocol (optional), host (required) and port (optional). For example: `https://this.ismyhost:8080`. If omitted, the protocol defaults to HTTPS. If omitted, the port defaults to `80` for HTTP and `443` for HTTPS.\n\nhttps://vercel.com/docs/microfrontends/local-development"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Routing": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/PathGroup"
+      },
+      "description": "A list of path groups that are routed to this application."
     },
     "PathGroup": {
       "type": "object",
