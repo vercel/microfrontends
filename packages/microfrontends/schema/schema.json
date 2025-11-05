@@ -99,7 +99,7 @@
           "description": "The name used to run the application, e.g. the `name` field in the `package.json`.\n\nThis is used by the local proxy to map the application config to the locally running app.\n\nThis is only necessary when the application name does not match the `name` used in `package.json`.\n\nhttps://vercel.com/docs/microfrontends/configuration#application-naming"
         },
         "development": {
-          "$ref": "#/definitions/Development",
+          "$ref": "#/definitions/ChildDevelopment",
           "description": "Development configuration for the child application."
         },
         "routing": {
@@ -116,7 +116,7 @@
       ],
       "additionalProperties": false
     },
-    "Development": {
+    "ChildDevelopment": {
       "type": "object",
       "properties": {
         "local": {

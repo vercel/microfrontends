@@ -1,4 +1,9 @@
 /**
+ * 👉 This file is used to generate the OpenAPI schema for the microfrontends configuration.
+ * Any type in this file is displayed dynamically in https://vercel.com/docs/microfrontends/configuration 📚
+ */
+
+/**
  * The microfrontends configuration schema.
  * https://vercel.com/docs/microfrontends/configuration
  */
@@ -61,7 +66,7 @@ export interface PathGroup {
   paths: string[];
 }
 
-export interface Development {
+export interface CommonDevelopment {
   /**
    * A local port number or host that this application runs on when it is running locally.
    * If passing a string, include the protocol (optional), host (required) and port (optional).
@@ -81,20 +86,9 @@ export interface Development {
    * https://vercel.com/docs/microfrontends/local-development
    */
   task?: string;
-  /**
-   * Fallback for local development, could point to any environment. If not provided for child apps,
-   * the fallback of the default app will be used.
-   *
-   * If passing a string, include the protocol (optional), host (required) and port (optional).
-   * For example: `https://this.ismyhost:8080`. If omitted, the protocol defaults to HTTPS. If
-   * omitted, the port defaults to `80` for HTTP and `443` for HTTPS.
-   *
-   * https://vercel.com/docs/microfrontends/local-development
-   */
-  fallback?: string;
 }
 
-export interface DefaultDevelopment extends Development {
+export interface DefaultDevelopment extends CommonDevelopment {
   /**
    * Fallback for local development, could point to any environment. This is required for the default
    * app. This value is used as the fallback for child apps as well if they do not have a fallback.
@@ -106,6 +100,20 @@ export interface DefaultDevelopment extends Development {
    * https://vercel.com/docs/microfrontends/local-development
    */
   fallback: string;
+}
+
+export interface ChildDevelopment extends CommonDevelopment {
+  /**
+   * Fallback for local development, could point to any environment. If not provided for child apps,
+   * the fallback of the default app will be used.
+   *
+   * If passing a string, include the protocol (optional), host (required) and port (optional).
+   * For example: `https://this.ismyhost:8080`. If omitted, the protocol defaults to HTTPS. If
+   * omitted, the port defaults to `80` for HTTP and `443` for HTTPS.
+   *
+   * https://vercel.com/docs/microfrontends/local-development
+   */
+  fallback?: string;
 }
 
 /**
@@ -137,7 +145,7 @@ export interface ChildApplication extends CommonApplication {
   /**
    * Development configuration for the child application.
    */
-  development?: Development;
+  development?: ChildDevelopment;
   /**
    * Groups of path expressions that are routed to this application.
    *
