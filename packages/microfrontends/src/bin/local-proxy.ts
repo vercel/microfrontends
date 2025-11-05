@@ -824,6 +824,10 @@ export class LocalProxy {
       );
     }
 
+    logger.info(
+      '\nTo debug routing, set an environment variable MFE_DEBUG=1,\nor enable the debug option when calling withMicrofrontends.\nThis will print out all routing information to the console.\n',
+    );
+
     logger.info(`\n${'─'.repeat(50)}\n`);
   }
 }
