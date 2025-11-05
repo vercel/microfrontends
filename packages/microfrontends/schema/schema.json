@@ -7,7 +7,7 @@
       "properties": {
         "$schema": {
           "type": "string",
-          "description": "https://openapi.vercel.sh/microfrontends.json"
+          "description": "https://openapi.vercel.sh/microfrontends.json."
         },
         "version": {
           "type": "string",

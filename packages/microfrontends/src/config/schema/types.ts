@@ -29,7 +29,10 @@ export type ApplicationRouting = Record<ApplicationId, Application>;
 /**
  * The Vercel project name of the microfrontend application.
  *
- * Note: If this name does not also match the name `name` from the `package.json`, set `packageName` with the name used in `package.json`.
+ * Note: If this name does not also match the name `name` from the `package.json`,
+ * set `packageName` with the name used in `package.json`.
+ *
+ * @see https://vercel.com/docs/microfrontends/configuration#application-naming
  */
 export type ApplicationId = string;
 
@@ -48,6 +51,7 @@ export interface PathGroup {
   group?: string;
   /**
    * The name of the feature flag that controls routing for this group of paths.
+   * @see https://vercel.com/docs/microfrontends/path-routing#routing-changes-safely-with-flags
    */
   flag?: string;
   /**
@@ -65,12 +69,16 @@ export interface Development {
    * Examples of valid values: 8080, my.localhost.me, my.localhost.me:8080, https://my.localhost.me, https://my.localhost.me:8080
    *
    * @defaultValue http://localhost:<port> where port is a stable, unique port number (based on the application name)
+   *
+   * @see https://vercel.com/docs/microfrontends/local-development
    */
   local?: number | string;
   /**
    * The task to run when starting the development server. Should reference a script in the package.json of the application.
    *
    * @defaultValue "dev"
+   *
+   * @see https://vercel.com/docs/microfrontends/local-development
    */
   task?: string;
   /**
@@ -80,6 +88,8 @@ export interface Development {
    * If passing a string, include the protocol (optional), host (required) and port (optional).
    * For example: `https://this.ismyhost:8080`. If omitted, the protocol defaults to HTTPS. If
    * omitted, the port defaults to `80` for HTTP and `443` for HTTPS.
+   *
+   * @see https://vercel.com/docs/microfrontends/local-development
    */
   fallback?: string;
 }
@@ -92,6 +102,8 @@ export interface DefaultDevelopment extends Development {
    * If passing a string, include the protocol (optional), host (required) and port (optional).
    * For example: `https://this.ismyhost:8080`. If omitted, the protocol defaults to HTTPS. If
    * omitted, the port defaults to `80` for HTTP and `443` for HTTPS.
+   *
+   * @see https://vercel.com/docs/microfrontends/local-development
    */
   fallback: string;
 }
@@ -108,6 +120,8 @@ interface CommonApplication {
    * This is used by the local proxy to map the application config to the locally running app.
    *
    * This is only necessary when the application name does not match the `name` used in `package.json`.
+   *
+   * @see https://vercel.com/docs/microfrontends/configuration#application-naming
    */
   packageName?: string;
 }
@@ -126,6 +140,8 @@ export interface ChildApplication extends CommonApplication {
   development?: Development;
   /**
    * Groups of path expressions that are routed to this application.
+   *
+   * @see https://vercel.com/docs/microfrontends/path-routing
    */
   routing: Routing;
 
@@ -144,6 +160,8 @@ export interface ChildApplication extends CommonApplication {
    * should be added to the `routing` field and deployed before setting the `assetPrefix` field.
    *
    * @defaultValue The auto-generated asset prefix of the form `vc-ap-<hash>`
+   *
+   * @see https://vercel.com/docs/microfrontends/path-routing#asset-prefix
    */
   assetPrefix?: string;
 }
@@ -153,12 +171,16 @@ export interface Options {
    * If you want to disable the overrides for the site. For example, if you are managing rewrites
    * between applications externally, you may wish to disable the overrides on the toolbar as
    * they will have no effect.
+   *
+   * @see https://vercel.com/docs/microfrontends/managing-microfrontends/vercel-toolbar#routing-overrides
    */
   disableOverrides?: boolean;
   /**
    * The port number used by the local proxy server.
    *
    * @defaultValue 3024
+   *
+   * @see https://vercel.com/docs/microfrontends/local-development
    */
   localProxyPort?: number;
 }
