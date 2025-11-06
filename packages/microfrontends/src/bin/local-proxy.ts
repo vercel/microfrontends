@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import * as http from 'node:http';
 import * as https from 'node:https';
 import { URL } from 'node:url';
@@ -19,6 +18,7 @@ import { hashApplicationName } from '../config/microfrontends-config/isomorphic/
 import cliPkg from '../../package.json';
 import type { LocalProxyOptions, LocalProxyApplicationResponse } from './types';
 import { localAuthHtml } from './local-auth';
+import { logger } from './logger';
 
 // This is a header set to `1` by the local proxy on all outgoing requests to locally running applications.
 // Applications may optionally route all traffic that they receive without the header to the local proxy.
@@ -195,7 +195,7 @@ export class ProxyRequestRouter {
     if (target) return target;
 
     const defaultHost = this.getDefaultHost(config);
-    console.log(
+    logger.debug(
       ` ${path} - Did not match any routes. Routing to default app: ${formatProxyTarget(defaultHost)}`,
     );
     return { path, ...defaultHost };
@@ -220,7 +220,7 @@ export class ProxyRequestRouter {
       const target = this.getApplicationTarget(application);
       if (middlewareMfeZone) {
         if (middlewareMfeZone === application.name) {
-          console.log(
+          logger.debug(
             ` ${path} - Routing to ${formatProxyTarget(target)} according to 'x-vercel-mfe-zone' header`,
           );
           return { path, ...target };
@@ -252,13 +252,13 @@ export class ProxyRequestRouter {
                 continue;
               } else {
                 // No provided value for flags, check middleware
-                console.log(
+                logger.debug(
                   'Routing group is behind flag. Routing to default app to check flag via middleware.',
                 );
                 if (!this.isDefaultAppLocal()) {
                   const defaultApp = this.getDefaultHost(this.config);
 
-                  console.error(
+                  logger.error(
                     `'${path}' is a flagged path, but the default application is not running locally. Using '${defaultApp.hostname}' to handle this request.`,
                   );
                 }
@@ -266,7 +266,7 @@ export class ProxyRequestRouter {
                 return null;
               }
             }
-            console.log(
+            logger.debug(
               ` ${path} - Matched ${childPath}. Routing to ${formatProxyTarget(target)}`,
             );
             return { path, ...target };
@@ -275,7 +275,7 @@ export class ProxyRequestRouter {
       }
     }
     if (middlewareMfeZone) {
-      console.error(
+      logger.error(
         `A request contained 'x-vercel-mfe-zone: ${middlewareMfeZone}', but no application was found with that name.`,
       );
     }
@@ -303,7 +303,7 @@ export class ProxyRequestRouter {
     for (const rewrite of rewrites) {
       for (const assetPrefix of assetPrefixes) {
         if (pathToRegexp(`/${assetPrefix}${rewrite}`).test(pathname)) {
-          console.log(
+          logger.debug(
             ` ${pathname} - Matched asset prefix. Routing to ${formatProxyTarget(target)}`,
           );
           return {
@@ -344,7 +344,7 @@ export class ProxyRequestRouter {
     if (!refererApp) {
       return null;
     }
-    console.log(
+    logger.debug(
       ` ${refererURL.pathname} - Routing nextjs stack frame request to ${formatProxyTarget(refererApp)}`,
     );
     return {
@@ -361,13 +361,13 @@ export class ProxyRequestRouter {
     // just choose any local application to handle the source map request
     const localApp = this.getArbitraryLocalApp();
     if (!localApp) {
-      console.error(
+      logger.error(
         ` ${url.pathname} - No locally running application to route request to`,
       );
       return null;
     }
     const target = this.getApplicationTarget(localApp);
-    console.log(
+    logger.debug(
       ` ${url.pathname} - Routing nextjs source map request to randomly selected local application: ${formatProxyTarget(target)}`,
     );
     return {
@@ -391,7 +391,7 @@ export class ProxyRequestRouter {
     // Extract the url parameter from the query string
     const imageUrl = url.searchParams.get('url');
     if (!imageUrl) {
-      console.error(
+      logger.error(
         ` ${url.pathname}?${url.search} - No url parameter found in _next/image request`,
       );
       return null;
@@ -412,7 +412,7 @@ export class ProxyRequestRouter {
       return null;
     }
 
-    console.log(
+    logger.debug(
       ` ${url.pathname}?${url.search} - Routing nextjs image request to ${formatProxyTarget(imageApp)}`,
     );
 
@@ -487,7 +487,7 @@ export class LocalProxy {
         `Error proxying request to ${formatProxyTarget(target)}. Is the server running locally on port ${target.port}?`,
       );
 
-      console.error(
+      logger.error(
         `Error proxying request for ${formatProxyTarget(target)}: `,
         err,
       );
@@ -558,7 +558,7 @@ export class LocalProxy {
           headers,
         });
       } catch (err) {
-        console.error('Error proxying ws: ', err);
+        logger.error('Error proxying ws: ', err);
       }
     });
     // Start the servers
@@ -683,7 +683,7 @@ export class LocalProxy {
       });
       req.pipe(proxyReq);
       proxyReq.on('error', (err) => {
-        console.error('Proxy request error: ', err);
+        logger.error('Proxy request error: ', err);
         res.writeHead(500, { 'Content-Type': 'text/plain' });
         res.end(
           `Error proxying request for ${target.application} to ${hostname}:${port}${path}`,
@@ -770,16 +770,16 @@ export class LocalProxy {
       }
     }
 
-    console.log(`\n▲ Microfrontends Proxy (${cliPkg.version}) Started`);
+    logger.info(`\n▲ Microfrontends Proxy (${cliPkg.version}) Started`);
 
-    console.log(`  - Proxy URL: http://localhost:${this.proxyPort}`);
+    logger.info(`  - Proxy URL: http://localhost:${this.proxyPort}`);
 
     if (this.configFilePath) {
-      console.log(`  - Config: ${this.configFilePath}`);
+      logger.info(`  - Config: ${this.configFilePath}`);
     }
 
     if (localApps.length > 0) {
-      console.log('  - Local Applications:');
+      logger.info('  - Local Applications:');
       const displayLocalApps =
         localApps.length > 5
           ? [
@@ -789,15 +789,15 @@ export class LocalProxy {
           : localApps;
       for (const app of displayLocalApps) {
         if (app.port !== undefined) {
-          console.log(`    • ${app.name} (port ${app.port})`);
+          logger.info(`    • ${app.name} (port ${app.port})`);
         } else {
-          console.log(`    • ${app.name}`);
+          logger.info(`    • ${app.name}`);
         }
       }
     }
 
     if (fallbackApps.length > 0) {
-      console.log('  - Fallback Applications:');
+      logger.info('  - Fallback Applications:');
       const displayFallbackApps =
         fallbackApps.length > 5
           ? [
@@ -807,24 +807,28 @@ export class LocalProxy {
           : fallbackApps;
       for (const app of displayFallbackApps) {
         if (app.fallback) {
-          console.log(`    • ${app.name} → ${app.fallback}`);
+          logger.info(`    • ${app.name} → ${app.fallback}`);
         } else {
-          console.log(`    • ${app.name}`);
+          logger.info(`    • ${app.name}`);
         }
       }
     }
 
     if (localApps.length === 0 && fallbackApps.length === 0) {
-      console.log('  - No applications configured\n');
+      logger.info('  - No applications configured\n');
     }
 
     if (localApps.length > 0) {
-      console.log(
+      logger.info(
         '\nRequests directly to the ports of these applications may be automatically\nredirected to this proxy. Set the MFE_DISABLE_LOCAL_PROXY_REWRITE=1\nenvironment variable to disable this behavior.',
       );
     }
 
-    console.log(`\n${'─'.repeat(50)}\n`);
+    logger.info(
+      '\nTo debug routing, set an environment variable MFE_DEBUG=1,\nor enable the debug option when calling withMicrofrontends.\nThis will print out all routing information to the console.\n',
+    );
+
+    logger.info(`\n${'─'.repeat(50)}\n`);
   }
 }
 
@@ -869,5 +873,3 @@ function removeMfeFlagQuery(req: http.IncomingMessage): {
 function formatProxyTarget(target: ProxyTarget): string {
   return `${target.originalApplication} (${target.isLocal ? 'local' : 'fallback'})`;
 }
-
-/* eslint-enable no-console */

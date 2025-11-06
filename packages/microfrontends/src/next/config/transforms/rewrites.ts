@@ -1,24 +1,20 @@
 import type { Rewrite } from 'next/dist/lib/load-custom-routes';
+import { logger } from '../../../bin/logger';
 import type { TransformConfigInput, TransformConfigResponse } from './types';
 
 function debugRewrites(rewrites: Rewrite[]): void {
-  if (process.env.MFE_DEBUG) {
-    const indent = ' '.repeat(4);
-    const header = 'rewrites (source → destination)';
-    const separator = '⎯'.repeat(header.length);
-    const maxSourceLength = Math.max(
-      ...rewrites.map((key) => key.source.length),
-    );
-    const table = rewrites
-      .map((route, idx) => {
-        const paddedSource = route.source.padEnd(maxSourceLength);
-        return `${indent} ${idx + 1}. ${paddedSource} →  ${route.destination}`;
-      })
-      .join('\n');
+  const indent = ' '.repeat(4);
+  const header = 'rewrites (source → destination)';
+  const separator = '⎯'.repeat(header.length);
+  const maxSourceLength = Math.max(...rewrites.map((key) => key.source.length));
+  const table = rewrites
+    .map((route, idx) => {
+      const paddedSource = route.source.padEnd(maxSourceLength);
+      return `${indent} ${idx + 1}. ${paddedSource} →  ${route.destination}`;
+    })
+    .join('\n');
 
-    // eslint-disable-next-line no-console
-    console.log(`${indent}${header}\n${indent}${separator}\n${table}\n`);
-  }
+  logger.debug(`${indent}${header}\n${indent}${separator}\n${table}\n`);
 }
 
 interface DestinationConfig {

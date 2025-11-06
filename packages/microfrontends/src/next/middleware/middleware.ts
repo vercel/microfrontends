@@ -8,6 +8,7 @@ import { getWellKnownClientData } from '../../config/well-known/endpoints';
 import type { WellKnownClientData } from '../../config/well-known/types';
 import { localProxyIsRunning } from '../../bin/local-proxy-is-running';
 import { MicrofrontendConfigIsomorphic } from '../../config/microfrontends-config/isomorphic';
+import { logger } from '../../bin/logger';
 import type {
   MicrofrontendsMiddleware,
   MicrofrontendsMiddlewareHandler,
@@ -64,27 +65,20 @@ function getFlagHandler({
           },
         };
         if (localProxyRunning) {
-          if (process.env.MFE_DEBUG) {
-            // eslint-disable-next-line no-console
-            console.log(
-              `Routing flagged path "${pathname}" to local proxy for application "${application.name}"`,
-            );
-          }
+          logger.debug(
+            `Routing flagged path "${pathname}" to local proxy for application "${application.name}"`,
+          );
           const url = req.nextUrl;
           url.host = `localhost:${localProxyPort}`;
           return NextResponse.rewrite(url, middlewareResponseInit);
         }
-        if (process.env.MFE_DEBUG) {
-          // eslint-disable-next-line no-console
-          console.log(
-            `Routing flagged path "${pathname}" to application "${application.name}"`,
-          );
-        }
+        logger.debug(
+          `Routing flagged path "${pathname}" to application "${application.name}"`,
+        );
         return NextResponse.next(middlewareResponseInit);
       }
     } catch (e) {
-      // eslint-disable-next-line no-console
-      console.error(
+      logger.error(
         `An error occured in the microfrontends middleware evaluating the flag "${flagName}":`,
         e,
       );

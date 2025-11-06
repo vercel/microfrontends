@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { logger } from '../../../bin/logger';
 
 /**
  * Given a repository root, determine if the repository is using the workspace feature of any package manager.
@@ -41,8 +42,7 @@ export function isMonorepo({
 
     return packageJson.workspaces !== undefined;
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error('Error determining if repository is a monorepo', error);
+    logger.error('Error determining if repository is a monorepo', error);
     return false;
   }
 }
