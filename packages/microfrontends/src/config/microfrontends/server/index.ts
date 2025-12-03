@@ -13,6 +13,7 @@ import { findPackageRoot } from '../utils/find-package-root';
 import { findConfig } from '../utils/find-config';
 import { MicrofrontendConfigIsomorphic } from '../../microfrontends-config/isomorphic';
 import { getApplicationContext } from '../utils/get-application-context';
+import { logger } from '../../../bin/logger';
 import { getOutputFilePath } from './utils/get-output-file-path';
 import { validateSchema } from './validation';
 
@@ -129,7 +130,14 @@ class MicrofrontendsServer {
     filePath?: string;
     cookies?: { name: string; value: string }[];
   } = {}): MicrofrontendsServer {
+    logger.debug('[MFE Config] Starting config inference', {
+      appName,
+      directory: directory || process.cwd(),
+      filePath,
+    });
+
     if (filePath) {
+      logger.debug('[MFE Config] Using explicit filePath:', filePath);
       return MicrofrontendsServer.fromFile({
         filePath,
         cookies,
@@ -138,13 +146,23 @@ class MicrofrontendsServer {
 
     try {
       const packageRoot = findPackageRoot(directory);
+      logger.debug('[MFE Config] Package root:', packageRoot);
+
       const applicationContext = getApplicationContext({
         appName,
         packageRoot,
       });
+      logger.debug('[MFE Config] Application context:', applicationContext);
 
       const customConfigFilename =
         process.env.VC_MICROFRONTENDS_CONFIG_FILE_NAME;
+
+      if (customConfigFilename) {
+        logger.debug(
+          '[MFE Config] Custom config filename from VC_MICROFRONTENDS_CONFIG_FILE_NAME:',
+          customConfigFilename,
+        );
+      }
 
       // see if we have a config file at the package root
       const maybeConfig = findConfig({
@@ -152,6 +170,7 @@ class MicrofrontendsServer {
         customConfigFilename,
       });
       if (maybeConfig) {
+        logger.debug('[MFE Config] Config found at package root:', maybeConfig);
         return MicrofrontendsServer.fromFile({
           filePath: maybeConfig,
           cookies,
@@ -161,11 +180,26 @@ class MicrofrontendsServer {
       // if we don't have a microfrontends configuration file, see if we have another package in the repo that references this one
       const repositoryRoot = findRepositoryRoot();
       const isMonorepo = isRepositoryMonorepo({ repositoryRoot });
+      logger.debug(
+        '[MFE Config] Repository root:',
+        repositoryRoot,
+        'Is monorepo:',
+        isMonorepo,
+      );
+
       const configFromEnv = process.env.VC_MICROFRONTENDS_CONFIG;
       // the environment variable, if specified, takes precedence over other inference methods
       if (typeof configFromEnv === 'string') {
+        logger.debug(
+          '[MFE Config] Checking VC_MICROFRONTENDS_CONFIG:',
+          configFromEnv,
+        );
         const maybeConfigFromEnv = resolve(packageRoot, configFromEnv);
         if (maybeConfigFromEnv) {
+          logger.debug(
+            '[MFE Config] Config loaded from VC_MICROFRONTENDS_CONFIG:',
+            maybeConfigFromEnv,
+          );
           return MicrofrontendsServer.fromFile({
             filePath: maybeConfigFromEnv,
             cookies,
@@ -173,11 +207,20 @@ class MicrofrontendsServer {
         }
       } else {
         // when the VC_MICROFRONTENDS_CONFIG environment variable is not set, try to find the config in the .vercel directory first
+        const vercelDir = join(packageRoot, '.vercel');
+        logger.debug(
+          '[MFE Config] Searching for config in .vercel directory:',
+          vercelDir,
+        );
         const maybeConfigFromVercel = findConfig({
-          dir: join(packageRoot, '.vercel'),
+          dir: vercelDir,
           customConfigFilename,
         });
         if (maybeConfigFromVercel) {
+          logger.debug(
+            '[MFE Config] Config found in .vercel directory:',
+            maybeConfigFromVercel,
+          );
           return MicrofrontendsServer.fromFile({
             filePath: maybeConfigFromVercel,
             cookies,
@@ -185,12 +228,20 @@ class MicrofrontendsServer {
         }
 
         if (isMonorepo) {
+          logger.debug(
+            '[MFE Config] Inferring microfrontends location in monorepo for application:',
+            applicationContext.name,
+          );
           // find the default package
           const defaultPackage = inferMicrofrontendsLocation({
             repositoryRoot,
             applicationContext,
             customConfigFilename,
           });
+          logger.debug(
+            '[MFE Config] Inferred package location:',
+            defaultPackage,
+          );
 
           // see if we have a config file at the package root
           const maybeConfigFromDefault = findConfig({
@@ -198,11 +249,16 @@ class MicrofrontendsServer {
             customConfigFilename,
           });
           if (maybeConfigFromDefault) {
+            logger.debug(
+              '[MFE Config] Config found in inferred package:',
+              maybeConfigFromDefault,
+            );
             return MicrofrontendsServer.fromFile({
               filePath: maybeConfigFromDefault,
               cookies,
             });
           }
+          logger.debug('[MFE Config] No config found in inferred package');
         }
       }
       // will be caught below
@@ -234,8 +290,13 @@ class MicrofrontendsServer {
     cookies?: { name: string; value: string }[];
   }): MicrofrontendsServer {
     try {
+      logger.debug('[MFE Config] Reading config from file:', filePath);
       const configJson = fs.readFileSync(filePath, 'utf-8');
       const config = MicrofrontendsServer.validate(configJson);
+      logger.debug(
+        '[MFE Config] Config loaded with applications:',
+        Object.keys(config.applications),
+      );
 
       return new MicrofrontendsServer({
         config,

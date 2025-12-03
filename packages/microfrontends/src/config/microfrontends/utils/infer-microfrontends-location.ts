@@ -4,6 +4,7 @@ import { parse } from 'jsonc-parser';
 import fg from 'fast-glob';
 import type { Config } from '../../schema/types';
 import { MicrofrontendError } from '../../errors';
+import { logger } from '../../../bin/logger';
 import { getPossibleConfigurationFilenames } from './get-config-file-name';
 import type { ApplicationContext } from './get-application-context';
 
@@ -28,6 +29,11 @@ function findPackageWithMicrofrontendsConfig({
   customConfigFilename,
 }: FindDefaultMicrofrontendPackageArgs): string | null {
   const applicationName = applicationContext.name;
+  logger.debug(
+    '[MFE Config] Searching repository for configs containing application:',
+    applicationName,
+  );
+
   try {
     // eslint-disable-next-line import/no-named-as-default-member
     const microfrontendsJsonPaths = fg.globSync(
@@ -41,6 +47,12 @@ function findPackageWithMicrofrontendsConfig({
       },
     );
 
+    logger.debug(
+      '[MFE Config] Found',
+      microfrontendsJsonPaths.length,
+      'config file(s) in repository',
+    );
+
     const matchingPaths: string[] = [];
     for (const microfrontendsJsonPath of microfrontendsJsonPaths) {
       try {
@@ -51,12 +63,20 @@ function findPackageWithMicrofrontendsConfig({
         const microfrontendsJson = parse(microfrontendsJsonContent) as Config;
 
         if (microfrontendsJson.applications[applicationName]) {
+          logger.debug(
+            '[MFE Config] Found application in config:',
+            microfrontendsJsonPath,
+          );
           matchingPaths.push(microfrontendsJsonPath);
         } else {
           for (const [_, app] of Object.entries(
             microfrontendsJson.applications,
           )) {
             if (app.packageName === applicationName) {
+              logger.debug(
+                '[MFE Config] Found application via packageName in config:',
+                microfrontendsJsonPath,
+              );
               matchingPaths.push(microfrontendsJsonPath);
             }
           }
@@ -65,6 +85,11 @@ function findPackageWithMicrofrontendsConfig({
         // malformed json most likely, skip this file
       }
     }
+
+    logger.debug(
+      '[MFE Config] Total matching config files:',
+      matchingPaths.length,
+    );
 
     if (matchingPaths.length > 1) {
       throw new MicrofrontendError(

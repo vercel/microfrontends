@@ -8,6 +8,8 @@ import { logger } from './logger';
  * Assumes cwd is the package directory for the current application.
  */
 export function displayPort(): void {
+  // Don't log any debug information when computing the port to use.
+  delete process.env.MFE_DEBUG;
   const portInfo = mfePort(cwd());
   header(portInfo);
   logger.info(portInfo.port);
