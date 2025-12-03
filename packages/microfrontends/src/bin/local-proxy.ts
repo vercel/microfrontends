@@ -458,8 +458,8 @@ export class LocalProxy {
   proxyPort: number;
   router: ProxyRequestRouter;
   configFilePath?: string;
-  private sseClients: Map<string, Set<http.ServerResponse>> = new Map();
-  private appReadyState: Map<string, boolean> = new Map();
+  private sseClients = new Map<string, Set<http.ServerResponse>>();
+  private appReadyState = new Map<string, boolean>();
 
   private getApplicationsList(): ApplicationInfo[] {
     const allApps = this.router.config.getAllApplications();
@@ -479,18 +479,17 @@ export class LocalProxy {
           port: app.development.local.port,
           isLocal: true,
         };
-      } else {
-        const target = this.router.getApplicationTarget(app);
-        let fallbackHost = target.hostname;
-        if (!app.fallback) {
-          fallbackHost = defaultFallback;
-        }
-        return {
-          name: app.name,
-          isLocal: false,
-          fallback: fallbackHost,
-        };
       }
+      const target = this.router.getApplicationTarget(app);
+      let fallbackHost = target.hostname;
+      if (!app.fallback) {
+        fallbackHost = defaultFallback;
+      }
+      return {
+        name: app.name,
+        isLocal: false,
+        fallback: fallbackHost,
+      };
     });
   }
 
@@ -776,8 +775,8 @@ export class LocalProxy {
         res.end(
           waitingPageHtml({
             app: target.application,
-            port: port,
-            path: path,
+            port,
+            path,
             proxyPort: this.proxyPort,
             applications: this.getApplicationsList(),
           }),
@@ -849,7 +848,7 @@ export class LocalProxy {
         if (!this.sseClients.has(appName)) {
           this.sseClients.set(appName, new Set());
         }
-        this.sseClients.get(appName)!.add(res);
+        this.sseClients.get(appName)?.add(res);
 
         // Start background monitoring for app readiness
         this.startAppReadinessMonitor();
@@ -969,7 +968,7 @@ export class LocalProxy {
         const target = this.router.getApplicationTarget(app);
         if (!target.isLocal) continue;
 
-        this.checkAppReady(target).then((ready) => {
+        void this.checkAppReady(target).then((ready) => {
           if (ready && !this.appReadyState.get(appName)) {
             this.appReadyState.set(appName, true);
             this.notifyAppReady(appName);
