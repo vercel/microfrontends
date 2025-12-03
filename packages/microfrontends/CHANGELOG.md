@@ -1,5 +1,11 @@
 # @vercel/microfrontends
 
+## 2.2.1
+
+### Patch Changes
+
+- d1e7cf7: Improve debug logging when inferring the microfrontends.json configuration when the MFE_DEBUG env var is set.
+
 ## 2.2.0
 
 ### Minor Changes
