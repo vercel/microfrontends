@@ -41,3 +41,6 @@ vite.config.ts.timestamp-*
 
 # Module Federation
 .__mf__temp
+
+# Claude
+CLAUDE.local.md
