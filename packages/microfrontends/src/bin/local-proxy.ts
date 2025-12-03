@@ -18,6 +18,7 @@ import { hashApplicationName } from '../config/microfrontends-config/isomorphic/
 import cliPkg from '../../package.json';
 import type { LocalProxyOptions, LocalProxyApplicationResponse } from './types';
 import { localAuthHtml } from './local-auth';
+import { waitingPageHtml, type ApplicationInfo } from './waiting-page';
 import { logger } from './logger';
 
 // This is a header set to `1` by the local proxy on all outgoing requests to locally running applications.
@@ -457,6 +458,41 @@ export class LocalProxy {
   proxyPort: number;
   router: ProxyRequestRouter;
   configFilePath?: string;
+  private sseClients: Map<string, Set<http.ServerResponse>> = new Map();
+  private appReadyState: Map<string, boolean> = new Map();
+
+  private getApplicationsList(): ApplicationInfo[] {
+    const allApps = this.router.config.getAllApplications();
+    const defaultApp = this.router.config.getDefaultApplication();
+    const defaultFallback = defaultApp.fallback.host;
+
+    return allApps.map((app) => {
+      const isLocal = Boolean(
+        this.router.localApps.find(
+          (name: string) => name === app.name || name === app.packageName,
+        ),
+      );
+
+      if (isLocal) {
+        return {
+          name: app.name,
+          port: app.development.local.port,
+          isLocal: true,
+        };
+      } else {
+        const target = this.router.getApplicationTarget(app);
+        let fallbackHost = target.hostname;
+        if (!app.fallback) {
+          fallbackHost = defaultFallback;
+        }
+        return {
+          name: app.name,
+          isLocal: false,
+          fallback: fallbackHost,
+        };
+      }
+    });
+  }
 
   constructor(
     config: MicrofrontendConfigIsomorphic,
@@ -474,18 +510,45 @@ export class LocalProxy {
     this.proxyPort = proxyPort ?? this.router.config.getLocalProxyPort();
     this.configFilePath = configFilePath;
     this.proxy = Server.createProxyServer({ secure: true });
-    this.proxy.on('error', (err, req, res) => {
-      if (res instanceof http.ServerResponse) {
-        res.writeHead(500, {
-          'Content-Type': 'text/plain',
-        });
-      }
 
+    // Mark app as ready when proxy receives a successful response
+    this.proxy.on('proxyRes', (_proxyRes, req) => {
+      const target = this.router.getTarget(req);
+      // Skip if still in artificial startup delay
+      if (this.isInStartupDelay()) {
+        return;
+      }
+      if (target.isLocal && !this.appReadyState.get(target.application)) {
+        this.appReadyState.set(target.application, true);
+        this.notifyAppReady(target.application);
+        logger.debug(`App ${target.application} is now ready`);
+      }
+    });
+
+    this.proxy.on('error', (err, req, res) => {
       const target = this.router.getTarget(req);
 
-      res.end(
-        `Error proxying request to ${formatProxyTarget(target)}. Is the server running locally on port ${target.port}?`,
-      );
+      // Mark app as not ready
+      this.appReadyState.set(target.application, false);
+
+      if (res instanceof http.ServerResponse) {
+        res.writeHead(503, {
+          'Content-Type': 'text/html; charset=utf-8',
+        });
+        res.end(
+          waitingPageHtml({
+            app: target.application,
+            port: target.port,
+            path: target.path,
+            proxyPort: this.proxyPort,
+            applications: this.getApplicationsList(),
+          }),
+        );
+      } else {
+        res.end(
+          `Error proxying request to ${formatProxyTarget(target)}. Is the server running locally on port ${target.port}?`,
+        );
+      }
 
       logger.error(
         `Error proxying request for ${formatProxyTarget(target)}: `,
@@ -571,6 +634,27 @@ export class LocalProxy {
     if (this.handleProxyInfoRequest(req.url, res)) {
       return;
     }
+
+    // Artificial delay for testing SSE - show waiting page during delay
+    if (this.isInStartupDelay()) {
+      const target = this.router.getTarget(req);
+      if (target.isLocal) {
+        res.writeHead(503, {
+          'Content-Type': 'text/html; charset=utf-8',
+        });
+        res.end(
+          waitingPageHtml({
+            app: target.application,
+            port: target.port,
+            path: target.path,
+            proxyPort: this.proxyPort,
+            applications: this.getApplicationsList(),
+          }),
+        );
+        return;
+      }
+    }
+
     if (req.url?.includes('//')) {
       // If the URL contains '//', send a 307 redirect to the normalized URL, preserving all request headers
       const originalUrl = req.url;
@@ -684,9 +768,19 @@ export class LocalProxy {
       req.pipe(proxyReq);
       proxyReq.on('error', (err) => {
         logger.error('Proxy request error: ', err);
-        res.writeHead(500, { 'Content-Type': 'text/plain' });
+
+        // Mark app as not ready
+        this.appReadyState.set(target.application, false);
+
+        res.writeHead(503, { 'Content-Type': 'text/html; charset=utf-8' });
         res.end(
-          `Error proxying request for ${target.application} to ${hostname}:${port}${path}`,
+          waitingPageHtml({
+            app: target.application,
+            port: port,
+            path: path,
+            proxyPort: this.proxyPort,
+            applications: this.getApplicationsList(),
+          }),
         );
       });
     } else {
@@ -711,7 +805,7 @@ export class LocalProxy {
     if (!path) {
       return false;
     }
-    const url = new URL(`http://example.comf${path}`);
+    const url = new URL(`http://example.com${path}`);
     const pathname = url.pathname;
     switch (pathname) {
       case '/.well-known/vercel/microfrontends/routing': {
@@ -734,9 +828,212 @@ export class LocalProxy {
         res.end(JSON.stringify(payload));
         return true;
       }
+
+      case '/.well-known/vercel/microfrontends/app-ready-events': {
+        // Server-Sent Events endpoint for app ready notifications
+        const appName = url.searchParams.get('app');
+        if (!appName) {
+          res.writeHead(400, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: 'Missing app parameter' }));
+          return true;
+        }
+
+        res.writeHead(200, {
+          'Content-Type': 'text/event-stream',
+          'Cache-Control': 'no-cache',
+          Connection: 'keep-alive',
+          'Access-Control-Allow-Origin': '*',
+        });
+
+        // Add client to SSE clients list
+        if (!this.sseClients.has(appName)) {
+          this.sseClients.set(appName, new Set());
+        }
+        this.sseClients.get(appName)!.add(res);
+
+        // Start background monitoring for app readiness
+        this.startAppReadinessMonitor();
+
+        // Send initial connection message
+        res.write(
+          `data: ${JSON.stringify({ type: 'connected', app: appName })}\n\n`,
+        );
+
+        // Keep connection alive with heartbeat
+        const heartbeat = setInterval(() => {
+          res.write(`data: ${JSON.stringify({ type: 'heartbeat' })}\n\n`);
+        }, 30000);
+
+        // Cleanup on close
+        res.on('close', () => {
+          clearInterval(heartbeat);
+          this.sseClients.get(appName)?.delete(res);
+
+          // Stop monitor if no more clients
+          let hasClients = false;
+          for (const clients of this.sseClients.values()) {
+            if (clients.size > 0) {
+              hasClients = true;
+              break;
+            }
+          }
+          if (!hasClients) {
+            this.stopAppReadinessMonitor();
+          }
+        });
+
+        return true;
+      }
+
+      case '/.well-known/vercel/microfrontends/app-status': {
+        // Endpoint to check if an app is ready (responds to HTTP request)
+        const appName = url.searchParams.get('app');
+        if (!appName) {
+          res.writeHead(400, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: 'Missing app parameter' }));
+          return true;
+        }
+
+        // Check if the app is ready by attempting to connect
+        const app = this.router.config
+          .getAllApplications()
+          .find((a) => a.name === appName || a.packageName === appName);
+
+        if (!app) {
+          res.writeHead(404, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: 'App not found', ready: false }));
+          return true;
+        }
+
+        const target = this.router.getApplicationTarget(app);
+
+        // Only check local apps
+        if (!target.isLocal) {
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ ready: true, app: appName }));
+          return true;
+        }
+
+        // Check if the port is accessible
+        this.checkAppReady(target)
+          .then((ready) => {
+            if (ready && !this.appReadyState.get(appName)) {
+              // App just became ready, notify SSE clients
+              this.appReadyState.set(appName, true);
+              this.notifyAppReady(appName);
+            }
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ ready, app: appName }));
+          })
+          .catch(() => {
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ ready: false, app: appName }));
+          });
+
+        return true;
+      }
     }
 
     return false;
+  }
+
+  // Track startup time for artificial delay (for testing SSE)
+  private startupTime = Date.now();
+  // Set MFE_STARTUP_DELAY env var to add artificial delay in ms (e.g., MFE_STARTUP_DELAY=10000 for 10 seconds)
+  private startupDelay = parseInt(process.env.MFE_STARTUP_DELAY || '0', 10);
+  private appCheckInterval: ReturnType<typeof setInterval> | null = null;
+
+  private isInStartupDelay(): boolean {
+    return (
+      this.startupDelay > 0 && Date.now() - this.startupTime < this.startupDelay
+    );
+  }
+
+  // Start background monitoring for local apps that SSE clients are waiting for
+  private startAppReadinessMonitor(): void {
+    if (this.appCheckInterval) return;
+
+    this.appCheckInterval = setInterval(() => {
+      // Check each app that has SSE clients waiting
+      for (const [appName, clients] of this.sseClients.entries()) {
+        if (clients.size === 0) continue;
+        if (this.appReadyState.get(appName)) continue;
+
+        // Find the app and check if it's ready
+        const app = this.router.config
+          .getAllApplications()
+          .find((a) => a.name === appName || a.packageName === appName);
+
+        if (!app) continue;
+
+        const target = this.router.getApplicationTarget(app);
+        if (!target.isLocal) continue;
+
+        this.checkAppReady(target).then((ready) => {
+          if (ready && !this.appReadyState.get(appName)) {
+            this.appReadyState.set(appName, true);
+            this.notifyAppReady(appName);
+            logger.debug(`App ${appName} is now ready (background check)`);
+          }
+        });
+      }
+    }, 1000);
+  }
+
+  private stopAppReadinessMonitor(): void {
+    if (this.appCheckInterval) {
+      clearInterval(this.appCheckInterval);
+      this.appCheckInterval = null;
+    }
+  }
+
+  private checkAppReady(target: ProxyTarget): Promise<boolean> {
+    // Artificial delay for testing SSE functionality
+    if (this.isInStartupDelay()) {
+      return Promise.resolve(false);
+    }
+
+    return new Promise((resolve) => {
+      const req = http.request(
+        {
+          hostname: target.hostname,
+          port: target.port,
+          path: '/',
+          method: 'HEAD',
+          timeout: 2000,
+        },
+        (res) => {
+          res.destroy();
+          resolve(true);
+        },
+      );
+
+      req.on('error', () => {
+        resolve(false);
+      });
+
+      req.on('timeout', () => {
+        req.destroy();
+        resolve(false);
+      });
+
+      req.end();
+    });
+  }
+
+  private notifyAppReady(appName: string): void {
+    const clients = this.sseClients.get(appName);
+    if (!clients) return;
+
+    const message = `data: ${JSON.stringify({ type: 'ready', app: appName })}\n\n`;
+    for (const client of clients) {
+      try {
+        client.write(message);
+      } catch {
+        // Client may have disconnected
+        clients.delete(client);
+      }
+    }
   }
 
   private displayStartupMessage(): void {

@@ -1,0 +1,663 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000" />
+    <title>Microfrontends</title>
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%23193a5c'/%3E%3Cg transform='translate(9, 9)'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M2.25 5C2.59736 5 2.92634 4.92129 3.22006 4.78073L7.00001 8.56067L10.7799 4.78073C11.0737 4.92129 11.4027 5 11.75 5C12.9927 5 14 3.99264 14 2.75C14 1.50736 12.9927 0.5 11.75 0.5C10.5074 0.5 9.50001 1.50736 9.50001 2.75C9.50001 3.09736 9.57872 3.42634 9.71929 3.72006L7.00001 6.43934L4.28073 3.72006C4.42129 3.42634 4.5 3.09736 4.5 2.75C4.5 1.50736 3.49264 0.5 2.25 0.5C1.00736 0.5 0 1.50736 0 2.75C0 3.99264 1.00736 5 2.25 5ZM3 2.75C3 3.16422 2.66422 3.5 2.25 3.5C1.83579 3.5 1.5 3.16422 1.5 2.75C1.5 2.33579 1.83579 2 2.25 2C2.66422 2 3 2.33579 3 2.75ZM11.75 3.5C12.1642 3.5 12.5 3.16422 12.5 2.75C12.5 2.33579 12.1642 2 11.75 2C11.3358 2 11 2.33579 11 2.75C11 3.16422 11.3358 3.5 11.75 3.5Z' fill='%2347a3f3'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M2.25 13.5C3.49264 13.5 4.5 12.4927 4.5 11.25C4.5 10.2703 3.8739 9.43691 3 9.12804V6.5H1.5V9.12804C0.626106 9.43691 0 10.2703 0 11.25C0 12.4927 1.00736 13.5 2.25 13.5ZM3 11.25C3 11.6642 2.66422 12 2.25 12C1.83579 12 1.5 11.6642 1.5 11.25C1.5 10.8358 1.83579 10.5 2.25 10.5C2.66422 10.5 3 10.8358 3 11.25Z' fill='%2347a3f3'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M11.75 13.5C12.9927 13.5 14 12.4927 14 11.25C14 10.2703 13.3739 9.43691 12.5 9.12804V6.5H11V9.12804C10.1261 9.43691 9.50001 10.2703 9.50001 11.25C9.50001 12.4927 10.5074 13.5 11.75 13.5ZM12.5 11.25C12.5 11.6642 12.1642 12 11.75 12C11.3358 12 11 11.6642 11 11.25C11 10.8358 11.3358 10.5 11.75 10.5C12.1642 10.5 12.5 10.8358 12.5 11.25Z' fill='%2347a3f3'/%3E%3C/g%3E%3C/svg%3E"
+    />
+    <style>
+      html {
+        font-size: 62.5%;
+        box-sizing: border-box;
+        height: -webkit-fill-available;
+      }
+
+      *,
+      ::after,
+      ::before {
+        box-sizing: inherit;
+      }
+
+      body {
+        font-family: 'Geist', 'SF Pro Text', 'SF Pro Icons', 'Helvetica Neue',
+          'Helvetica', 'Arial', sans-serif;
+        font-size: 1.6rem;
+        line-height: 1.65;
+        word-break: break-word;
+        font-kerning: auto;
+        font-variant: normal;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
+        hyphens: none;
+        height: 100vh;
+        height: -webkit-fill-available;
+        max-height: 100vh;
+        max-height: -webkit-fill-available;
+        margin: 0;
+        background: #000;
+        color: #fff;
+      }
+
+      ::selection {
+        background: #79ffe1;
+        color: #000;
+      }
+      ::-moz-selection {
+        background: #79ffe1;
+        color: #000;
+      }
+
+      a {
+        cursor: pointer;
+        color: #0070f3;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        border-radius: 5px;
+        border-bottom: 1px solid transparent;
+      }
+
+      a:hover {
+        border-bottom: 1px solid #0070f3;
+      }
+
+      code {
+        font-family:
+          'Geist Mono',
+          Menlo,
+          Monaco,
+          Lucida Console,
+          Liberation Mono,
+          DejaVu Sans Mono,
+          Bitstream Vera Sans Mono,
+          Courier New,
+          monospace,
+          serif;
+        font-size: 0.92em;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 2px 6px;
+        border-radius: 4px;
+        color: #fff;
+      }
+
+      .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        min-height: 100%;
+        padding-bottom: 8rem;
+      }
+
+      main {
+        max-width: 56rem;
+        padding: 4rem;
+        margin: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+
+      .logo {
+        display: flex;
+        flex-direction: row-reverse;
+        align-items: center;
+        gap: 1.2rem;
+        margin-bottom: 3rem;
+      }
+
+      .logo-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        background: oklch(0.3086 0.1022 255.21);
+        border-radius: 50%;
+      }
+
+      .logo-icon:hover {
+        background: oklch(0.25 0.1022 255.21);
+      }
+
+      .logo-icon svg {
+        width: 16px;
+        height: 16px;
+        color: oklch(0.717 0.1648 250.794);
+      }
+
+      .logo-text {
+        font-size: 3.2rem;
+        font-weight: 600;
+        color: #fff;
+        letter-spacing: -0.04em;
+        line-height: 1;
+      }
+
+      .message {
+        color: #888;
+        margin-bottom: 2.4rem;
+        font-size: 1.5rem;
+      }
+
+      .status-card {
+        background: #111;
+        border: 1px solid #333;
+        border-radius: 6px;
+        padding: 1.6rem;
+        width: 100%;
+        margin-bottom: 2rem;
+        overflow: hidden;
+      }
+
+      .status-header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1.2rem;
+        margin-bottom: 1.6rem;
+      }
+
+      .spinner {
+        width: 20px;
+        height: 20px;
+        border: 2px solid #333;
+        border-top-color: #fff;
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .status-text {
+        font-size: 1.4rem;
+        font-weight: 500;
+        color: #fff;
+      }
+
+      .app-info {
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+        padding-top: 1.6rem;
+        border-top: 1px solid #333;
+        margin-left: -2.4rem;
+        margin-right: -2.4rem;
+        padding-left: 2.4rem;
+        padding-right: 2.4rem;
+      }
+
+      .info-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 1.4rem;
+      }
+
+      .info-label {
+        color: #888;
+      }
+
+      .info-value {
+        font-weight: 500;
+        color: #fff;
+      }
+
+      .applications-card {
+        background: #111;
+        border: 1px solid #333;
+        border-radius: 6px;
+        padding: 1.6rem;
+        width: 100%;
+        margin-bottom: 1.6rem;
+        text-align: left;
+      }
+
+      .applications-title {
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: #888;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 1.2rem;
+      }
+
+      .applications-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+      }
+
+      .app-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.8rem 1.2rem;
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 6px;
+        font-size: 1.3rem;
+      }
+
+      .app-item-name {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        color: #fff;
+        font-weight: 500;
+      }
+
+      .app-item-status {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        font-size: 1.2rem;
+      }
+
+      .app-item-status.local {
+        color: #0070f3;
+      }
+
+      .app-item-status.fallback {
+        color: #888;
+      }
+
+      .app-item-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+      }
+
+      .app-item-dot.local {
+        background: #0070f3;
+      }
+
+      .app-item-dot.fallback {
+        background: #888;
+      }
+
+      .app-item-dot.waiting {
+        background: #f5a623;
+        animation: pulse 2s ease-in-out infinite;
+      }
+
+      .hint {
+        background: rgba(245, 166, 35, 0.1);
+        border: 1px solid rgba(245, 166, 35, 0.3);
+        border-radius: 6px;
+        padding: 1.6rem;
+        font-size: 1.3rem;
+        color: #f5a623;
+        text-align: left;
+        width: 100%;
+      }
+
+      .hint-title {
+        font-weight: 600;
+        margin-bottom: 0.4rem;
+      }
+
+      .connection-status {
+        font-size: 1.2rem;
+        color: #666;
+        margin-top: 1.6rem;
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+      }
+
+      .connection-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #10b981;
+        animation: pulse 2s ease-in-out infinite;
+      }
+
+      .connection-dot.disconnected {
+        background: #ef4444;
+        animation: none;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.5;
+        }
+      }
+
+      footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 2.4rem;
+        border-top: 1px solid #222;
+        background: #000;
+      }
+
+      footer a {
+        display: flex;
+        align-items: center;
+        color: #888;
+        font-size: 1.4rem;
+        font-weight: 500;
+        letter-spacing: -0.01em;
+        transition: color 0.2s ease;
+      }
+
+      footer a:hover {
+        color: #fff;
+        border-bottom-color: transparent;
+      }
+
+      footer svg {
+        margin-left: 1rem;
+      }
+
+      .vercel-link {
+        position: fixed;
+        top: 2.4rem;
+        left: 2.4rem;
+        display: flex;
+        align-items: center;
+        color: #666;
+        border-bottom: none;
+        transition: color 0.2s ease;
+      }
+
+      .vercel-link:hover {
+        color: #fff;
+        border-bottom: none;
+      }
+
+      @media (max-width: 500px) {
+        main {
+          padding: 2rem;
+        }
+
+        h1 {
+          font-size: 2rem;
+        }
+
+        .status-card,
+        .applications-card {
+          padding: 1.6rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <a
+      href="https://vercel.com/microfrontends"
+      target="_blank"
+      rel="noopener"
+      class="vercel-link"
+      ><svg
+        width="90.6923076923077"
+        height="18"
+        viewBox="0 0 262 52"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        style="color: rgb(237, 237, 237)"
+      >
+        <path
+          fill-rule="evenodd"
+          clip-rule="evenodd"
+          d="M59.8 52L29.9 0L0 52H59.8ZM89.9574 49.6328L114.945 2.36365H104.137L86.8999 36.6921L69.6628 2.36365H58.8545L83.8423 49.6328H89.9574ZM260.248 2.36365V49.6329H251.3V2.36365H260.248ZM210.441 31.99C210.441 28.3062 211.21 25.0661 212.747 22.2699C214.285 19.4737 216.429 17.321 219.179 15.812C221.928 14.3029 225.144 13.5484 228.826 13.5484C232.088 13.5484 235.024 14.2585 237.634 15.6788C240.244 17.0991 242.317 19.2074 243.855 22.0036C245.393 24.7998 246.185 28.2174 246.232 32.2564V34.3202H219.878C220.064 37.2496 220.926 39.5576 222.464 41.2442C224.049 42.8864 226.169 43.7075 228.826 43.7075C230.503 43.7075 232.041 43.2637 233.439 42.376C234.838 41.4883 235.886 40.2899 236.585 38.7808L245.743 39.4466C244.624 42.7754 242.527 45.4385 239.451 47.4358C236.375 49.4331 232.834 50.4317 228.826 50.4317C225.144 50.4317 221.928 49.6772 219.179 48.1681C216.429 46.6591 214.285 44.5064 212.747 41.7102C211.21 38.914 210.441 35.6739 210.441 31.99ZM237.005 28.6612C236.678 25.7762 235.77 23.668 234.278 22.3365C232.787 20.9606 230.969 20.2726 228.826 20.2726C226.356 20.2726 224.352 21.0049 222.814 22.4696C221.276 23.9343 220.321 25.9982 219.948 28.6612H237.005ZM195.345 22.3365C196.836 23.5348 197.768 25.1993 198.141 27.3297L207.369 26.8637C207.043 24.1562 206.087 21.8039 204.503 19.8066C202.918 17.8093 200.868 16.278 198.351 15.2128C195.881 14.1032 193.155 13.5484 190.172 13.5484C186.49 13.5484 183.275 14.3029 180.525 15.812C177.775 17.321 175.632 19.4737 174.094 22.2699C172.556 25.0661 171.787 28.3062 171.787 31.99C171.787 35.6739 172.556 38.914 174.094 41.7102C175.632 44.5064 177.775 46.6591 180.525 48.1681C183.275 49.6772 186.49 50.4317 190.172 50.4317C193.248 50.4317 196.044 49.8769 198.561 48.7673C201.077 47.6133 203.128 45.9933 204.712 43.9072C206.297 41.8212 207.252 39.38 207.578 36.5838L198.281 36.1844C197.955 38.5367 197.046 40.3565 195.555 41.6436C194.063 42.8864 192.269 43.5078 190.172 43.5078C187.283 43.5078 185.046 42.5091 183.461 40.5118C181.877 38.5145 181.084 35.6739 181.084 31.99C181.084 28.3062 181.877 25.4656 183.461 23.4683C185.046 21.471 187.283 20.4723 190.172 20.4723C192.176 20.4723 193.9 21.0937 195.345 22.3365ZM149.953 14.3457H158.28L158.52 21.137C159.111 19.2146 159.933 17.7218 160.986 16.6585C162.512 15.1166 164.64 14.3457 167.369 14.3457H170.769V21.6146H167.3C165.357 21.6146 163.761 21.8789 162.512 22.4075C161.309 22.9362 160.384 23.7732 159.737 24.9186C159.135 26.064 158.835 27.5178 158.835 29.2799V49.6328H149.953V14.3457ZM111.546 22.2699C110.008 25.0661 109.239 28.3062 109.239 31.99C109.239 35.6739 110.008 38.914 111.546 41.7102C113.084 44.5064 115.228 46.6591 117.977 48.1681C120.727 49.6772 123.942 50.4317 127.624 50.4317C131.632 50.4317 135.174 49.4331 138.25 47.4358C141.325 45.4385 143.423 42.7754 144.541 39.4466L135.384 38.7808C134.684 40.2899 133.636 41.4883 132.238 42.376C130.84 43.2637 129.302 43.7075 127.624 43.7075C124.968 43.7075 122.847 42.8864 121.263 41.2442C119.725 39.5576 118.863 37.2496 118.676 34.3202H145.03V32.2564C144.984 28.2174 144.192 24.7998 142.654 22.0036C141.116 19.2074 139.042 17.0991 136.432 15.6788C133.822 14.2585 130.886 13.5484 127.624 13.5484C123.942 13.5484 120.727 14.3029 117.977 15.812C115.228 17.321 113.084 19.4737 111.546 22.2699ZM133.077 22.3365C134.568 23.668 135.477 25.7762 135.803 28.6612H118.746C119.119 25.9982 120.074 23.9343 121.612 22.4696C123.15 21.0049 125.154 20.2726 127.624 20.2726C129.768 20.2726 131.585 20.9606 133.077 22.3365Z"
+          fill="currentColor"
+        ></path>
+      </svg>
+    </a>
+    <div class="container">
+      <main>
+        <div class="logo">
+          <div class="logo-icon">
+            <svg
+              viewBox="0 0 14 14"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M2.25 5C2.59736 5 2.92634 4.92129 3.22006 4.78073L7.00001 8.56067L10.7799 4.78073C11.0737 4.92129 11.4027 5 11.75 5C12.9927 5 14 3.99264 14 2.75C14 1.50736 12.9927 0.5 11.75 0.5C10.5074 0.5 9.50001 1.50736 9.50001 2.75C9.50001 3.09736 9.57872 3.42634 9.71929 3.72006L7.00001 6.43934L4.28073 3.72006C4.42129 3.42634 4.5 3.09736 4.5 2.75C4.5 1.50736 3.49264 0.5 2.25 0.5C1.00736 0.5 0 1.50736 0 2.75C0 3.99264 1.00736 5 2.25 5ZM3 2.75C3 3.16422 2.66422 3.5 2.25 3.5C1.83579 3.5 1.5 3.16422 1.5 2.75C1.5 2.33579 1.83579 2 2.25 2C2.66422 2 3 2.33579 3 2.75ZM11.75 3.5C12.1642 3.5 12.5 3.16422 12.5 2.75C12.5 2.33579 12.1642 2 11.75 2C11.3358 2 11 2.33579 11 2.75C11 3.16422 11.3358 3.5 11.75 3.5Z"
+                fill="currentColor"
+              />
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M2.25 13.5C3.49264 13.5 4.5 12.4927 4.5 11.25C4.5 10.2703 3.8739 9.43691 3 9.12804V6.5H1.5V9.12804C0.626106 9.43691 0 10.2703 0 11.25C0 12.4927 1.00736 13.5 2.25 13.5ZM3 11.25C3 11.6642 2.66422 12 2.25 12C1.83579 12 1.5 11.6642 1.5 11.25C1.5 10.8358 1.83579 10.5 2.25 10.5C2.66422 10.5 3 10.8358 3 11.25Z"
+                fill="currentColor"
+              />
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M11.75 13.5C12.9927 13.5 14 12.4927 14 11.25C14 10.2703 13.3739 9.43691 12.5 9.12804V6.5H11V9.12804C10.1261 9.43691 9.50001 10.2703 9.50001 11.25C9.50001 12.4927 10.5074 13.5 11.75 13.5ZM12.5 11.25C12.5 11.6642 12.1642 12 11.75 12C11.3358 12 11 11.6642 11 11.25C11 10.8358 11.3358 10.5 11.75 10.5C12.1642 10.5 12.5 10.8358 12.5 11.25Z"
+                fill="currentColor"
+              />
+            </svg>
+          </div>
+          <span class="logo-text">Microfrontends</span>
+        </div>
+
+        <p class="message">
+          The proxy is ready, but the upstream applications are still starting
+          up.
+        </p>
+
+        <div class="status-card">
+          <div class="status-header">
+            <div class="spinner"></div>
+            <span class="status-text"
+              >Waiting for applications to start...</span
+            >
+          </div>
+
+          <div class="app-info">
+            <div class="info-row">
+              <span class="info-label">Application</span>
+              <span class="info-value"><code id="appName"></code></span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Expected Port</span>
+              <span class="info-value"><code id="appPort"></code></span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Path</span>
+              <span class="info-value"><code id="appPath"></code></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="applications-card">
+          <div class="applications-title">Applications</div>
+          <div class="applications-list" id="applicationsList"></div>
+        </div>
+
+        <div class="hint">
+          <div class="hint-title">💡 Tip</div>
+          <span id="hintText"></span>
+        </div>
+
+        <div class="connection-status">
+          <span class="connection-dot" id="connectionDot"></span>
+          <span id="connectionText">Listening for updates...</span>
+        </div>
+      </main>
+
+      <footer>
+        <a
+          href="https://vercel.com/docs/microfrontends"
+          target="_blank"
+          rel="noopener"
+        >
+          Documentation
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 16 16"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M6.5 3.5H3.5C2.94772 3.5 2.5 3.94772 2.5 4.5V12.5C2.5 13.0523 2.94772 13.5 3.5 13.5H11.5C12.0523 13.5 12.5 13.0523 12.5 12.5V9.5M9.5 2.5H13.5M13.5 2.5V6.5M13.5 2.5L7 9"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </a>
+      </footer>
+    </div>
+
+    <script>
+      var __MFE_APP__ = '';
+      var __MFE_PORT__ = null;
+      var __MFE_PATH__ = '/';
+      var __MFE_PROXY_PORT__ = 3000;
+      var __MFE_APPLICATIONS__ = [];
+    </script>
+    <script>
+      (() => {
+        const targetApp = __MFE_APP__;
+        const targetPort = __MFE_PORT__;
+        const proxyPort = __MFE_PROXY_PORT__;
+        const applications = __MFE_APPLICATIONS__;
+        const connectionDot = document.getElementById('connectionDot');
+        const connectionText = document.getElementById('connectionText');
+        const maxRetries = 50;
+        const checkInterval = 2000;
+
+        let eventSource = null;
+        let retryCount = 0;
+
+        // Populate the page with config values
+        document.getElementById('appName').textContent = __MFE_APP__;
+        document.getElementById('appPort').textContent =
+          __MFE_PORT__ !== null ? __MFE_PORT__ : 'N/A';
+        document.getElementById('appPath').textContent = __MFE_PATH__;
+        document.getElementById('hintText').textContent =
+          `Make sure your application is running${__MFE_PORT__ !== null ? ` on port ${__MFE_PORT__}` : ''}. This page will automatically reload when the application becomes available.`;
+
+        // Populate applications list
+        const appsList = document.getElementById('applicationsList');
+        for (const app of applications) {
+          const item = document.createElement('div');
+          item.className = 'app-item';
+
+          const isWaiting = app.name === targetApp && app.isLocal;
+          const statusClass = isWaiting
+            ? 'waiting'
+            : app.isLocal
+              ? 'local'
+              : 'fallback';
+          const statusText = isWaiting
+            ? 'waiting'
+            : app.isLocal
+              ? `local :${app.port}`
+              : app.fallback;
+
+          item.innerHTML = `
+            <span class="app-item-name">
+              <span class="app-item-dot ${statusClass}"></span>
+              ${app.name}
+            </span>
+            <span class="app-item-status ${statusClass}">${statusText}</span>
+          `;
+
+          appsList.appendChild(item);
+        }
+
+        const updateConnectionStatus = (connected, message) => {
+          connectionDot.classList.toggle('disconnected', !connected);
+          connectionText.textContent = message;
+        };
+
+        const pollForReady = async () => {
+          if (retryCount >= maxRetries) {
+            updateConnectionStatus(
+              false,
+              'Max retries reached. Please refresh manually.',
+            );
+            return;
+          }
+
+          retryCount++;
+          updateConnectionStatus(
+            false,
+            `Polling for status... (attempt ${retryCount})`,
+          );
+
+          try {
+            const response = await fetch(
+              `/.well-known/vercel/microfrontends/app-status?app=${encodeURIComponent(targetApp)}`,
+            );
+            const data = await response.json();
+            if (data.ready) {
+              updateConnectionStatus(true, 'Application ready! Reloading...');
+              setTimeout(() => window.location.reload(), 500);
+            } else {
+              setTimeout(pollForReady, checkInterval);
+            }
+          } catch {
+            setTimeout(pollForReady, checkInterval);
+          }
+        };
+
+        const connectSSE = () => {
+          eventSource?.close();
+
+          eventSource = new EventSource(
+            `/.well-known/vercel/microfrontends/app-ready-events?app=${encodeURIComponent(targetApp)}`,
+          );
+
+          eventSource.onopen = () => {
+            updateConnectionStatus(true, 'Listening for updates...');
+            retryCount = 0;
+          };
+
+          eventSource.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            if (data.type === 'ready' && data.app === targetApp) {
+              updateConnectionStatus(true, 'Application ready! Reloading...');
+              setTimeout(() => window.location.reload(), 500);
+            }
+          };
+
+          eventSource.onerror = () => {
+            updateConnectionStatus(false, 'SSE unavailable. Polling...');
+            eventSource.close();
+            eventSource = null;
+
+            // Fallback to polling if SSE fails
+            pollForReady();
+          };
+        };
+
+        // Try SSE first, fall back to polling only if SSE is not supported
+        if (typeof EventSource !== 'undefined') {
+          connectSSE();
+        } else {
+          pollForReady();
+        }
+      })();
+    </script>
+  </body>
+</html>
