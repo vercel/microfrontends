@@ -1,215 +1,215 @@
 {
-	"name": "@vercel/microfrontends",
-	"version": "2.2.0",
-	"private": false,
-	"description": "Defines configuration and utilities for microfrontends development",
-	"keywords": [
-		"microfrontends",
-		"micro-frontends",
-		"micro frontends",
-		"microservices",
-		"Vercel",
-		"Next.js",
-		"React"
-	],
-	"homepage": "https://vercel.com/docs/microfrontends",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/vercel/microfrontends.git",
-		"directory": "packages/microfrontends"
-	},
-	"sideEffects": false,
-	"type": "module",
-	"exports": {
-		"./schema.json": "./schema/schema.json",
-		"./validation": {
-			"import": "./dist/validation.js",
-			"require": "./dist/validation.cjs"
-		},
-		"./config": {
-			"import": "./dist/config.js",
-			"require": "./dist/config.cjs"
-		},
-		"./experimental/sveltekit": {
-			"import": "./dist/experimental/sveltekit.js",
-			"require": "./dist/experimental/sveltekit.cjs"
-		},
-		"./experimental/vite": {
-			"import": "./dist/experimental/vite.js",
-			"require": "./dist/experimental/vite.cjs"
-		},
-		"./overrides": {
-			"import": "./dist/overrides.js",
-			"require": "./dist/overrides.cjs"
-		},
-		"./microfrontends/server": {
-			"import": "./dist/microfrontends/server.js",
-			"require": "./dist/microfrontends/server.cjs"
-		},
-		"./microfrontends/utils": {
-			"import": "./dist/microfrontends/utils.js",
-			"require": "./dist/microfrontends/utils.cjs"
-		},
-		"./schema": {
-			"import": "./dist/schema.js",
-			"require": "./dist/schema.cjs"
-		},
-		"./next/config": {
-			"import": "./dist/next/config.js",
-			"require": "./dist/next/config.cjs"
-		},
-		"./next/middleware": {
-			"import": "./dist/next/middleware.js",
-			"require": "./dist/next/middleware.cjs"
-		},
-		"./next/testing": {
-			"import": "./dist/next/testing.js",
-			"require": "./dist/next/testing.cjs"
-		},
-		"./next/client": {
-			"import": "./dist/next/client.js",
-			"require": "./dist/next/client.cjs"
-		},
-		"./utils/mfe-port": {
-			"import": "./dist/utils/mfe-port.js",
-			"require": "./dist/utils/mfe-port.cjs"
-		}
-	},
-	"typesVersions": {
-		"*": {
-			"validation": [
-				"./dist/validation.d.ts"
-			],
-			"config": [
-				"./dist/config.d.ts"
-			],
-			"experimental/sveltekit": [
-				"./dist/experimental/sveltekit.d.ts"
-			],
-			"experimental/vite": [
-				"./dist/experimental/vite.d.ts"
-			],
-			"overrides": [
-				"./dist/overrides.d.ts"
-			],
-			"microfrontends/server": [
-				"./dist/microfrontends/server.d.ts"
-			],
-			"microfrontends/utils": [
-				"./dist/microfrontends/utils.d.ts"
-			],
-			"schema": [
-				"./dist/schema.d.ts"
-			],
-			"next/config": [
-				"./dist/next/config.d.ts"
-			],
-			"next/middleware": [
-				"./dist/next/middleware.d.ts"
-			],
-			"next/testing": [
-				"./dist/next/testing.d.ts"
-			],
-			"next/client": [
-				"./dist/next/client.d.ts"
-			],
-			"utils/mfe-port": [
-				"./dist/utils/mfe-port.d.ts"
-			]
-		}
-	},
-	"bin": {
-		"microfrontends": "./cli/index.cjs"
-	},
-	"files": [
-		"dist",
-		"schema",
-		"CHANGELOG.md"
-	],
-	"scripts": {
-		"build": "tsup",
-		"postbuild": "pnpm generate:exports",
-		"generate:exports": "tsx scripts/generate-exports/index.ts",
-		"generate:schema": "tsx scripts/generate-json-schema.ts",
-		"lint": "eslint .",
-		"lint-fix": "eslint . --fix",
-		"prepublishOnly": "pnpm build && pnpm generate:exports && pnpm generate:schema",
-		"proxy": "tsx src/proxy/index.ts",
-		"test": "cross-env TZ=UTC jest",
-		"typecheck": "tsc --noEmit"
-	},
-	"dependencies": {
-		"@next/env": "15.5.4",
-		"@types/md5": "^2.3.5",
-		"ajv": "^8.17.1",
-		"commander": "^12.1.0",
-		"cookie": "1.0.2",
-		"fast-glob": "^3.3.2",
-		"http-proxy": "^1.18.1",
-		"jsonc-parser": "^3.3.1",
-		"md5": "^2.3.0",
-		"nanoid": "^3.3.9",
-		"path-to-regexp": "6.2.1",
-		"semver": "^7.7.2"
-	},
-	"devDependencies": {
-		"@edge-runtime/jest-environment": "^4.0.0",
-		"@edge-runtime/types": "^3.0.2",
-		"@sveltejs/kit": "2.17.2",
-		"@testing-library/react": "^15.0.7",
-		"@types/cookie": "0.5.1",
-		"@types/http-proxy": "^1.17.15",
-		"@types/jest": "^29.2.0",
-		"@types/json-schema": "^7.0.15",
-		"@types/node": "20.11.30",
-		"@types/react": "18.3.1",
-		"@types/react-dom": "18.3.0",
-		"@types/semver": "^7.7.0",
-		"eslint-config-custom": "workspace:*",
-		"jest": "^29.7.0",
-		"jest-environment-jsdom": "29.2.2",
-		"next": "15.5.4",
-		"react": "19.0.0",
-		"react-dom": "19.0.0",
-		"ts-config": "workspace:*",
-		"ts-json-schema-generator": "^1.1.2",
-		"ts-node": "~10.9.2",
-		"tsup": "^6.6.2",
-		"tsx": "^4.6.2",
-		"typescript": "5.7.3",
-		"vite": "5.4.11",
-		"webpack": "5"
-	},
-	"peerDependencies": {
-		"@sveltejs/kit": ">=1",
-		"@vercel/analytics": ">=1.5.0",
-		"@vercel/speed-insights": ">=1.2.0",
-		"next": ">=13",
-		"react": ">=17.0.0",
-		"react-dom": ">=17.0.0",
-		"vite": ">=5"
-	},
-	"peerDependenciesMeta": {
-		"@sveltejs/kit": {
-			"optional": true
-		},
-		"@vercel/analytics": {
-			"optional": true
-		},
-		"@vercel/speed-insights": {
-			"optional": true
-		},
-		"next": {
-			"optional": true
-		},
-		"react": {
-			"optional": true
-		},
-		"react-dom": {
-			"optional": true
-		},
-		"vite": {
-			"optional": true
-		}
-	}
+  "name": "@vercel/microfrontends",
+  "version": "2.2.0",
+  "private": false,
+  "description": "Defines configuration and utilities for microfrontends development",
+  "keywords": [
+    "microfrontends",
+    "micro-frontends",
+    "micro frontends",
+    "microservices",
+    "Vercel",
+    "Next.js",
+    "React"
+  ],
+  "homepage": "https://vercel.com/docs/microfrontends",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vercel/microfrontends.git",
+    "directory": "packages/microfrontends"
+  },
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    "./schema.json": "./schema/schema.json",
+    "./validation": {
+      "import": "./dist/validation.js",
+      "require": "./dist/validation.cjs"
+    },
+    "./config": {
+      "import": "./dist/config.js",
+      "require": "./dist/config.cjs"
+    },
+    "./experimental/sveltekit": {
+      "import": "./dist/experimental/sveltekit.js",
+      "require": "./dist/experimental/sveltekit.cjs"
+    },
+    "./experimental/vite": {
+      "import": "./dist/experimental/vite.js",
+      "require": "./dist/experimental/vite.cjs"
+    },
+    "./overrides": {
+      "import": "./dist/overrides.js",
+      "require": "./dist/overrides.cjs"
+    },
+    "./microfrontends/server": {
+      "import": "./dist/microfrontends/server.js",
+      "require": "./dist/microfrontends/server.cjs"
+    },
+    "./microfrontends/utils": {
+      "import": "./dist/microfrontends/utils.js",
+      "require": "./dist/microfrontends/utils.cjs"
+    },
+    "./schema": {
+      "import": "./dist/schema.js",
+      "require": "./dist/schema.cjs"
+    },
+    "./next/config": {
+      "import": "./dist/next/config.js",
+      "require": "./dist/next/config.cjs"
+    },
+    "./next/middleware": {
+      "import": "./dist/next/middleware.js",
+      "require": "./dist/next/middleware.cjs"
+    },
+    "./next/testing": {
+      "import": "./dist/next/testing.js",
+      "require": "./dist/next/testing.cjs"
+    },
+    "./next/client": {
+      "import": "./dist/next/client.js",
+      "require": "./dist/next/client.cjs"
+    },
+    "./utils/mfe-port": {
+      "import": "./dist/utils/mfe-port.js",
+      "require": "./dist/utils/mfe-port.cjs"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "validation": [
+        "./dist/validation.d.ts"
+      ],
+      "config": [
+        "./dist/config.d.ts"
+      ],
+      "experimental/sveltekit": [
+        "./dist/experimental/sveltekit.d.ts"
+      ],
+      "experimental/vite": [
+        "./dist/experimental/vite.d.ts"
+      ],
+      "overrides": [
+        "./dist/overrides.d.ts"
+      ],
+      "microfrontends/server": [
+        "./dist/microfrontends/server.d.ts"
+      ],
+      "microfrontends/utils": [
+        "./dist/microfrontends/utils.d.ts"
+      ],
+      "schema": [
+        "./dist/schema.d.ts"
+      ],
+      "next/config": [
+        "./dist/next/config.d.ts"
+      ],
+      "next/middleware": [
+        "./dist/next/middleware.d.ts"
+      ],
+      "next/testing": [
+        "./dist/next/testing.d.ts"
+      ],
+      "next/client": [
+        "./dist/next/client.d.ts"
+      ],
+      "utils/mfe-port": [
+        "./dist/utils/mfe-port.d.ts"
+      ]
+    }
+  },
+  "bin": {
+    "microfrontends": "./cli/index.cjs"
+  },
+  "files": [
+    "dist",
+    "schema",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "postbuild": "pnpm generate:exports",
+    "generate:exports": "tsx scripts/generate-exports/index.ts",
+    "generate:schema": "tsx scripts/generate-json-schema.ts",
+    "lint": "eslint .",
+    "lint-fix": "eslint . --fix",
+    "prepublishOnly": "pnpm build && pnpm generate:exports && pnpm generate:schema",
+    "proxy": "tsx src/proxy/index.ts",
+    "test": "cross-env TZ=UTC jest",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@next/env": "15.5.4",
+    "@types/md5": "^2.3.5",
+    "ajv": "^8.17.1",
+    "commander": "^12.1.0",
+    "cookie": "1.0.2",
+    "fast-glob": "^3.3.2",
+    "http-proxy": "^1.18.1",
+    "jsonc-parser": "^3.3.1",
+    "md5": "^2.3.0",
+    "nanoid": "^3.3.9",
+    "path-to-regexp": "6.2.1",
+    "semver": "^7.7.2"
+  },
+  "devDependencies": {
+    "@edge-runtime/jest-environment": "^4.0.0",
+    "@edge-runtime/types": "^3.0.2",
+    "@sveltejs/kit": "2.17.2",
+    "@testing-library/react": "^15.0.7",
+    "@types/cookie": "0.5.1",
+    "@types/http-proxy": "^1.17.15",
+    "@types/jest": "^29.2.0",
+    "@types/json-schema": "^7.0.15",
+    "@types/node": "20.11.30",
+    "@types/react": "18.3.1",
+    "@types/react-dom": "18.3.0",
+    "@types/semver": "^7.7.0",
+    "eslint-config-custom": "workspace:*",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "29.2.2",
+    "next": "15.5.4",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "ts-config": "workspace:*",
+    "ts-json-schema-generator": "^1.1.2",
+    "ts-node": "~10.9.2",
+    "tsup": "^6.6.2",
+    "tsx": "^4.6.2",
+    "typescript": "5.7.3",
+    "vite": "5.4.11",
+    "webpack": "5"
+  },
+  "peerDependencies": {
+    "@sveltejs/kit": ">=1",
+    "@vercel/analytics": ">=1.5.0",
+    "@vercel/speed-insights": ">=1.2.0",
+    "next": ">=13",
+    "react": ">=17.0.0",
+    "react-dom": ">=17.0.0",
+    "vite": ">=5"
+  },
+  "peerDependenciesMeta": {
+    "@sveltejs/kit": {
+      "optional": true
+    },
+    "@vercel/analytics": {
+      "optional": true
+    },
+    "@vercel/speed-insights": {
+      "optional": true
+    },
+    "next": {
+      "optional": true
+    },
+    "react": {
+      "optional": true
+    },
+    "react-dom": {
+      "optional": true
+    },
+    "vite": {
+      "optional": true
+    }
+  }
 }
