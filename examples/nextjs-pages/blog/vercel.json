@@ -1,4 +1,4 @@
 {
-  "buildCommand": "pnpm --workspace-root exec turbo --no-daemon --filter nextjs-pages-blog build --env-mode loose",
-  "installCommand": "node -v && pnpm --workspace-root --filter nextjs-pages-blog... install --config.dedupe-peer-dependents=false"
+  "buildCommand": "pnpm --workspace-root exec turbo --no-daemon --filter nextjs-pages-blog-different-than-vercel-project-name build --env-mode loose",
+  "installCommand": "node -v && pnpm --workspace-root --filter nextjs-pages-blog-different-than-vercel-project-name... install --config.dedupe-peer-dependents=false"
 }
