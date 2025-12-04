@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "build": "next build",
-    "dev": "next dev --turbo --port $(microfrontends port)",
+    "dev": "PORT=$(microfrontends port) node scripts/delayed-dev.mjs",
     "lint": "next typegen && eslint .",
     "lint-fix": "eslint . --fix",
     "start": "next start",

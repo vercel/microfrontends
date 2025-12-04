@@ -33,6 +33,11 @@ export default async (): Promise<Config> => {
     transformIgnorePatterns: (config.transformIgnorePatterns ?? []).filter(
       (pattern) => !pattern.includes('node_modules'),
     ),
+    // Add HTML transformer while preserving existing transforms
+    transform: {
+      ...config.transform,
+      '\\.html$': '<rootDir>/test/html-transformer.cjs',
+    },
   };
   return finalConfig;
 };
