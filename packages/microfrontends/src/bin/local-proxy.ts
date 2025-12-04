@@ -513,10 +513,6 @@ export class LocalProxy {
     // Mark app as ready when proxy receives a successful response
     this.proxy.on('proxyRes', (_proxyRes, req) => {
       const target = this.router.getTarget(req);
-      // Skip if still in artificial startup delay
-      if (this.isInStartupDelay()) {
-        return;
-      }
       if (target.isLocal && !this.appReadyState.get(target.application)) {
         this.appReadyState.set(target.application, true);
         this.notifyAppReady(target.application);
@@ -632,26 +628,6 @@ export class LocalProxy {
   handleRequest(req: http.IncomingMessage, res: http.ServerResponse): void {
     if (this.handleProxyInfoRequest(req.url, res)) {
       return;
-    }
-
-    // Artificial delay for testing SSE - show waiting page during delay
-    if (this.isInStartupDelay()) {
-      const target = this.router.getTarget(req);
-      if (target.isLocal) {
-        res.writeHead(503, {
-          'Content-Type': 'text/html; charset=utf-8',
-        });
-        res.end(
-          waitingPageHtml({
-            app: target.application,
-            port: target.port,
-            path: target.path,
-            proxyPort: this.proxyPort,
-            applications: this.getApplicationsList(),
-          }),
-        );
-        return;
-      }
     }
 
     if (req.url?.includes('//')) {
@@ -936,17 +912,7 @@ export class LocalProxy {
     return false;
   }
 
-  // Track startup time for artificial delay (for testing SSE)
-  private startupTime = Date.now();
-  // Set MFE_STARTUP_DELAY env var to add artificial delay in ms (e.g., MFE_STARTUP_DELAY=10000 for 10 seconds)
-  private startupDelay = parseInt(process.env.MFE_STARTUP_DELAY || '0', 10);
   private appCheckInterval: ReturnType<typeof setInterval> | null = null;
-
-  private isInStartupDelay(): boolean {
-    return (
-      this.startupDelay > 0 && Date.now() - this.startupTime < this.startupDelay
-    );
-  }
 
   // Start background monitoring for local apps that SSE clients are waiting for
   private startAppReadinessMonitor(): void {
@@ -987,11 +953,6 @@ export class LocalProxy {
   }
 
   private checkAppReady(target: ProxyTarget): Promise<boolean> {
-    // Artificial delay for testing SSE functionality
-    if (this.isInStartupDelay()) {
-      return Promise.resolve(false);
-    }
-
     return new Promise((resolve) => {
       const req = http.request(
         {
