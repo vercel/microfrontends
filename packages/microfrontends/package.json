@@ -168,7 +168,7 @@
     "eslint-config-custom": "workspace:*",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "29.2.2",
-    "next": "15.5.4",
+    "next": "15.5.7",
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "ts-config": "workspace:*",
