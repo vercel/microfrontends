@@ -831,8 +831,8 @@ importers:
   packages/microfrontends:
     dependencies:
       '@next/env':
-        specifier: 15.5.4
-        version: 15.5.4
+        specifier: 15.5.7
+        version: 15.5.7
       '@types/md5':
         specifier: ^2.3.5
         version: 2.3.5

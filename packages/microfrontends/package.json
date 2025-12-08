@@ -139,7 +139,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@next/env": "15.5.4",
+    "@next/env": "15.5.7",
     "@types/md5": "^2.3.5",
     "ajv": "^8.17.1",
     "commander": "^12.1.0",
