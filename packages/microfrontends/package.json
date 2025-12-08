@@ -139,7 +139,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@next/env": "15.5.4",
+    "@next/env": "15.5.7",
     "@types/md5": "^2.3.5",
     "ajv": "^8.17.1",
     "commander": "^12.1.0",
@@ -168,7 +168,7 @@
     "eslint-config-custom": "workspace:*",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "29.2.2",
-    "next": "15.5.4",
+    "next": "15.5.7",
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "ts-config": "workspace:*",
