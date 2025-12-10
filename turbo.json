@@ -1,6 +1,10 @@
 {
   "$schema": "https://turborepo.org/schema.json",
-  "globalPassThroughEnv": ["MFE_DEBUG", "VC_MICROFRONTENDS_CONFIG_FILE_NAME"],
+  "globalPassThroughEnv": [
+    "MFE_DEBUG",
+    "MFE_STARTUP_DELAY",
+    "VC_MICROFRONTENDS_CONFIG_FILE_NAME"
+  ],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],

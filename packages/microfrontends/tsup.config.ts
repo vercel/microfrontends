@@ -49,6 +49,9 @@ export default defineConfig([
     entry: {
       'bin/cli': 'src/bin/index.ts',
     },
+    loader: {
+      '.html': 'text',
+    },
   },
   {
     ...COMMON_CFG,
