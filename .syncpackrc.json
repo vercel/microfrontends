@@ -40,7 +40,7 @@
       "dependencies": ["next", "@next/**"],
       "dependencyTypes": ["!peer"],
       "packages": ["**"],
-      "pinVersion": "15.5.4"
+      "pinVersion": "16.0.10"
     },
     {
       "dependencies": ["react", "react-dom"],
