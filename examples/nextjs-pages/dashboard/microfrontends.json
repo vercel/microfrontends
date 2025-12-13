@@ -7,6 +7,7 @@
       }
     },
     "nextjs-pages-blog": {
+      "packageName": "nextjs-pages-blog-different-than-vercel-project-name",
       "routing": [
         {
           "paths": ["/blog", "/blog/:path*"]
