@@ -24,7 +24,6 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@vitejs/plugin-react": "^4.3.4",
-    "eslint-config-custom": "workspace:*",
     "tailwindcss": "^4",
     "ts-config": "workspace:*",
     "typescript": "5.7.3",
