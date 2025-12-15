@@ -5,8 +5,7 @@
   "scripts": {
     "build": "VC_MICROFRONTENDS_CONFIG_FILE_NAME=microfrontends-custom.jsonc next build",
     "dev": "next dev --port $(microfrontends port)",
-    "lint": "next typegen && eslint .",
-    "lint-fix": "eslint . --fix",
+    "lint": "next typegen && biome check",
     "start": "next start",
     "pretest": "playwright install chromium",
     "test": "jest",
@@ -37,7 +36,6 @@
     "@types/react": "18.3.1",
     "@types/react-dom": "18.3.0",
     "autoprefixer": "^10.4.20",
-    "eslint-config-custom": "workspace:*",
     "jest": "^29.7.0",
     "playwright-config": "workspace:*",
     "postcss": "^8.4.47",
