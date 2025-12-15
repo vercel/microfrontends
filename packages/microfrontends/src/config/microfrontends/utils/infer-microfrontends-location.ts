@@ -147,6 +147,7 @@ export function inferMicrofrontendsLocation(
   }
 
   const result = findPackageWithMicrofrontendsConfig(opts);
+
   if (!result) {
     throw new MicrofrontendError(
       `Could not infer the location of the \`microfrontends.json\` file for application "${opts.applicationContext.name}" starting in directory "${opts.repositoryRoot}".`,
