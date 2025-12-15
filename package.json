@@ -21,8 +21,13 @@
     "dev:react-router": "turbo dev -F react-router-web -F react-router-docs -F react-router-vite-base-path-different-than-vercel-project-name",
     "dev:single-spa": "turbo dev -F single-spa-root -F single-spa-web -F single-spa-shared",
     "dev:sveltekit": "turbo dev -F sveltekit-web -F sveltekit-docs",
-    "format": "prettier --write \"**/*.{ts,tsx,md,json,jsonc}\"",
+    "format": "biome format --write",
+    "format:check": "biome format",
     "lint": "turbo lint --continue",
+    "biome": "biome lint --write",
+    "biome:check": "biome lint",
+    "biome:full": "biome check --write",
+    "biome:full:check": "biome check",
     "release": "pnpm build:releasable && changeset publish",
     "start:single-spa-example": "turbo start -F single-spa-microfrontends-root -F single-spa-microfrontends-web -F single-spa-microfrontends-shared",
     "test": "turbo test --continue",
@@ -33,7 +38,7 @@
   },
   "lint-staged": {
     "*": [
-      "prettier --write \"**/*.{ts,tsx,md,json,jsonc}\""
+      "biome check --write --no-errors-on-unmatched --files-ignore-unknown=true"
     ]
   },
   "prettier": "@vercel/style-guide/prettier",
@@ -41,6 +46,7 @@
     "sharp": "0.34.1"
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.2.6",
     "@changesets/cli": "^2.27.12",
     "@vercel/style-guide": "^6.0.0",
     "cross-env": "^7.0.3",

@@ -17,8 +17,14 @@ export function transform(args: TransformConfigInput): TransformConfigResponse {
 
   const { next, microfrontend, opts } = args;
 
+  const isNext16OrHigher = semver.gte(nextVersion, '16.0.0');
+  const hasTurbopackConfig = Boolean(next.turbopack);
+  const turbopackConfig =
+    isNext16OrHigher && !hasTurbopackConfig ? { turbopack: {} } : {};
+
   const configWithWebpack: NextConfig = {
     ...next,
+    ...turbopackConfig,
     ...(useDefineServer
       ? {
           compiler: {

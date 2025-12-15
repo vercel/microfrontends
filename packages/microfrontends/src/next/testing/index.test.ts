@@ -126,7 +126,9 @@ describe('next testing', () => {
             WELL_KNOWN_ENDPOINT,
             {
               source: '/flagged/path',
-              missing: [{ type: 'header', key: 'host', value: 'testing.app' }],
+              missing: [
+                { type: 'header', key: 'host', value: 'testing.app' } as const,
+              ],
             },
           ],
         };

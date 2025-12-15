@@ -29,13 +29,19 @@ This is a monorepo for `@vercel/microfrontends`, a library that enables splittin
 - `pnpm typecheck` - Run TypeScript type checking
 - `pnpm checks` - Run build, lint, test, and typecheck on all packages (run before submitting PRs)
 
-### Start examples
+When running commands for a specific application, do not `cd` into the directory. Run commands from the root. The above commands can be run for a particular package by using a filter option: `pnpm checks -F <package name>`. Use this.
+
+Make sure that `pnpm checks` is successful for the entire repository when verifying a change.
+
+### Dev examples
 
 - `pnpm dev:nextjs-app` - Run the Next.js App Router example
 - `pnpm dev:nextjs-pages` - Run the Next.js Pages Router example
 - `pnpm dev:react-router` - Run the React Router example
 - `pnpm dev:single-spa` - Run the single-spa example
 - `pnpm dev:sveltekit` - Run the SvelteKit example
+
+When testing a change, make sure that these dev commands all start up the server successfully. If the server is running and there are no errors after 30 seconds, consider that successful.
 
 ### NPM Package Management
 

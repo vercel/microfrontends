@@ -44,7 +44,6 @@ describe('class MicrofrontendsServer', () => {
 
   describe('fromEnv', () => {
     afterEach(() => {
-      // biome-ignore lint/performance/noDelete: Ignored using `--suppress`
       delete process.env.MFE_CONFIG;
     });
 
@@ -312,11 +311,8 @@ See https://openapi.vercel.sh/microfrontends.json for the schema.`);
 
     afterEach(() => {
       chdir(realCwd);
-      // biome-ignore lint/performance/noDelete: Cleaning up test
       delete process.env.NX_TASK_TARGET_PROJECT;
-      // biome-ignore lint/performance/noDelete: Cleaning up test
       delete process.env.NX_WORKSPACE_ROOT;
-      // biome-ignore lint/performance/noDelete: Cleaning up test
       delete process.env.VERCEL_PROJECT_NAME;
     });
 

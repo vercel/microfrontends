@@ -28,7 +28,6 @@ function main(): void {
     .addOption(new Option('--names <names...>').hideHelp())
     .option('--port <port>', 'Port proxy will use', (value) => {
       const parsedValue = Number.parseInt(value, 10);
-      // biome-ignore lint/suspicious/noGlobalIsNan: Ignored using `--suppress`
       if (isNaN(parsedValue) || parsedValue <= 0) {
         throw new Error(
           'The value passed in to --port must be a positive number.',
