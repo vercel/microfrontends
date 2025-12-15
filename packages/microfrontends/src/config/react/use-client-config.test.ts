@@ -44,7 +44,6 @@ describe('useClientConfig', () => {
     const config = parse(
       fs.readFileSync(join(fixtures, 'simple.jsonc'), 'utf-8'),
     ) as Config;
-    // biome-ignore lint/performance/noDelete: <explanation>
     delete config.applications['other-app'];
     const originalConfig = new MicrofrontendConfigIsomorphic({
       config,

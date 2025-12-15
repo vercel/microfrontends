@@ -8,8 +8,7 @@
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
     "dev": "vite build && vite preview --port $(microfrontends port)",
-    "lint": "eslint .",
-    "lint-fix": "eslint . --fix",
+    "lint": "biome lint",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit"
   },
@@ -23,7 +22,6 @@
   },
   "devDependencies": {
     "autoprefixer": "^10.4.20",
-    "eslint-config-custom": "workspace:*",
     "postcss": "^8.4.47",
     "svelte-check": "^4.1.4",
     "tailwindcss": "^3.4.14",

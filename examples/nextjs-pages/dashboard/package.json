@@ -5,8 +5,7 @@
   "scripts": {
     "build": "next build",
     "dev": "next dev --port $(microfrontends port)",
-    "lint": "next typegen && eslint .",
-    "lint-fix": "eslint . --fix",
+    "lint": "next typegen && biome lint",
     "start": "next start --port $(microfrontends port)",
     "test": "jest",
     "typecheck": "next typegen && tsc --noEmit"

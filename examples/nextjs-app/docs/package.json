@@ -5,7 +5,7 @@
   "scripts": {
     "build": "MFE_DEBUG=1 next build",
     "dev": "next dev --port $(microfrontends port)",
-    "lint": "next typegen && biome check",
+    "lint": "next typegen && biome lint",
     "start": "next start",
     "typecheck": "next typegen && tsc --noEmit"
   },
