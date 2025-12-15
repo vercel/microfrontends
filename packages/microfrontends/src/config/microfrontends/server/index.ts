@@ -261,6 +261,7 @@ class MicrofrontendsServer {
           logger.debug('[MFE Config] No config found in inferred package');
         }
       }
+
       // will be caught below
       throw new MicrofrontendError(
         'Unable to automatically infer the location of the `microfrontends.json` file. If your Vercel Microfrontends configuration is not in this repository, you can use the Vercel CLI to pull the Vercel Microfrontends configuration using the "vercel microfrontends pull" command, or you can specify the path manually using the VC_MICROFRONTENDS_CONFIG environment variable. If you suspect this is thrown in error, please reach out to the Vercel team.',
