@@ -333,7 +333,7 @@ See https://openapi.vercel.sh/microfrontends.json for the schema.`);
           ),
         }),
       ).toThrow(
-        'A microfrontends config was found in the .vercel directory at the repository root',
+        'A microfrontends config was found in the `.vercel` directory at the repository root',
       );
     });
   });
