@@ -3,17 +3,17 @@
   "vcs": {
     "enabled": true,
     "clientKind": "git",
-    "useIgnoreFile": true
+    "useIgnoreFile": true,
   },
   "files": {
-    "ignoreUnknown": false
+    "ignoreUnknown": false,
   },
   "formatter": {
     "enabled": true,
     "indentStyle": "space",
     "indentWidth": 2,
     "lineWidth": 80,
-    "lineEnding": "lf"
+    "lineEnding": "lf",
   },
   "linter": {
     "enabled": true,
@@ -31,7 +31,7 @@
         // TODO: Re-enable after fixing React hook dependencies
         "useExhaustiveDependencies": "off",
         // TODO: Re-enable after fixing unknown CSS media features
-        "noUnknownMediaFeatureName": "off"
+        "noUnknownMediaFeatureName": "off",
       },
       "suspicious": {
         // TODO: Re-enable after adding proper TypeScript types
@@ -49,7 +49,7 @@
         // TODO: Re-enable after reviewing iterable callback returns
         "useIterableCallbackReturn": "off",
         // TODO: Re-enable after switching to Number.isNaN
-        "noGlobalIsNan": "off"
+        "noGlobalIsNan": "off",
       },
       "a11y": {
         // TODO: Re-enable after adding titles to SVGs
@@ -57,7 +57,7 @@
         // TODO: Re-enable after fixing anchor elements
         "useValidAnchor": "off",
         // TODO: Re-enable after adding keyboard handlers to interactive elements
-        "noStaticElementInteractions": "off"
+        "noStaticElementInteractions": "off",
       },
       "style": {
         // TODO: Re-enable if using Node.js import protocol
@@ -67,42 +67,42 @@
         // TODO: Re-enable after adding import type annotations
         "useImportType": "off",
         // TODO: Re-enable after reviewing const vs let usage in Svelte components
-        "useConst": "off"
+        "useConst": "off",
       },
       "performance": {
         // TODO: Re-enable after reviewing delete operations in tests
-        "noDelete": "off"
+        "noDelete": "off",
       },
       "security": {
         // TODO: Re-enable after reviewing dangerouslySetInnerHTML usage
-        "noDangerouslySetInnerHtml": "off"
+        "noDangerouslySetInnerHtml": "off",
       },
       "complexity": {
         // TODO: Re-enable after reviewing React fragments usage
-        "noUselessFragments": "off"
-      }
-    }
+        "noUselessFragments": "off",
+      },
+    },
   },
   "javascript": {
     "formatter": {
       "quoteStyle": "single",
       "jsxQuoteStyle": "double",
       "semicolons": "always",
-      "trailingCommas": "all"
-    }
+      "trailingCommas": "all",
+    },
   },
   "assist": {
     // TODO: Re-enable assist after initial migration
-    "enabled": false
+    "enabled": false,
   },
   "css": {
     "parser": {
       "cssModules": true,
-      "tailwindDirectives": true
+      "tailwindDirectives": true,
     },
     "linter": {
-      // TODO: Re-enable after Biome supports Tailwind v4 syntax (prefix() function)
-      "enabled": false
-    }
-  }
+      // TODO: Re-enable after initial migration
+      "enabled": false,
+    },
+  },
 }
