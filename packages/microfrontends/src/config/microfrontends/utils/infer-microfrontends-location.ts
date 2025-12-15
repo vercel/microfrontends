@@ -1,5 +1,5 @@
-import { dirname } from 'node:path';
-import { readFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+import { readFileSync, statSync } from 'node:fs';
 import { parse } from 'jsonc-parser';
 import fg from 'fast-glob';
 import type { Config } from '../../schema/types';
@@ -55,34 +55,10 @@ function findPackageWithMicrofrontendsConfig({
 
     const matchingPaths: string[] = [];
     for (const microfrontendsJsonPath of microfrontendsJsonPaths) {
-      try {
-        const microfrontendsJsonContent = readFileSync(
-          microfrontendsJsonPath,
-          'utf-8',
-        );
-        const microfrontendsJson = parse(microfrontendsJsonContent) as Config;
-
-        if (microfrontendsJson.applications[applicationName]) {
-          logger.debug(
-            '[MFE Config] Found application in config:',
-            microfrontendsJsonPath,
-          );
-          matchingPaths.push(microfrontendsJsonPath);
-        } else {
-          for (const [_, app] of Object.entries(
-            microfrontendsJson.applications,
-          )) {
-            if (app.packageName === applicationName) {
-              logger.debug(
-                '[MFE Config] Found application via packageName in config:',
-                microfrontendsJsonPath,
-              );
-              matchingPaths.push(microfrontendsJsonPath);
-            }
-          }
-        }
-      } catch (error) {
-        // malformed json most likely, skip this file
+      if (
+        doesApplicationExistInConfig(microfrontendsJsonPath, applicationName)
+      ) {
+        matchingPaths.push(microfrontendsJsonPath);
       }
     }
 
@@ -99,6 +75,35 @@ function findPackageWithMicrofrontendsConfig({
     }
 
     if (matchingPaths.length === 0) {
+      if (
+        repositoryRoot &&
+        doesMisplacedConfigExist(
+          repositoryRoot,
+          applicationName,
+          customConfigFilename,
+        )
+      ) {
+        logger.debug(
+          '[MFE Config] Found misplaced config in wrong .vercel directory in repository',
+        );
+        const misplacedConfigPath = join(
+          repositoryRoot,
+          '.vercel',
+          customConfigFilename || 'microfrontends.json',
+        );
+        throw new MicrofrontendError(
+          `Unable to automatically infer the location of the \`microfrontends.json\` file.\n\n` +
+            `A microfrontends config was found in the \`.vercel\` directory at the repository root: ${misplacedConfigPath}\n` +
+            `However, in a monorepo, the config file should be placed in the \`.vercel\` directory in your application directory instead.\n\n` +
+            `To fix this:\n` +
+            `1. If using \`vercel link\`, run it with \`vercel link --repo\` to handle monorepos, or run \`vercel microfrontends pull --cwd=<application-directory>\` to make sure it pulls the \`microfrontends.json\` file to the correct location\n` +
+            `2. If manually defined, move the config file to the \`.vercel\` directory in your application\n` +
+            `3. Alternatively, set the VC_MICROFRONTENDS_CONFIG environment variable to the correct path\n\n` +
+            `For more information, see: https://vercel.com/docs/cli/project-linking`,
+          { type: 'config', subtype: 'inference_failed' },
+        );
+      }
+
       let additionalErrorMessage = '';
       if (microfrontendsJsonPaths.length > 0) {
         if (!applicationContext.projectName) {
@@ -153,4 +158,67 @@ export function inferMicrofrontendsLocation(
   // Cache the result
   configCache[cacheKey] = result;
   return result;
+}
+
+function existsSync(path: string): boolean {
+  try {
+    statSync(path);
+    return true;
+  } catch (_) {
+    return false;
+  }
+}
+
+function doesMisplacedConfigExist(
+  repositoryRoot: string,
+  applicationName: string,
+  customConfigFilename: string | undefined,
+): boolean {
+  logger.debug(
+    '[MFE Config] Looking for misplaced config in wrong .vercel directory',
+  );
+  const misplacedConfigPath = join(
+    repositoryRoot,
+    '.vercel',
+    customConfigFilename || 'microfrontends.json',
+  );
+  return (
+    existsSync(misplacedConfigPath) &&
+    doesApplicationExistInConfig(misplacedConfigPath, applicationName)
+  );
+}
+
+function doesApplicationExistInConfig(
+  microfrontendsJsonPath: string,
+  applicationName: string,
+): boolean {
+  try {
+    const microfrontendsJsonContent = readFileSync(
+      microfrontendsJsonPath,
+      'utf-8',
+    );
+    const microfrontendsJson = parse(microfrontendsJsonContent) as Config;
+
+    if (microfrontendsJson.applications[applicationName]) {
+      logger.debug(
+        '[MFE Config] Found application in config:',
+        microfrontendsJsonPath,
+      );
+      return true;
+    }
+
+    for (const [_, app] of Object.entries(microfrontendsJson.applications)) {
+      if (app.packageName === applicationName) {
+        logger.debug(
+          '[MFE Config] Found application via packageName in config:',
+          microfrontendsJsonPath,
+        );
+        return true;
+      }
+    }
+  } catch (error) {
+    logger.debug('[MFE Config] Error checking application in config:', error);
+    // malformed json most likely, skip this file
+  }
+  return false;
 }

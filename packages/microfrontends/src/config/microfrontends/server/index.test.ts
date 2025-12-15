@@ -319,5 +319,22 @@ See https://openapi.vercel.sh/microfrontends.json for the schema.`);
       // biome-ignore lint/performance/noDelete: Cleaning up test
       delete process.env.VERCEL_PROJECT_NAME;
     });
+
+    it('throws helpful error when config is misplaced at repo root .vercel', () => {
+      chdir(join(fixtures, 'misplaced-vc-config-workspace', 'apps', 'web'));
+
+      expect(() =>
+        MicrofrontendsServer.infer({
+          directory: join(
+            fixtures,
+            'misplaced-vc-config-workspace',
+            'apps',
+            'web',
+          ),
+        }),
+      ).toThrow(
+        'A microfrontends config was found in the `.vercel` directory at the repository root',
+      );
+    });
   });
 });
