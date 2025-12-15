@@ -61,6 +61,10 @@
         {
           "group": "child rate limit",
           "paths": ["/api/check-rate-limit"]
+        },
+        {
+          "group": "rule only in test-custom-env",
+          "paths": ["/foo/test-custom-env"]
         }
       ]
     }
