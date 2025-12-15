@@ -93,13 +93,13 @@ function findPackageWithMicrofrontendsConfig({
         );
         throw new MicrofrontendError(
           `Unable to automatically infer the location of the \`microfrontends.json\` file.\n\n` +
-            `A microfrontends config was found in the .vercel directory at the repository root: ${misplacedConfigPath}\n` +
-            `However, in a monorepo, the config file should be placed in your application directory instead.\n\n` +
+            `A microfrontends config was found in the \`.vercel\` directory at the repository root: ${misplacedConfigPath}\n` +
+            `However, in a monorepo, the config file should be placed in the \`.vercel\` directory in your application directory instead.\n\n` +
             `To fix this:\n` +
-            `1. Move the config file to your application directory\n` +
-            `2. Or if using \`vercel link\`, run it with \`vercel link --repo\` to handle monorepos, or run \`vercel link\` from your application directory\n` +
+            `1. If using \`vercel link\`, run it with \`vercel link --repo\` to handle monorepos, or run \`vercel microfrontends pull --cwd=<application-directory>\` to make sure it pulls the \`microfrontends.json\` file to the correct location\n` +
+            `2. If manually defined, move the config file to the \`.vercel\` directory in your application\n` +
             `3. Alternatively, set the VC_MICROFRONTENDS_CONFIG environment variable to the correct path\n\n` +
-            `For more information, see: https://vercel.com/docs/workflow-collaboration/vercel-cli#project-linking`,
+            `For more information, see: https://vercel.com/docs/cli/project-linking`,
           { type: 'config', subtype: 'inference_failed' },
         );
       }
