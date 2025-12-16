@@ -10,7 +10,6 @@ export function getStaticProps() {
   };
 }
 
- 
 export default function Blog({ articles }: { articles: Article[] }) {
   return (
     <div className="flex flex-col flex-1 overflow-hidden">

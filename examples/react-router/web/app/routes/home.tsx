@@ -1,6 +1,5 @@
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Code, Layers, Puzzle, Rocket } from 'lucide-react';
-import { Link } from 'react-router';
 
 export default function HomePage() {
   return (

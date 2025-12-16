@@ -19,67 +19,16 @@
     "enabled": true,
     "rules": {
       "recommended": true,
-      "correctness": {
-        // TODO: Re-enable after fixing unused function parameters across the codebase
-        "noUnusedFunctionParameters": "off",
-        // TODO: Re-enable after cleaning up unused imports
-        "noUnusedImports": "off",
-        // TODO: Re-enable after fixing unused variables
-        "noUnusedVariables": "off",
-        // TODO: Consider re-enabling - disabled for parseInt without radix
-        "useParseIntRadix": "off",
-        // TODO: Re-enable after fixing React hook dependencies
-        "useExhaustiveDependencies": "off",
-        // TODO: Re-enable after fixing unknown CSS media features
-        "noUnknownMediaFeatureName": "off",
-      },
       "suspicious": {
-        // TODO: Re-enable after adding proper TypeScript types
-        "noExplicitAny": "off",
-        // TODO: Re-enable if not using document.cookie directly
-        "noDocumentCookie": "off",
-        // TODO: Re-enable after verifying CSS @rules
-        "noUnknownAtRules": "off",
-        // TODO: Already fixed duplicate properties, can be re-enabled
-        "noDuplicateProperties": "off",
-        // TODO: Already fixed suspicious semicolons, can be re-enabled
-        "noSuspiciousSemicolonInJsx": "off",
-        // TODO: Consider re-enabling after reviewing array key usage
-        "noArrayIndexKey": "off",
-        // TODO: Re-enable after reviewing iterable callback returns
         "useIterableCallbackReturn": "off",
-        // TODO: Re-enable after switching to Number.isNaN
-        "noGlobalIsNan": "off",
       },
       "a11y": {
-        // TODO: Re-enable after adding titles to SVGs
         "noSvgWithoutTitle": "off",
-        // TODO: Re-enable after fixing anchor elements
         "useValidAnchor": "off",
-        // TODO: Re-enable after adding keyboard handlers to interactive elements
         "noStaticElementInteractions": "off",
       },
-      "style": {
-        // TODO: Re-enable if using Node.js import protocol
-        "useNodejsImportProtocol": "off",
-        // TODO: Re-enable after reviewing non-null assertions
-        "noNonNullAssertion": "off",
-        // TODO: Re-enable after adding import type annotations
-        "useImportType": "off",
-        // TODO: Re-enable after reviewing const vs let usage in Svelte components
-        "useConst": "off",
-      },
       "performance": {
-        // TODO: Re-enable after reviewing delete operations in tests
         "noDelete": "off",
-      },
-      "security": {
-        // TODO: Re-enable after reviewing dangerouslySetInnerHTML usage
-        "noDangerouslySetInnerHtml": "off",
-      },
-      "complexity": {
-        // TODO: Re-enable after reviewing React fragments usage
-        "noUselessFragments": "off",
       },
     },
   },
@@ -92,8 +41,7 @@
     },
   },
   "assist": {
-    // TODO: Re-enable assist after initial migration
-    "enabled": false,
+    "enabled": true,
   },
   "css": {
     "parser": {
@@ -101,7 +49,6 @@
       "tailwindDirectives": true,
     },
     "linter": {
-      // TODO: Re-enable after initial migration
       "enabled": false,
     },
   },

@@ -54,34 +54,35 @@ describe('withMicrofrontends: transpilePackages', () => {
     },
   ];
 
-  test.each<TestCase>(testCases)(
-    '$description',
-    ({ input, expected, throws }) => {
-      const microfrontends = MicrofrontendsServer.fromFile({
-        filePath: join(fixtures, 'simple.jsonc'),
-      });
-      const config = microfrontends.config;
-      const app = config.getApplication(input.app.name);
+  test.each<TestCase>(testCases)('$description', ({
+    input,
+    expected,
+    throws,
+  }) => {
+    const microfrontends = MicrofrontendsServer.fromFile({
+      filePath: join(fixtures, 'simple.jsonc'),
+    });
+    const config = microfrontends.config;
+    const app = config.getApplication(input.app.name);
 
-      if (throws) {
-        // eslint-disable-next-line jest/no-conditional-expect
-        expect(() =>
-          transform({
-            next: input.next,
-            app,
-            microfrontend: config,
-          }),
-        ).toThrow(throws.message);
-      } else {
-        const result = transform({
+    if (throws) {
+      // eslint-disable-next-line jest/no-conditional-expect
+      expect(() =>
+        transform({
           next: input.next,
           app,
           microfrontend: config,
-        });
+        }),
+      ).toThrow(throws.message);
+    } else {
+      const result = transform({
+        next: input.next,
+        app,
+        microfrontend: config,
+      });
 
-        // eslint-disable-next-line jest/no-conditional-expect
-        expect(result).toEqual(expected);
-      }
-    },
-  );
+      // eslint-disable-next-line jest/no-conditional-expect
+      expect(result).toEqual(expected);
+    }
+  });
 });

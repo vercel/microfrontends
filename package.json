@@ -23,11 +23,8 @@
     "dev:sveltekit": "turbo dev -F sveltekit-web -F sveltekit-docs",
     "format": "biome format --write",
     "format:check": "biome format",
-    "lint": "turbo lint --continue",
-    "biome": "biome lint --write",
-    "biome:check": "biome lint",
-    "biome:full": "biome check --write",
-    "biome:full:check": "biome check",
+    "lint": "turbo run lint --continue",
+    "lint:fix": "biome check --write",
     "release": "pnpm build:releasable && changeset publish",
     "start:single-spa-example": "turbo start -F single-spa-microfrontends-root -F single-spa-microfrontends-web -F single-spa-microfrontends-shared",
     "test": "turbo test --continue",
@@ -41,7 +38,6 @@
       "biome check --write --no-errors-on-unmatched --files-ignore-unknown=true"
     ]
   },
-  "prettier": "@vercel/style-guide/prettier",
   "resolutions": {
     "sharp": "0.34.1"
   },
@@ -52,7 +48,6 @@
     "cross-env": "^7.0.3",
     "husky": "^9.1.7",
     "lint-staged": "^15.4.3",
-    "prettier": "^3.4.2",
     "syncpack": "^13.0.1",
     "turbo": "2.6.0",
     "typescript": "5.7.3"

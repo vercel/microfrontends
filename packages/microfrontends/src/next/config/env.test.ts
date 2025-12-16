@@ -103,9 +103,7 @@ describe('withMicrofrontends: setEnvironment', () => {
     expect(
       process.env.NEXT_PUBLIC_VERCEL_OBSERVABILITY_BASEPATH,
     ).toBeUndefined();
-    expect(
-      process.env.NEXT_PUBLIC_VERCEL_FIREWALL_PATH_PREFIX,
-    ).toBeUndefined();
+    expect(process.env.NEXT_PUBLIC_VERCEL_FIREWALL_PATH_PREFIX).toBeUndefined();
   });
 
   it("doesn't set observability prefix without ROUTE_OBSERVABILITY_TO_THIS_PROJECT", () => {

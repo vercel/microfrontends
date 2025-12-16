@@ -1,7 +1,7 @@
 import type { GetStaticProps } from 'next';
 import { Link } from '@vercel/microfrontends/next/client';
 import { BlogHeader } from '@/components/header';
-import type { Article} from '@/lib/blog-data';
+import type { Article } from '@/lib/blog-data';
 import { articles } from '@/lib/blog-data';
 import { LoremIpsum } from '@/components/lorem-ipsum';
 
@@ -14,7 +14,7 @@ export const getStaticPaths = () => {
 
 export const getStaticProps = ((context) => {
   const article = articles.find(
-    (a) => a.id === parseInt(String(context.params?.id ?? -1)),
+    (a) => a.id === parseInt(String(context.params?.id ?? -1), 10),
   );
   if (!article) {
     throw new Error('Article not found');
@@ -24,7 +24,6 @@ export const getStaticProps = ((context) => {
   article: Article;
 }>;
 
- 
 export default function BlogPost({ article }: { article: Article }) {
   return (
     <div className="flex flex-col flex-1 overflow-hidden">

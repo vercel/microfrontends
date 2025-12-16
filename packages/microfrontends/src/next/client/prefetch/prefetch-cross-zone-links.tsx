@@ -182,6 +182,7 @@ export function PrefetchCrossZoneLinks({
 
   return (
     <Script
+      // biome-ignore lint/security/noDangerouslySetInnerHtml: Safe - injecting JSON speculation rules, not HTML
       dangerouslySetInnerHTML={{
         __html: JSON.stringify(speculationRules),
       }}

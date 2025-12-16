@@ -38,13 +38,13 @@ describe('getPossibleConfigurationFilenames', () => {
         'microfrontends.jsonc',
       ],
     },
-  ])(
-    'returns the filenames or throws an error if the filename is invalid',
-    ({ customConfigFilename, expected }) => {
-      const result = getPossibleConfigurationFilenames({
-        customConfigFilename,
-      });
-      expect(result).toEqual(expected);
-    },
-  );
+  ])('returns the filenames or throws an error if the filename is invalid', ({
+    customConfigFilename,
+    expected,
+  }) => {
+    const result = getPossibleConfigurationFilenames({
+      customConfigFilename,
+    });
+    expect(result).toEqual(expected);
+  });
 });

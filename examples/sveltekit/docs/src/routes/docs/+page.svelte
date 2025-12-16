@@ -1,26 +1,25 @@
 <script>
-  import { onMount } from 'svelte';
-  import { fade } from 'svelte/transition';
+import { onMount } from 'svelte';
 
-  let searchQuery = '';
-  let topics = [
-    { title: 'Getting Started', href: '#getting-started' },
-    { title: 'Routing', href: '#routing' },
-    { title: 'Data Fetching', href: '#data-fetching' },
-  ];
+const searchQuery = '';
+const topics = [
+  { title: 'Getting Started', href: '#getting-started' },
+  { title: 'Routing', href: '#routing' },
+  { title: 'Data Fetching', href: '#data-fetching' },
+];
 
-  let filteredTopics = topics;
-  let showContent = false;
+let filteredTopics = topics;
+let showContent = false;
 
-  $: {
-    filteredTopics = topics.filter(topic => 
-      topic.title.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-  }
+$: {
+  filteredTopics = topics.filter((topic) =>
+    topic.title.toLowerCase().includes(searchQuery.toLowerCase()),
+  );
+}
 
-  onMount(() => {
-    showContent = true;
-  });
+onMount(() => {
+  showContent = true;
+});
 </script>
 
 <svelte:head>

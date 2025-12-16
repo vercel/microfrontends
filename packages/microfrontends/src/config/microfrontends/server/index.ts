@@ -34,9 +34,7 @@ class MicrofrontendsServer {
    * Writes the configuration to a file.
    */
   writeConfig(
-    opts: {
-      pretty?: boolean;
-    } = {
+    opts: { pretty?: boolean } = {
       pretty: true,
     },
   ): void {

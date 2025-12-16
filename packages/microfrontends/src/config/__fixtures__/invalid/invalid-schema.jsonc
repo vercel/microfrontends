@@ -7,20 +7,20 @@
         "local": {
           "protocol": "http",
           "host": "localhost",
-          "port": 3331,
+          "port": 3331
         },
         "fallback": {
           "protocol": "https",
-          "host": "vercel-preview.sh",
-        },
+          "host": "vercel-preview.sh"
+        }
       },
       "production": {
         "protocol": "https",
-        "host": "vercel.com",
+        "host": "vercel.com"
       },
       "vercel": {
-        "projectId": "Qmc52npNy86S8VV4Mt8a8dP1LEkRNbgosW3pBCQytkcgf2",
-      },
+        "projectId": "Qmc52npNy86S8VV4Mt8a8dP1LEkRNbgosW3pBCQytkcgf2"
+      }
     },
     "vercel-marketing": {
       "routing": {
@@ -33,112 +33,112 @@
             "/press",
             "/changelog",
             "/changelog/:slug*",
-            "/customers/:slug*",
-          ],
-        },
+            "/customers/:slug*"
+          ]
+        }
       },
       "development": {
         "local": {
           "protocol": "http",
           "host": "localhost",
-          "port": 3332,
+          "port": 3332
         },
         "fallback": {
           "protocol": "https",
-          "host": "vercel-preview.sh",
-        },
+          "host": "vercel-preview.sh"
+        }
       },
       "production": {
         "protocol": "https",
-        "host": "marketing.vercel.com",
+        "host": "marketing.vercel.com"
       },
       "vercel": {
-        "projectId": "prj_nrJxw7BdBCiGredEziCb9q67mBXI",
-      },
+        "projectId": "prj_nrJxw7BdBCiGredEziCb9q67mBXI"
+      }
     },
     "geist-docs": {
       "routing": [
         {
-          "paths": ["/design/:path*", "/geist/:path*"],
-        },
+          "paths": ["/design/:path*", "/geist/:path*"]
+        }
       ],
       "development": {
         "fallback": {
           "protocol": "https",
-          "host": "vercel-preview.sh",
+          "host": "vercel-preview.sh"
         },
         "local": {
           "protocol": "http",
           "host": "localhost",
-          "port": 3333,
-        },
+          "port": 3333
+        }
       },
       "production": {
         "protocol": "https",
-        "host": "geist.vercel.com",
+        "host": "geist.vercel.com"
       },
       "vercel": {
-        "projectId": "prj_llbp8PAndTmS7O2xCF0uHl8msLV7",
-      },
+        "projectId": "prj_llbp8PAndTmS7O2xCF0uHl8msLV7"
+      }
     },
     "docs": {
       "routing": [],
       "development": {
         "fallback": {
           "protocol": "https",
-          "host": "vercel-preview.sh",
+          "host": "vercel-preview.sh"
         },
         "local": {
           "protocol": "http",
           "host": "localhost",
-          "port": 3334,
-        },
+          "port": 3334
+        }
       },
       "production": {
         "protocol": "https",
-        "host": "docs.vercel.com",
+        "host": "docs.vercel.com"
       },
       "vercel": {
-        "projectId": "prj_iv3tCRmwhF1ETZx2rH9NeoJJsoOc",
-      },
+        "projectId": "prj_iv3tCRmwhF1ETZx2rH9NeoJJsoOc"
+      }
     },
     "nextjs-conf": {
       "routing": [],
       "vercel": {
-        "projectId": "prj_iv3tCRmwhF1ETZx2rH9NeoJJsoOc",
-      },
+        "projectId": "prj_iv3tCRmwhF1ETZx2rH9NeoJJsoOc"
+      }
     },
     "other-app": {
       "routing": [
         {
           "group": "released-feature",
-          "paths": ["/new-feature-1/:slug*"],
+          "paths": ["/new-feature-1/:slug*"]
         },
         {
           "group": "new-feature-with-flag-routing",
           "paths": ["/new-feature-2/:slug*"],
 
-          "flag": "new-feature-flag",
-        },
+          "flag": "new-feature-flag"
+        }
       ],
       "development": {
         "fallback": {
           "protocol": "https",
-          "host": "vercel-preview.sh",
+          "host": "vercel-preview.sh"
         },
         "local": {
           "protocol": "http",
           "host": "localhost",
-          "port": 3334,
-        },
+          "port": 3334
+        }
       },
       "production": {
         "protocol": "https",
-        "host": "other.vercel.com",
+        "host": "other.vercel.com"
       },
       "vercel": {
-        "projectId": "prj_iv3tCRmwhF1ETZx2rH9NeoJJsoOc",
-      },
-    },
-  },
+        "projectId": "prj_iv3tCRmwhF1ETZx2rH9NeoJJsoOc"
+      }
+    }
+  }
 }

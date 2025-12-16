@@ -17,12 +17,18 @@ export function getApplicationContext(opts?: {
   packageRoot?: string;
 }): ApplicationContext {
   if (opts?.appName) {
-    logger.debug('[MFE Config] Application name from appName parameter:', opts.appName);
+    logger.debug(
+      '[MFE Config] Application name from appName parameter:',
+      opts.appName,
+    );
     return { name: opts.appName };
   }
 
   if (process.env.VERCEL_PROJECT_NAME) {
-    logger.debug('[MFE Config] Application name from VERCEL_PROJECT_NAME:', process.env.VERCEL_PROJECT_NAME);
+    logger.debug(
+      '[MFE Config] Application name from VERCEL_PROJECT_NAME:',
+      process.env.VERCEL_PROJECT_NAME,
+    );
     return {
       name: process.env.VERCEL_PROJECT_NAME,
       projectName: process.env.VERCEL_PROJECT_NAME,
@@ -33,7 +39,10 @@ export function getApplicationContext(opts?: {
   // might not even have a package.json. Use the environment variable, which
   // relies on NX's logic to find the name.
   if (process.env.NX_TASK_TARGET_PROJECT) {
-    logger.debug('[MFE Config] Application name from NX_TASK_TARGET_PROJECT:', process.env.NX_TASK_TARGET_PROJECT);
+    logger.debug(
+      '[MFE Config] Application name from NX_TASK_TARGET_PROJECT:',
+      process.env.NX_TASK_TARGET_PROJECT,
+    );
     return {
       name: process.env.NX_TASK_TARGET_PROJECT,
       packageJsonName: process.env.NX_TASK_TARGET_PROJECT,
@@ -49,7 +58,10 @@ export function getApplicationContext(opts?: {
       projectName?: string;
     };
     if (projectJson.projectName) {
-      logger.debug('[MFE Config] Application name from .vercel/project.json:', projectJson.projectName);
+      logger.debug(
+        '[MFE Config] Application name from .vercel/project.json:',
+        projectJson.projectName,
+      );
       return {
         name: projectJson.projectName,
         projectName: projectJson.projectName,
@@ -78,7 +90,10 @@ export function getApplicationContext(opts?: {
       );
     }
 
-    logger.debug('[MFE Config] Application name from package.json:', packageJson.name);
+    logger.debug(
+      '[MFE Config] Application name from package.json:',
+      packageJson.name,
+    );
     return { name: packageJson.name, packageJsonName: packageJson.name };
   } catch (err) {
     throw MicrofrontendError.handle(err, {

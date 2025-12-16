@@ -96,7 +96,7 @@ export function useClientConfig(config: string | undefined): {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [config, clientConfig.applications, canLoad]);
+  }, [canLoad]);
 
   return { clientConfig, isLoading };
 }
