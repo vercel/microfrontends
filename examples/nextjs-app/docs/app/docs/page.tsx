@@ -1,5 +1,5 @@
-import Image from 'next/image';
 import { Link } from '@vercel/microfrontends/next/client';
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import mfeIcon from '../../public/mfe-icon-dark.png';
 

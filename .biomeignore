@@ -1,2 +1,2 @@
-# Ignore CSS file with Tailwind v4 syntax that Biome can't parse yet
-examples/single-spa/shared/src/globals.css
+**/*.css
+**/*.svelte

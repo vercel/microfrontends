@@ -2,8 +2,8 @@ import fs from 'node:fs';
 import { join } from 'node:path';
 import { chdir, cwd } from 'node:process';
 import { fileURLToPath } from '../../../test-utils/file-url-to-path';
-import { getAppEnvOverrideCookieName } from '../../overrides';
 import { Host } from '../../microfrontends-config/isomorphic/host';
+import { getAppEnvOverrideCookieName } from '../../overrides';
 import { MicrofrontendsServer } from '.';
 
 const fixtures = fileURLToPath(new URL('../../__fixtures__', import.meta.url));

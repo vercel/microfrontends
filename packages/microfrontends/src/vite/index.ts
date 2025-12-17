@@ -1,7 +1,7 @@
 import type { Plugin, UserConfig } from 'vite';
+import { logger } from '../bin/logger';
 import { MicrofrontendsServer } from '../config/microfrontends/server';
 import { getApplicationContext } from '../config/microfrontends/utils/get-application-context';
-import { logger } from '../bin/logger';
 import { detectFramework } from './detect-framework';
 
 interface MicrofrontendsViteOptions {

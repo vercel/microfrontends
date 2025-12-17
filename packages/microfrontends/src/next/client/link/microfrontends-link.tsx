@@ -1,8 +1,8 @@
-import type { AnchorHTMLAttributes } from 'react';
-import { forwardRef, useContext, useMemo } from 'react';
 import NextLink, {
   type LinkProps as ExternalNextLinkProps,
 } from 'next/link.js';
+import type { AnchorHTMLAttributes } from 'react';
+import { forwardRef, useContext, useMemo } from 'react';
 import { useClientConfig } from '../../../config/react/use-client-config';
 import { PrefetchCrossZoneLinksContext } from '../prefetch';
 

@@ -1,8 +1,8 @@
 import { join } from 'node:path';
 import type { NextConfig } from 'next';
-import { fileURLToPath } from '../../../test-utils/file-url-to-path';
 import { MicrofrontendsServer } from '../../../config/microfrontends/server';
 import { generateAssetPrefixFromName } from '../../../config/microfrontends-config/isomorphic/utils/generate-asset-prefix';
+import { fileURLToPath } from '../../../test-utils/file-url-to-path';
 import { transform } from './rewrites';
 
 const OLD_ENV = process.env;

@@ -3,53 +3,54 @@
   "vcs": {
     "enabled": true,
     "clientKind": "git",
-    "useIgnoreFile": true,
+    "useIgnoreFile": true
   },
   "files": {
-    "ignoreUnknown": false,
+    "ignoreUnknown": true,
+    "includes": ["**/*", "!**/*.css", "!**/*.svelte", "!dist/"]
   },
   "formatter": {
     "enabled": true,
     "indentStyle": "space",
     "indentWidth": 2,
     "lineWidth": 80,
-    "lineEnding": "lf",
+    "lineEnding": "lf"
   },
   "linter": {
     "enabled": true,
     "rules": {
       "recommended": true,
       "suspicious": {
-        "useIterableCallbackReturn": "off",
+        "useIterableCallbackReturn": "off"
       },
       "a11y": {
         "noSvgWithoutTitle": "off",
         "useValidAnchor": "off",
-        "noStaticElementInteractions": "off",
+        "noStaticElementInteractions": "off"
       },
       "performance": {
-        "noDelete": "off",
-      },
-    },
+        "noDelete": "off"
+      }
+    }
   },
   "javascript": {
     "formatter": {
       "quoteStyle": "single",
       "jsxQuoteStyle": "double",
       "semicolons": "always",
-      "trailingCommas": "all",
-    },
+      "trailingCommas": "all"
+    }
   },
   "assist": {
-    "enabled": true,
+    "enabled": true
   },
   "css": {
     "parser": {
       "cssModules": true,
-      "tailwindDirectives": true,
+      "tailwindDirectives": true
     },
     "linter": {
-      "enabled": false,
-    },
-  },
+      "enabled": false
+    }
+  }
 }

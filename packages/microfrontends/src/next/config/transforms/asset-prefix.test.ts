@@ -1,6 +1,6 @@
 import { join } from 'node:path';
-import { fileURLToPath } from '../../../test-utils/file-url-to-path';
 import { MicrofrontendsServer } from '../../../config/microfrontends/server';
+import { fileURLToPath } from '../../../test-utils/file-url-to-path';
 import { transform } from './asset-prefix';
 
 const fixtures = fileURLToPath(

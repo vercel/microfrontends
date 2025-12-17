@@ -1,5 +1,5 @@
-import nextJest from 'next/jest';
 import type { Config } from 'jest';
+import nextJest from 'next/jest';
 
 const customConfig: Config = {
   collectCoverageFrom: ['./**/*.{ts,tsx}'],

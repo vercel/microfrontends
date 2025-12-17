@@ -1,11 +1,11 @@
 import { readFileSync } from 'node:fs';
+import { parse } from 'jsonc-parser';
 import {
+  type MiddlewareConfig,
   type NextFetchEvent,
   NextRequest,
-  type MiddlewareConfig,
 } from 'next/server.js';
 import { match, pathToRegexp } from 'path-to-regexp';
-import { parse } from 'jsonc-parser';
 import { MicrofrontendConfigIsomorphic } from '../../config/microfrontends-config/isomorphic';
 import { DefaultApplication } from '../../config/microfrontends-config/isomorphic/application';
 import type { Config } from '../../config/schema/types';

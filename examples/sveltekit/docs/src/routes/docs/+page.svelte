@@ -1,8 +1,8 @@
 <script>
 import { onMount } from 'svelte';
 
-const searchQuery = '';
-const topics = [
+let searchQuery = '';
+let topics = [
   { title: 'Getting Started', href: '#getting-started' },
   { title: 'Routing', href: '#routing' },
   { title: 'Data Fetching', href: '#data-fetching' },

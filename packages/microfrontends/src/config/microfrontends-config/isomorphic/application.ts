@@ -1,14 +1,14 @@
+import type { ApplicationOverrideConfig } from '../../overrides';
 import type {
   Application as ApplicationConfig,
-  DefaultApplication as DefaultApplicationConfig,
   ChildApplication as ChildApplicationConfig,
+  DefaultApplication as DefaultApplicationConfig,
   PathGroup,
 } from '../../schema/types';
-import type { ApplicationOverrideConfig } from '../../overrides';
-import { validateAppPaths } from './validation';
-import { generateAssetPrefixFromName } from './utils/generate-asset-prefix';
 import { Host, LocalHost } from './host';
+import { generateAssetPrefixFromName } from './utils/generate-asset-prefix';
 import { generateAutomationBypassEnvVarName } from './utils/generate-automation-bypass-env-var-name';
+import { validateAppPaths } from './validation';
 
 export class Application {
   readonly default: boolean;

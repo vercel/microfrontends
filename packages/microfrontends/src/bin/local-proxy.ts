@@ -2,23 +2,23 @@ import * as http from 'node:http';
 import * as https from 'node:https';
 import { URL } from 'node:url';
 import { parse, serialize } from 'cookie';
-import { pathToRegexp } from 'path-to-regexp';
 import Server from 'http-proxy';
+import { pathToRegexp } from 'path-to-regexp';
+import cliPkg from '../../package.json';
+import { MicrofrontendsServer } from '../config/microfrontends/server';
 import { MicrofrontendConfigIsomorphic } from '../config/microfrontends-config/isomorphic';
 import type {
   Application,
   ChildApplication,
 } from '../config/microfrontends-config/isomorphic/application';
+import { hashApplicationName } from '../config/microfrontends-config/isomorphic/utils/hash-application-name';
 import {
   getAppEnvOverrideCookieName,
   parseOverrides,
 } from '../config/overrides';
-import { MicrofrontendsServer } from '../config/microfrontends/server';
-import { hashApplicationName } from '../config/microfrontends-config/isomorphic/utils/hash-application-name';
-import cliPkg from '../../package.json';
-import type { LocalProxyOptions, LocalProxyApplicationResponse } from './types';
 import { localAuthHtml } from './local-auth';
 import { logger } from './logger';
+import type { LocalProxyApplicationResponse, LocalProxyOptions } from './types';
 
 // This is a header set to `1` by the local proxy on all outgoing requests to locally running applications.
 // Applications may optionally route all traffic that they receive without the header to the local proxy.

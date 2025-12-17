@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
-import type { WellKnownClientData } from '../well-known/types';
+import { useEffect, useMemo, useState } from 'react';
 import { MicrofrontendConfigClient } from '../microfrontends-config/client';
+import type { WellKnownClientData } from '../well-known/types';
 
 const clientCache = new Map<string, MicrofrontendConfigClient>();
 const cachedHasDynamicPaths = new Map<string, boolean>();

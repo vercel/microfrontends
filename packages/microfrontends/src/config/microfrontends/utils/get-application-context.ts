@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { MicrofrontendError } from '../../errors';
 import { logger } from '../../../bin/logger';
+import { MicrofrontendError } from '../../errors';
 
 export interface ApplicationContext {
   name: string;

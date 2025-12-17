@@ -1,9 +1,9 @@
 import { join } from 'node:path';
-import type { WebpackConfigContext } from 'next/dist/server/config-shared';
 import type { NextConfig } from 'next';
+import type { WebpackConfigContext } from 'next/dist/server/config-shared';
 import webpack, { type EnvironmentPlugin } from 'webpack';
-import { fileURLToPath } from '../../../test-utils/file-url-to-path';
 import { MicrofrontendsServer } from '../../../config/microfrontends/server';
+import { fileURLToPath } from '../../../test-utils/file-url-to-path';
 import { transform } from './webpack';
 
 const OLD_ENV = process.env;

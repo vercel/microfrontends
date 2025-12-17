@@ -1,9 +1,9 @@
-import type { GetStaticProps } from 'next';
 import { Link } from '@vercel/microfrontends/next/client';
+import type { GetStaticProps } from 'next';
 import { BlogHeader } from '@/components/header';
+import { LoremIpsum } from '@/components/lorem-ipsum';
 import type { Article } from '@/lib/blog-data';
 import { articles } from '@/lib/blog-data';
-import { LoremIpsum } from '@/components/lorem-ipsum';
 
 export const getStaticPaths = () => {
   return {

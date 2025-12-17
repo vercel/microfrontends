@@ -5,7 +5,7 @@
   "scripts": {
     "build": "MFE_DEBUG=1 next build",
     "dev": "next dev --port $(microfrontends port)",
-    "lint": "next typegen && biome lint",
+    "lint": "VC_MICROFRONTENDS_CONFIG_FILE_NAME=microfrontends-custom.jsonc next typegen && biome check",
     "start": "next start",
     "typecheck": "next typegen && tsc --noEmit"
   },

@@ -12,7 +12,8 @@
       "persistent": true
     },
     "lint": {
-      "dependsOn": ["^build"]
+      "dependsOn": ["^build"],
+      "inputs": ["$TURBO_DEFAULT$", "biome.jsonc"]
     },
     "pretest": {},
     "start": {

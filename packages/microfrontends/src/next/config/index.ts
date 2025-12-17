@@ -1,10 +1,10 @@
 import type { NextConfig } from 'next';
 import { displayLocalProxyInfo } from '../../bin/check-proxy';
+import { logger } from '../../bin/logger';
 import { MicrofrontendsServer } from '../../config/microfrontends/server';
 import { getApplicationContext } from '../../config/microfrontends/utils/get-application-context';
-import { logger } from '../../bin/logger';
-import { transforms } from './transforms';
 import { setEnvironment } from './env';
+import { transforms } from './transforms';
 import type { WithMicrofrontendsOptions } from './types';
 
 function typedEntries<T extends Record<string, unknown>>(

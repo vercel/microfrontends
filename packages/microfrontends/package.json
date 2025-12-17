@@ -131,7 +131,7 @@
     "postbuild": "pnpm generate:exports",
     "generate:exports": "tsx scripts/generate-exports/index.ts",
     "generate:schema": "tsx scripts/generate-json-schema.ts",
-    "lint": "biome lint",
+    "lint": "biome check",
     "prepublishOnly": "pnpm build && pnpm generate:exports && pnpm generate:schema",
     "proxy": "tsx src/proxy/index.ts",
     "test": "cross-env TZ=UTC jest",

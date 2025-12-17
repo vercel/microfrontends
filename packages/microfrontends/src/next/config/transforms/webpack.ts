@@ -1,9 +1,9 @@
 import fs from 'node:fs';
 import { createRequire } from 'node:module';
 import type { NextConfig } from 'next';
+import * as semver from 'semver';
 import type webpack from 'webpack';
 import type { WebpackOptionsNormalized } from 'webpack';
-import * as semver from 'semver';
 import { SortChunksPlugin } from '../plugins/sort-chunks';
 import type { TransformConfigInput, TransformConfigResponse } from './types';
 

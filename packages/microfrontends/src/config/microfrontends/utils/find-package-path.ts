@@ -1,5 +1,5 @@
-import { dirname } from 'node:path';
 import { readFileSync } from 'node:fs';
+import { dirname } from 'node:path';
 import fg from 'fast-glob';
 
 // cache the path to default configuration to avoid having to walk the file system multiple times

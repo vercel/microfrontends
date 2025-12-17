@@ -1,9 +1,9 @@
 import {
-  Puzzle,
-  GitBranch,
   Activity,
-  ArrowUpRight,
   ArrowDownRight,
+  ArrowUpRight,
+  GitBranch,
+  Puzzle,
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 

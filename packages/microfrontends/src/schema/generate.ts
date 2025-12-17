@@ -1,5 +1,5 @@
-import { writeFileSync, mkdirSync } from 'node:fs';
-import { join, dirname } from 'node:path';
+import { mkdirSync, writeFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
 import { createGenerator } from 'ts-json-schema-generator';
 import { fileURLToPath } from '../test-utils/file-url-to-path';
 

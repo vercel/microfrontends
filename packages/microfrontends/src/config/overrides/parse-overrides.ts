@@ -1,5 +1,5 @@
-import type { OverridesConfig } from './types';
 import { getOverrideFromCookie } from './get-override-from-cookie';
+import type { OverridesConfig } from './types';
 
 export function parseOverrides(
   cookies: { name: string; value?: string | null }[],

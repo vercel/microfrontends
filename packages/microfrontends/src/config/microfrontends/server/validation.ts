@@ -1,7 +1,7 @@
-import { parse } from 'jsonc-parser';
 import { Ajv, type ErrorObject } from 'ajv';
-import type { Config } from '../../schema/types';
+import { parse } from 'jsonc-parser';
 import { MicrofrontendError } from '../../errors';
+import type { Config } from '../../schema/types';
 import { SCHEMA } from '../../schema/utils/load';
 
 const LIST_FORMATTER = new Intl.ListFormat('en', {

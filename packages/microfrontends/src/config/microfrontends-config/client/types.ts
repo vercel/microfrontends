@@ -1,4 +1,4 @@
-import type { PathGroup, ApplicationId } from '../../schema/types';
+import type { ApplicationId, PathGroup } from '../../schema/types';
 
 export interface ClientApplication {
   routing?: PathGroup[];

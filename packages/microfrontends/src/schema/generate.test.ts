@@ -8,8 +8,9 @@ const destinationPath = 'schema/schema.json';
 describe('generateSchema', () => {
   beforeEach(() => {
     (writeFileSync as jest.MockedFunction<typeof writeFileSync>).mockClear();
-    (writeFileSync as jest.MockedFunction<typeof writeFileSync>)
-      .mockImplementation(() => {});
+    (
+      writeFileSync as jest.MockedFunction<typeof writeFileSync>
+    ).mockImplementation(() => {});
   });
 
   it('should not throw an error when generating the schema', () => {

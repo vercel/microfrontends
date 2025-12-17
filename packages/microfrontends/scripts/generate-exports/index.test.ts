@@ -1,6 +1,6 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import type { Options } from 'tsup';
-import { generateExports, buildExports } from './generate-exports';
+import { buildExports, generateExports } from './generate-exports';
 
 jest.mock('node:fs');
 

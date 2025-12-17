@@ -1,15 +1,15 @@
 /* @jest-environment node */
 
 import {
-  getRedirectUrl,
-  getRewrittenUrl,
-  unstable_getResponseFromNextConfig,
-} from 'next/experimental/testing/server';
-import {
   expandWildcards,
   getAllMicrofrontendPaths,
   loadMicrofrontendConfigForEdge,
 } from '@vercel/microfrontends/next/testing';
+import {
+  getRedirectUrl,
+  getRewrittenUrl,
+  unstable_getResponseFromNextConfig,
+} from 'next/experimental/testing/server';
 
 type Env = 'development' | 'preview' | 'production';
 

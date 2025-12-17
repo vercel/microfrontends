@@ -1,10 +1,11 @@
-import React, {
+import type React from 'react';
+import {
   createContext,
-  useCallback,
-  useRef,
-  useMemo,
-  useState,
   startTransition,
+  useCallback,
+  useMemo,
+  useRef,
+  useState,
 } from 'react';
 
 export interface PrefetchCrossZoneLinksContext {
