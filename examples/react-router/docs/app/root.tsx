@@ -1,3 +1,4 @@
+import { mountVercelToolbar } from '@vercel/toolbar/vite';
 import {
   isRouteErrorResponse,
   Links,
@@ -6,7 +7,6 @@ import {
   Scripts,
   ScrollRestoration,
 } from 'react-router';
-import { mountVercelToolbar } from '@vercel/toolbar/vite';
 
 import type { Route } from './+types/root';
 import './app.css';

@@ -3,9 +3,9 @@ import {
   PrefetchCrossZoneLinksProvider,
 } from '@vercel/microfrontends/next/client';
 import './globals.css';
-import { Inter } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
+import { Inter } from 'next/font/google';
 import { Toolbar } from './client-scripts';
 
 const inter = Inter({ subsets: ['latin'] });

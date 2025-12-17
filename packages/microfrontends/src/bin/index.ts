@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 
-import { Command, Option } from 'commander';
 import { loadEnvConfig } from '@next/env';
+import { Command, Option } from 'commander';
 import cliPkg from '../../package.json';
 import { LocalProxy } from './local-proxy';
-import type { LocalProxyOptions } from './types';
 import { displayPort } from './port';
+import type { LocalProxyOptions } from './types';
 
 function main(): void {
   loadEnvConfig(process.cwd());

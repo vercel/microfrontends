@@ -1,6 +1,6 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import type { Options } from 'tsup';
-import { generateExports, buildExports } from './generate-exports';
+import { buildExports, generateExports } from './generate-exports';
 
 jest.mock('node:fs');
 
@@ -193,7 +193,6 @@ describe('generateExports', () => {
   it('should log appropriate messages during execution', () => {
     const consoleLogSpy = jest
       .spyOn(console, 'log')
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
       .mockImplementation(() => {});
     const mockPackageJson = JSON.stringify({
       type: 'module',

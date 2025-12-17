@@ -8,9 +8,9 @@ const destinationPath = 'schema/schema.json';
 describe('generateSchema', () => {
   beforeEach(() => {
     (writeFileSync as jest.MockedFunction<typeof writeFileSync>).mockClear();
-    (writeFileSync as jest.MockedFunction<typeof writeFileSync>)
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      .mockImplementation(() => {});
+    (
+      writeFileSync as jest.MockedFunction<typeof writeFileSync>
+    ).mockImplementation(() => {});
   });
 
   it('should not throw an error when generating the schema', () => {
@@ -42,12 +42,10 @@ describe('generateSchema', () => {
     // Check that the callArgs exists and is an array before destructuring
     if (callArgs) {
       const [_, schemaContent] = callArgs;
-      // eslint-disable-next-line @typescript-eslint/no-base-to-string
       const parsedSchema = JSON.parse(schemaContent.toString()) as {
         $ref: string;
       };
 
-      // eslint-disable-next-line jest/no-conditional-expect
       expect(parsedSchema.$ref).toEqual(`#/definitions/${SCHEMA_ROOT}`);
     }
   });

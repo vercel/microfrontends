@@ -1,6 +1,6 @@
 import type {
-  HostConfig as RemoteHostConfigSchema,
   LocalHostConfig as LocalHostConfigSchema,
+  HostConfig as RemoteHostConfigSchema,
 } from '../../../bin/types';
 import { generatePortFromName } from './utils/generate-port';
 

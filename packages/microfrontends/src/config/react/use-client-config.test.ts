@@ -1,11 +1,11 @@
 import fs from 'node:fs';
 import { join } from 'node:path';
-import { parse } from 'jsonc-parser';
 import { renderHook, waitFor } from '@testing-library/react';
+import { parse } from 'jsonc-parser';
 import { fileURLToPath } from '../../test-utils/file-url-to-path';
-import type { Config } from '../schema/types';
-import { MicrofrontendConfigIsomorphic } from '../microfrontends-config/isomorphic';
 import type { ClientConfig } from '../microfrontends-config/client/types';
+import { MicrofrontendConfigIsomorphic } from '../microfrontends-config/isomorphic';
+import type { Config } from '../schema/types';
 import {
   resetCachedServerClientConfigPromise,
   useClientConfig,

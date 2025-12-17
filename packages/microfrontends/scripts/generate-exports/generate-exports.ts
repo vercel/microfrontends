@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
-import { readFileSync, writeFileSync } from 'node:fs';
+
 import { exec } from 'node:child_process';
+import { readFileSync, writeFileSync } from 'node:fs';
 import type { Options } from 'tsup';
 
 const STATIC_EXPORTS = {

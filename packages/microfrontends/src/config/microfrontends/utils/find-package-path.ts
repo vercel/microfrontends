@@ -1,5 +1,5 @@
-import { dirname } from 'node:path';
 import { readFileSync } from 'node:fs';
+import { dirname } from 'node:path';
 import fg from 'fast-glob';
 
 // cache the path to default configuration to avoid having to walk the file system multiple times
@@ -21,7 +21,6 @@ function findPackagePathWithGlob({
   name,
 }: FindPackagePathOptions): string | null {
   try {
-    // eslint-disable-next-line import/no-named-as-default-member
     const packageJsonPaths = fg.globSync('**/package.json', {
       cwd: repositoryRoot,
       absolute: true,

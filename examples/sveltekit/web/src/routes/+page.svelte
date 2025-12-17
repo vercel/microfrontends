@@ -1,12 +1,11 @@
 <script>
-  import { onMount } from 'svelte';
-  import { fly } from 'svelte/transition';
+import { onMount } from 'svelte';
 
-  let showWelcome = false;
+let showWelcome = false;
 
-  onMount(() => {
-    showWelcome = true;
-  });
+onMount(() => {
+  showWelcome = true;
+});
 </script>
 
 <svelte:head>

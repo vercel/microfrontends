@@ -1,8 +1,8 @@
 import { join } from 'node:path';
 import type { NextConfig } from 'next';
-import { fileURLToPath } from '../../../test-utils/file-url-to-path';
 import { MicrofrontendsServer } from '../../../config/microfrontends/server';
 import { generateAssetPrefixFromName } from '../../../config/microfrontends-config/isomorphic/utils/generate-asset-prefix';
+import { fileURLToPath } from '../../../test-utils/file-url-to-path';
 import { transform } from './rewrites';
 
 const OLD_ENV = process.env;
@@ -61,7 +61,6 @@ describe('withMicrofrontends: rewrites', () => {
       env: {
         MY_ENV_VAR: 'test',
       },
-      // eslint-disable-next-line @typescript-eslint/require-await
       rewrites: async () => [
         {
           source: '/test',
@@ -105,7 +104,6 @@ describe('withMicrofrontends: rewrites', () => {
       env: {
         MY_ENV_VAR: 'test',
       },
-      // eslint-disable-next-line @typescript-eslint/require-await
       rewrites: async () => ({
         afterFiles: [
           {
@@ -174,7 +172,6 @@ describe('withMicrofrontends: rewrites', () => {
       env: {
         MY_ENV_VAR: 'test',
       },
-      // eslint-disable-next-line @typescript-eslint/require-await
       rewrites: async () => {
         aFunc();
         return {

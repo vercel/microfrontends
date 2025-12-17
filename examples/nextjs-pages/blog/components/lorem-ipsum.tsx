@@ -11,7 +11,7 @@ export function LoremIpsum() {
     <>
       {paragraphArray.map((paragraph, index) => {
         return (
-          // eslint-disable-next-line react/no-array-index-key
+          // biome-ignore lint/suspicious/noArrayIndexKey: Static content - safe to use index
           <p className="mb-4" key={index}>
             {paragraph}
           </p>

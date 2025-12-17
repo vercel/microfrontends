@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.describe('Docs page (child app)', () => {
   test('page should load correctly', async ({ page }) => {

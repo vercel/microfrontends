@@ -14,10 +14,8 @@ export function generatePortFromName({
   // hash the name
   let hash = 0;
   for (let i = 0; i < name.length; i++) {
-    // eslint-disable-next-line no-bitwise
     hash = (hash << 5) - hash + name.charCodeAt(i);
     // Convert to 32-bit
-    // eslint-disable-next-line no-bitwise
     hash |= 0;
   }
   hash = Math.abs(hash);

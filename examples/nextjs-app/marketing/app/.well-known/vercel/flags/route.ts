@@ -1,6 +1,6 @@
-import { verifyAccess, type ApiData } from 'flags';
+import { type ApiData, verifyAccess } from 'flags';
 import { getProviderData } from 'flags/next';
-import { NextResponse, type NextRequest } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 import * as flags from '../../../flags';
 
 export async function GET(request: NextRequest) {

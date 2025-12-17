@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
 import Script from 'next/script.js';
+import { useEffect, useState } from 'react';
 import { useClientConfig } from '../../../config/react/use-client-config';
 
 const PREFETCH_ATTR = 'data-prefetch';
@@ -182,6 +182,7 @@ export function PrefetchCrossZoneLinks({
 
   return (
     <Script
+      // biome-ignore lint/security/noDangerouslySetInnerHtml: Safe - injecting JSON speculation rules, not HTML
       dangerouslySetInnerHTML={{
         __html: JSON.stringify(speculationRules),
       }}

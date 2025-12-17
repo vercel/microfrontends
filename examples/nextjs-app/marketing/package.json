@@ -5,7 +5,7 @@
   "scripts": {
     "build": "VC_MICROFRONTENDS_CONFIG_FILE_NAME=microfrontends-custom.jsonc next build",
     "dev": "next dev --port $(microfrontends port)",
-    "lint": "next typegen && biome lint",
+    "lint": "VC_MICROFRONTENDS_CONFIG_FILE_NAME=microfrontends-custom.jsonc next typegen && biome check",
     "start": "next start",
     "pretest": "playwright install chromium",
     "test": "VC_MICROFRONTENDS_CONFIG_FILE_NAME=microfrontends-custom.jsonc jest",

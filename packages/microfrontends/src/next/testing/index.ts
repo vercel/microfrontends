@@ -1,11 +1,11 @@
 import { readFileSync } from 'node:fs';
+import { parse } from 'jsonc-parser';
 import {
+  type MiddlewareConfig,
   type NextFetchEvent,
   NextRequest,
-  type MiddlewareConfig,
 } from 'next/server.js';
 import { match, pathToRegexp } from 'path-to-regexp';
-import { parse } from 'jsonc-parser';
 import { MicrofrontendConfigIsomorphic } from '../../config/microfrontends-config/isomorphic';
 import { DefaultApplication } from '../../config/microfrontends-config/isomorphic/application';
 import type { Config } from '../../config/schema/types';
@@ -266,7 +266,6 @@ export async function validateMiddlewareOnFlaggedPaths(
           const requestPath = `${host}${path}`;
           const request = new NextRequest(requestPath);
 
-          // eslint-disable-next-line no-await-in-loop
           const response = await middleware(
             request,
             {} as unknown as NextFetchEvent,

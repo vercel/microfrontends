@@ -1,7 +1,7 @@
 import { join } from 'node:path';
 import type { NextConfig } from 'next';
-import { fileURLToPath } from '../../../test-utils/file-url-to-path';
 import { MicrofrontendsServer } from '../../../config/microfrontends/server';
+import { fileURLToPath } from '../../../test-utils/file-url-to-path';
 import { transform } from './redirects';
 
 const OLD_ENV = process.env;
@@ -83,7 +83,6 @@ describe('withMicrofrontends: redirects', () => {
       }).config;
 
       const nextConfig: NextConfig = {
-        // eslint-disable-next-line @typescript-eslint/require-await
         redirects: async () => [
           {
             source: '/blog/alpha',

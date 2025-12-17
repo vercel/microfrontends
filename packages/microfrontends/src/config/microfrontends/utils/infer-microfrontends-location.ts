@@ -1,12 +1,12 @@
-import { dirname, join } from 'node:path';
 import { readFileSync, statSync } from 'node:fs';
-import { parse } from 'jsonc-parser';
+import { dirname, join } from 'node:path';
 import fg from 'fast-glob';
-import type { Config } from '../../schema/types';
-import { MicrofrontendError } from '../../errors';
+import { parse } from 'jsonc-parser';
 import { logger } from '../../../bin/logger';
-import { getPossibleConfigurationFilenames } from './get-config-file-name';
+import { MicrofrontendError } from '../../errors';
+import type { Config } from '../../schema/types';
 import type { ApplicationContext } from './get-application-context';
+import { getPossibleConfigurationFilenames } from './get-config-file-name';
 
 // cache the path to default configuration to avoid having to walk the file system multiple times
 const configCache: Record<string, string> = {};
@@ -35,7 +35,6 @@ function findPackageWithMicrofrontendsConfig({
   );
 
   try {
-    // eslint-disable-next-line import/no-named-as-default-member
     const microfrontendsJsonPaths = fg.globSync(
       `**/{${getPossibleConfigurationFilenames({ customConfigFilename }).join(',')}}`,
       {

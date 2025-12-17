@@ -1,6 +1,6 @@
 import { cwd } from 'node:process';
-import { mfePort } from '../utils/mfe-port';
 import type { MicrofrontendsPort } from '../utils/mfe-port';
+import { mfePort } from '../utils/mfe-port';
 import { logger } from './logger';
 
 /**

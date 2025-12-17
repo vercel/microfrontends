@@ -1,19 +1,19 @@
 import fs from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
-import type { Config } from '../../schema/types';
-import { parseOverrides } from '../../overrides';
-import type { OverridesConfig } from '../../overrides';
-import { getConfigStringFromEnv } from '../../microfrontends-config/utils/get-config-from-env';
+import { logger } from '../../../bin/logger';
 import { MicrofrontendError } from '../../errors';
+import { MicrofrontendConfigIsomorphic } from '../../microfrontends-config/isomorphic';
+import { getConfigStringFromEnv } from '../../microfrontends-config/utils/get-config-from-env';
+import type { OverridesConfig } from '../../overrides';
+import { parseOverrides } from '../../overrides';
+import type { Config } from '../../schema/types';
 import { isDefaultApp } from '../../schema/utils/is-default-app';
+import { findConfig } from '../utils/find-config';
+import { findPackageRoot } from '../utils/find-package-root';
 import { findRepositoryRoot } from '../utils/find-repository-root';
+import { getApplicationContext } from '../utils/get-application-context';
 import { inferMicrofrontendsLocation } from '../utils/infer-microfrontends-location';
 import { isMonorepo as isRepositoryMonorepo } from '../utils/is-monorepo';
-import { findPackageRoot } from '../utils/find-package-root';
-import { findConfig } from '../utils/find-config';
-import { MicrofrontendConfigIsomorphic } from '../../microfrontends-config/isomorphic';
-import { getApplicationContext } from '../utils/get-application-context';
-import { logger } from '../../../bin/logger';
 import { getOutputFilePath } from './utils/get-output-file-path';
 import { validateSchema } from './validation';
 
@@ -34,9 +34,7 @@ class MicrofrontendsServer {
    * Writes the configuration to a file.
    */
   writeConfig(
-    opts: {
-      pretty?: boolean;
-    } = {
+    opts: { pretty?: boolean } = {
       pretty: true,
     },
   ): void {

@@ -15,7 +15,6 @@ try {
 
   process.exit(result.status);
 } catch (error) {
-  // eslint-disable-next-line no-console
   console.error('Error loading microfrontends CLI, please re-install', error);
   process.exit(1);
 }

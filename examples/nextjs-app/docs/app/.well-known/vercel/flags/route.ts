@@ -1,5 +1,5 @@
-import { NextResponse, type NextRequest } from 'next/server';
-import { verifyAccess, type ApiData } from 'flags';
+import { type ApiData, verifyAccess } from 'flags';
+import { type NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {
   const access = await verifyAccess(request.headers.get('Authorization'));

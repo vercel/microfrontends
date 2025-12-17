@@ -1,6 +1,6 @@
-import { readFileSync, mkdtempSync } from 'node:fs';
-import path from 'node:path';
+import { mkdtempSync, readFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
+import path from 'node:path';
 import pkg from '../../package.json';
 import { generateSchema } from './generate';
 

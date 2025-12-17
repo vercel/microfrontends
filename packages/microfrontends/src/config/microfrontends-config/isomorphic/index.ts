@@ -1,18 +1,18 @@
 import { parse } from 'jsonc-parser';
-import { getConfigStringFromEnv } from '../utils/get-config-from-env';
-import { isDefaultApp } from '../../schema/utils/is-default-app';
-import type { Config } from '../../schema/types';
 import { MicrofrontendError } from '../../errors';
 import { type OverridesConfig, parseOverrides } from '../../overrides';
-import type { ClientConfig } from '../client/types';
+import type { Config } from '../../schema/types';
+import { isDefaultApp } from '../../schema/utils/is-default-app';
 import { MicrofrontendConfigClient } from '../client';
-import { DefaultApplication, ChildApplication } from './application';
+import type { ClientConfig } from '../client/types';
+import { getConfigStringFromEnv } from '../utils/get-config-from-env';
+import { ChildApplication, DefaultApplication } from './application';
 import { DEFAULT_LOCAL_PROXY_PORT } from './constants';
+import { hashApplicationName } from './utils/hash-application-name';
 import {
   validateConfigDefaultApplication,
   validateConfigPaths,
 } from './validation';
-import { hashApplicationName } from './utils/hash-application-name';
 
 /**
  * A class to manage the microfrontends configuration.

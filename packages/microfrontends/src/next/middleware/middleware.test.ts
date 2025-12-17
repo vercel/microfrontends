@@ -3,10 +3,10 @@
  */
 
 import { NextRequest } from 'next/server';
-import type { Config, Application, PathGroup } from '../../config/schema/types';
-import { TEST_CONFIG } from '../../test-utils/fixtures/test-config';
 import { MicrofrontendConfigIsomorphic } from '../../config/microfrontends-config/isomorphic';
 import { hashApplicationName } from '../../config/microfrontends-config/isomorphic/utils/hash-application-name';
+import type { Application, Config, PathGroup } from '../../config/schema/types';
+import { TEST_CONFIG } from '../../test-utils/fixtures/test-config';
 import { runMicrofrontendsMiddleware } from './middleware';
 
 const OLD_ENV = process.env;
@@ -26,7 +26,6 @@ describe('runMicrofrontendsMiddleware', () => {
   let config: Config;
   let originalFetch: Fetch;
   const fetchMock = jest.fn<ReturnType<Fetch>, Parameters<Fetch>>(() => {
-    // eslint-disable-next-line no-console
     console.error('fetchMock not implemented');
     throw new Error('No implementation provided');
   });

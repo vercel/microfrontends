@@ -1,14 +1,14 @@
 {
   "$schema": "https://openapi.vercel.sh/microfrontends.json",
   "options": {
-    "localProxyPort": 3324,
+    "localProxyPort": 3324
   },
   "applications": {
     "vercel-site": {
       "development": {
         "local": 3331,
-        "fallback": "https://vercel.com",
-      },
+        "fallback": "https://vercel.com"
+      }
     },
     "vercel-marketing": {
       "routing": [
@@ -20,8 +20,8 @@
             "/press",
             "/changelog",
             "/changelog/:slug*",
-            "/customers/:slug*",
-          ],
+            "/customers/:slug*"
+          ]
         },
         {
           "group": "navbar",
@@ -66,55 +66,55 @@
             "/contact/sales",
             "/contact/sales/:slug*",
             "/try-enterprise",
-            "/solutions/composable-commerce/migration",
-          ],
-        },
+            "/solutions/composable-commerce/migration"
+          ]
+        }
       ],
       "development": {
-        "fallback": "marketing.vercel.com",
-      },
+        "fallback": "marketing.vercel.com"
+      }
     },
     "geist-docs": {
       "routing": [
         {
-          "paths": ["/design/:path*", "/geist/:path*"],
-        },
+          "paths": ["/design/:path*", "/geist/:path*"]
+        }
       ],
 
       "development": {
         "fallback": "https://geist.vercel.com",
-        "local": 3333,
-      },
+        "local": 3333
+      }
     },
     "docs": {
       "routing": [],
       "development": {
         "fallback": "https://docs.vercel.com",
-        "local": 3334,
-      },
+        "local": 3334
+      }
     },
     "nextjs-conf": {
       "routing": [],
       "development": {
-        "fallback": "https://next.vercel.com",
-      },
+        "fallback": "https://next.vercel.com"
+      }
     },
     "other-app": {
       "routing": [
         {
           "group": "released-feature",
-          "paths": ["/new-feature-1/:slug*"],
+          "paths": ["/new-feature-1/:slug*"]
         },
         {
           "group": "new-feature-with-flag-routing",
           "paths": ["/new-feature-2/:slug*"],
-          "flag": "new-feature-flag",
+          "flag": "new-feature-flag"
         },
         {
           "group": "new-feature-with-default-app-routing",
-          "paths": ["/new-feature-3/:slug*"],
-        },
-      ],
-    },
-  },
+          "paths": ["/new-feature-3/:slug*"]
+        }
+      ]
+    }
+  }
 }

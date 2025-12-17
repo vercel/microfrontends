@@ -1,6 +1,6 @@
 import { pathToRegexp } from 'path-to-regexp';
 import type { ApplicationRouting, ChildApplication } from '../../schema/types';
-import { validateConfigPaths, validateAppPaths } from './validation';
+import { validateAppPaths, validateConfigPaths } from './validation';
 
 describe('validation', () => {
   describe('validateConfigPaths', () => {

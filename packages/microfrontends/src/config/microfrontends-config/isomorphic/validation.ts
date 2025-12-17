@@ -1,11 +1,11 @@
-import { pathToRegexp, parse as parsePathRegexp } from 'path-to-regexp';
+import { parse as parsePathRegexp, pathToRegexp } from 'path-to-regexp';
+import { MicrofrontendError } from '../../errors';
 import type {
   ApplicationId,
-  PathGroup,
   ApplicationRouting,
   ChildApplication as ChildApplicationConfig,
+  PathGroup,
 } from '../../schema/types';
-import { MicrofrontendError } from '../../errors';
 import { isDefaultApp } from '../../schema/utils/is-default-app';
 
 const LIST_FORMATTER = new Intl.ListFormat('en', {

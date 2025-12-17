@@ -1,15 +1,15 @@
 /* @jest-environment node */
 
 import {
-  getRedirectUrl,
-  getRewrittenUrl,
-  unstable_getResponseFromNextConfig,
-} from 'next/experimental/testing/server';
-import {
   expandWildcards,
   getAllMicrofrontendPaths,
   loadMicrofrontendConfigForEdge,
 } from '@vercel/microfrontends/next/testing';
+import {
+  getRedirectUrl,
+  getRewrittenUrl,
+  unstable_getResponseFromNextConfig,
+} from 'next/experimental/testing/server';
 
 type Env = 'development' | 'preview' | 'production';
 
@@ -18,7 +18,6 @@ describe('next.config.ts', () => {
 
   for (const env of environments) {
     describe(`when VERCEL_ENV is '${env}'`, () => {
-      // eslint-disable-next-line @typescript-eslint/consistent-type-imports
       let nextConfig: typeof import('../next.config').default;
 
       beforeAll(async () => {
@@ -40,7 +39,6 @@ describe('next.config.ts', () => {
         const errors = [];
         for (const path of allPaths) {
           for (const concretePath of expandWildcards(path)) {
-            // eslint-disable-next-line no-await-in-loop
             const response = await unstable_getResponseFromNextConfig({
               url: concretePath,
               nextConfig,

@@ -1,4 +1,4 @@
-import { test, expect, type BrowserContext } from '@playwright/test';
+import { type BrowserContext, expect, test } from '@playwright/test';
 import { encrypt } from 'flags';
 
 const FEATURE_FLAGS_COOKIE_NAME = 'vercel-flag-overrides';

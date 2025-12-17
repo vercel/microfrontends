@@ -1,5 +1,5 @@
-import nextJest from 'next/jest';
 import type { Config } from 'jest';
+import nextJest from 'next/jest';
 
 const customConfig: Config = {
   collectCoverageFrom: ['./**/*.{ts,tsx}'],
@@ -24,7 +24,6 @@ const customConfig: Config = {
   verbose: true,
 };
 
-// eslint-disable-next-line import/no-default-export
 export default async (): Promise<Config> => {
   const config = (await nextJest({ dir: './' })(customConfig)()) as Config;
   const finalConfig = {

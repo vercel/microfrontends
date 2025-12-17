@@ -1,12 +1,12 @@
 import fs from 'node:fs';
 import { join } from 'node:path';
 import { parse } from 'jsonc-parser';
-import { fileURLToPath } from '../test-utils/file-url-to-path';
-import type { Config } from '../config/schema/types';
 import { MicrofrontendConfigIsomorphic } from '../config/microfrontends-config/isomorphic';
 import { Host } from '../config/microfrontends-config/isomorphic/host';
-import { OVERRIDES_ENV_COOKIE_PREFIX } from '../config/overrides/constants';
 import { generateAssetPrefixFromName } from '../config/microfrontends-config/isomorphic/utils/generate-asset-prefix';
+import { OVERRIDES_ENV_COOKIE_PREFIX } from '../config/overrides/constants';
+import type { Config } from '../config/schema/types';
+import { fileURLToPath } from '../test-utils/file-url-to-path';
 import { LocalProxy, ProxyRequestRouter } from './local-proxy';
 
 const fixtures = fileURLToPath(
@@ -526,7 +526,6 @@ describe('class ProxyRequestRouter', () => {
   it('routes to default if middleware return invalid zone', () => {
     const mockedError = jest
       .spyOn(console, 'error')
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
       .mockImplementation(() => {});
     const config = simpleConfig();
     const router = new ProxyRequestRouter(config, {
@@ -554,7 +553,6 @@ describe('class ProxyRequestRouter', () => {
   it('warns if checking production middleware', () => {
     const mockedError = jest
       .spyOn(console, 'error')
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
       .mockImplementation(() => {});
     const config = simpleConfig();
     const router = new ProxyRequestRouter(config, {

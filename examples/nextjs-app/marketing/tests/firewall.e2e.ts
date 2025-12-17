@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.describe('Firewall behavior', () => {
   test.describe('Firewall rules in parent app', () => {

@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.describe('Vite-base-path page (child app)', () => {
   test('page should load correctly', async ({ page }) => {
