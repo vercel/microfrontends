@@ -1,7 +1,6 @@
 import fs from 'node:fs';
 import { createRequire } from 'node:module';
 import type { NextConfig } from 'next';
-// eslint-disable-next-line import/no-named-as-default
 import type webpack from 'webpack';
 import type { WebpackOptionsNormalized } from 'webpack';
 import * as semver from 'semver';
@@ -45,7 +44,6 @@ export function transform(args: TransformConfigInput): TransformConfigResponse {
         typeof next.webpack === 'function' ? next.webpack(cfg, context) : cfg
       ) as WebpackOptionsNormalized;
 
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const { isServer, nextRuntime, webpack: wpFromNext } = context;
       if (!useDefineServer && (isServer || nextRuntime === 'edge')) {
         config.plugins.push(

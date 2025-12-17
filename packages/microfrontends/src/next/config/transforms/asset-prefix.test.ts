@@ -195,7 +195,6 @@ describe('withMicrofrontends: assetPrefix', () => {
     const app = config.getApplication(input.app.name);
 
     if (throws) {
-      // eslint-disable-next-line jest/no-conditional-expect
       expect(() =>
         transform({
           next: input.next,
@@ -210,7 +209,6 @@ describe('withMicrofrontends: assetPrefix', () => {
         microfrontend: config,
       });
 
-      // eslint-disable-next-line jest/no-conditional-expect
       expect(result).toEqual(expected);
     }
   });

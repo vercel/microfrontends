@@ -61,7 +61,6 @@ describe('withMicrofrontends: rewrites', () => {
       env: {
         MY_ENV_VAR: 'test',
       },
-      // eslint-disable-next-line @typescript-eslint/require-await
       rewrites: async () => [
         {
           source: '/test',
@@ -105,7 +104,6 @@ describe('withMicrofrontends: rewrites', () => {
       env: {
         MY_ENV_VAR: 'test',
       },
-      // eslint-disable-next-line @typescript-eslint/require-await
       rewrites: async () => ({
         afterFiles: [
           {
@@ -174,7 +172,6 @@ describe('withMicrofrontends: rewrites', () => {
       env: {
         MY_ENV_VAR: 'test',
       },
-      // eslint-disable-next-line @typescript-eslint/require-await
       rewrites: async () => {
         aFunc();
         return {

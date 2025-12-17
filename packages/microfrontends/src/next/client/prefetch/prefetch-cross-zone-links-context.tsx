@@ -13,7 +13,6 @@ export interface PrefetchCrossZoneLinksContext {
 
 export const PrefetchCrossZoneLinksContext =
   createContext<PrefetchCrossZoneLinksContext>({
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
     prefetchHref: () => {},
   });
 

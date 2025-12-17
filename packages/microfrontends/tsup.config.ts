@@ -13,7 +13,6 @@ const COMMON_CFG: Options = {
   external: ['node_modules', 'react'],
 };
 
-// eslint-disable-next-line import/no-default-export
 export default defineConfig([
   {
     ...COMMON_CFG,

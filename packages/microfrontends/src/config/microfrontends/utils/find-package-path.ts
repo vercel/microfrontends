@@ -21,7 +21,6 @@ function findPackagePathWithGlob({
   name,
 }: FindPackagePathOptions): string | null {
   try {
-    // eslint-disable-next-line import/no-named-as-default-member
     const packageJsonPaths = fg.globSync('**/package.json', {
       cwd: repositoryRoot,
       absolute: true,

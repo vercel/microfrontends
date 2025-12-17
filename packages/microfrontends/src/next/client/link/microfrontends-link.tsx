@@ -13,7 +13,6 @@ interface BaseProps {
 
 // fix for tsc inlining LinkProps from next
 // https://github.com/microsoft/TypeScript/issues/37151#issuecomment-756232934
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface NextLinkProps extends ExternalNextLinkProps {}
 export type LinkProps = BaseProps &
   Omit<NextLinkProps, keyof BaseProps> &

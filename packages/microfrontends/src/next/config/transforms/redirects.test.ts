@@ -83,7 +83,6 @@ describe('withMicrofrontends: redirects', () => {
       }).config;
 
       const nextConfig: NextConfig = {
-        // eslint-disable-next-line @typescript-eslint/require-await
         redirects: async () => [
           {
             source: '/blog/alpha',

@@ -193,7 +193,6 @@ describe('generateExports', () => {
   it('should log appropriate messages during execution', () => {
     const consoleLogSpy = jest
       .spyOn(console, 'log')
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
       .mockImplementation(() => {});
     const mockPackageJson = JSON.stringify({
       type: 'module',

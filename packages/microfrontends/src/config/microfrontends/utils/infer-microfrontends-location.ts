@@ -35,7 +35,6 @@ function findPackageWithMicrofrontendsConfig({
   );
 
   try {
-    // eslint-disable-next-line import/no-named-as-default-member
     const microfrontendsJsonPaths = fg.globSync(
       `**/{${getPossibleConfigurationFilenames({ customConfigFilename }).join(',')}}`,
       {

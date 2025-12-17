@@ -1,5 +1,4 @@
-/* TODO: Tailwind v4 syntax - not yet supported by Biome
-@import 'tailwindcss' prefix(remote); */
+@import 'tailwindcss' prefix(remote);
 
 @theme {
   --color-background: white;

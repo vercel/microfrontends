@@ -198,7 +198,6 @@ export async function runMicrofrontendsMiddleware({
         ? pathname === mware.src
         : mware.src.test(pathname)
     ) {
-      // eslint-disable-next-line no-await-in-loop
       const response = await mware.fn(request);
       if (response) {
         return response;

@@ -111,7 +111,6 @@ export function transform(args: TransformConfigInput): TransformConfigResponse {
     };
   } else {
     // rewrites aren't defined, we can write our own
-    // eslint-disable-next-line @typescript-eslint/require-await
     next.rewrites = async () => ({
       beforeFiles: newBeforeFiles,
       afterFiles: [],

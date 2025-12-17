@@ -26,7 +26,6 @@ describe('runMicrofrontendsMiddleware', () => {
   let config: Config;
   let originalFetch: Fetch;
   const fetchMock = jest.fn<ReturnType<Fetch>, Parameters<Fetch>>(() => {
-    // eslint-disable-next-line no-console
     console.error('fetchMock not implemented');
     throw new Error('No implementation provided');
   });

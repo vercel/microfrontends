@@ -526,7 +526,6 @@ describe('class ProxyRequestRouter', () => {
   it('routes to default if middleware return invalid zone', () => {
     const mockedError = jest
       .spyOn(console, 'error')
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
       .mockImplementation(() => {});
     const config = simpleConfig();
     const router = new ProxyRequestRouter(config, {
@@ -554,7 +553,6 @@ describe('class ProxyRequestRouter', () => {
   it('warns if checking production middleware', () => {
     const mockedError = jest
       .spyOn(console, 'error')
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
       .mockImplementation(() => {});
     const config = simpleConfig();
     const router = new ProxyRequestRouter(config, {

@@ -266,7 +266,6 @@ export async function validateMiddlewareOnFlaggedPaths(
           const requestPath = `${host}${path}`;
           const request = new NextRequest(requestPath);
 
-          // eslint-disable-next-line no-await-in-loop
           const response = await middleware(
             request,
             {} as unknown as NextFetchEvent,

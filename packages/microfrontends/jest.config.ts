@@ -24,7 +24,6 @@ const customConfig: Config = {
   verbose: true,
 };
 
-// eslint-disable-next-line import/no-default-export
 export default async (): Promise<Config> => {
   const config = (await nextJest({ dir: './' })(customConfig)()) as Config;
   const finalConfig = {

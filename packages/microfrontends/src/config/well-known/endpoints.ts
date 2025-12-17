@@ -33,7 +33,6 @@ export async function getWellKnownClientData(
             `Flag "${flagName}" was specified to control routing for path group "${pathGroup.group}" in application ${applicationName} but not found in provided flag values.`,
           );
         }
-        // eslint-disable-next-line no-await-in-loop
         const flagEnabled = await flagFn();
         if (flagEnabled) {
           allPaths.push(...pathGroup.paths);

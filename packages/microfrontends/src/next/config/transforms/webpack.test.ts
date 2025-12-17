@@ -1,7 +1,6 @@
 import { join } from 'node:path';
 import type { WebpackConfigContext } from 'next/dist/server/config-shared';
 import type { NextConfig } from 'next';
-// eslint-disable-next-line import/no-named-as-default
 import webpack, { type EnvironmentPlugin } from 'webpack';
 import { fileURLToPath } from '../../../test-utils/file-url-to-path';
 import { MicrofrontendsServer } from '../../../config/microfrontends/server';
@@ -117,7 +116,6 @@ describe('transform function', () => {
       // Ensure the env var is set as expected
       expect(webpackConfig.plugins).toEqual([
         { resourceRegExp: 'foo' },
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         { newResource: expect.anything(), resourceRegExp: /^node:/ },
       ]);
       expect(webpackConfig.resolve.fallback).toEqual({
