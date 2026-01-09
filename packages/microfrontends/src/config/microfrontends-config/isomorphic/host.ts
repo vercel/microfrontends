@@ -2,6 +2,7 @@ import type {
   LocalHostConfig as LocalHostConfigSchema,
   HostConfig as RemoteHostConfigSchema,
 } from '../../../bin/types';
+import { MFE_PORT_OVERRIDE_ENV } from './constants';
 import { generatePortFromName } from './utils/generate-port';
 
 interface HostOptions {
@@ -109,6 +110,21 @@ export class LocalHost extends Host {
     appName: string;
     local?: string | number | LocalHostConfigSchema;
   }) {
+    // Check for MFE_PORT_OVERRIDE first - this allows multi-worktree setups
+    // to override the port for all local applications
+    const portOverride = process.env[MFE_PORT_OVERRIDE_ENV];
+    if (portOverride) {
+      const overridePort = Number.parseInt(portOverride, 10);
+      if (!Number.isNaN(overridePort) && overridePort > 0) {
+        super({
+          protocol: 'http',
+          host: 'localhost',
+          port: overridePort,
+        });
+        return;
+      }
+    }
+
     let protocol: RemoteHostConfigSchema['protocol'];
     let host: string | undefined;
     let port: number | undefined;
