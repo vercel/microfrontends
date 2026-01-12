@@ -1,7 +1,7 @@
 import { join } from 'node:path';
 import { chdir, cwd } from 'node:process';
 import { fileURLToPath } from '../test-utils/file-url-to-path';
-import { MFE_PORT_OVERRIDE_ENV, mfePort } from './mfe-port';
+import { MFE_PORT_ENV, mfePort } from './mfe-port';
 
 // Use the existing fixtures
 const fixtures = fileURLToPath(
@@ -14,7 +14,7 @@ describe('mfePort', () => {
 
   beforeEach(() => {
     // Reset env before each test
-    delete process.env[MFE_PORT_OVERRIDE_ENV];
+    delete process.env[MFE_PORT_ENV];
   });
 
   afterEach(() => {
@@ -22,11 +22,11 @@ describe('mfePort', () => {
     process.env = { ...originalEnv };
   });
 
-  describe('with MFE_PORT_OVERRIDE environment variable', () => {
+  describe('with MFE_PORT environment variable', () => {
     it('uses the override port when set to a valid number', () => {
       // Create a minimal fixture directory for this test
       const packageDir = join(fixtures, 'with-package-json');
-      process.env[MFE_PORT_OVERRIDE_ENV] = '4000';
+      process.env[MFE_PORT_ENV] = '4000';
 
       const result = mfePort(packageDir);
 
@@ -36,7 +36,7 @@ describe('mfePort', () => {
 
     it('uses the override port when set to a string number', () => {
       const packageDir = join(fixtures, 'with-package-json');
-      process.env[MFE_PORT_OVERRIDE_ENV] = '8080';
+      process.env[MFE_PORT_ENV] = '8080';
 
       const result = mfePort(packageDir);
 
@@ -46,7 +46,7 @@ describe('mfePort', () => {
 
     it('ignores invalid override values (non-numeric)', () => {
       const packageDir = join(fixtures, 'with-package-json');
-      process.env[MFE_PORT_OVERRIDE_ENV] = 'not-a-number';
+      process.env[MFE_PORT_ENV] = 'not-a-number';
 
       // Should fall through to config loading, which will fail without proper setup
       // This test validates that invalid values don't cause the override to trigger
@@ -55,21 +55,21 @@ describe('mfePort', () => {
 
     it('ignores override values out of valid port range (too low)', () => {
       const packageDir = join(fixtures, 'with-package-json');
-      process.env[MFE_PORT_OVERRIDE_ENV] = '0';
+      process.env[MFE_PORT_ENV] = '0';
 
       expect(() => mfePort(packageDir)).toThrow();
     });
 
     it('ignores override values out of valid port range (too high)', () => {
       const packageDir = join(fixtures, 'with-package-json');
-      process.env[MFE_PORT_OVERRIDE_ENV] = '70000';
+      process.env[MFE_PORT_ENV] = '70000';
 
       expect(() => mfePort(packageDir)).toThrow();
     });
 
     it('ignores negative port values', () => {
       const packageDir = join(fixtures, 'with-package-json');
-      process.env[MFE_PORT_OVERRIDE_ENV] = '-1';
+      process.env[MFE_PORT_ENV] = '-1';
 
       expect(() => mfePort(packageDir)).toThrow();
     });

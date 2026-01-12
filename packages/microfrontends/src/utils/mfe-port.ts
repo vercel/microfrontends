@@ -6,7 +6,7 @@ export interface MicrofrontendsPort {
   name: string;
   version: string;
   port: number;
-  /** Whether the port was overridden via MFE_PORT_OVERRIDE env var */
+  /** Whether the port was overridden via MFE_PORT env var */
   overridden?: boolean;
 }
 
@@ -18,13 +18,13 @@ interface PortResult {
  * Environment variable to override the port for local development.
  * Useful when running multiple worktrees simultaneously.
  */
-export const MFE_PORT_OVERRIDE_ENV = 'MFE_PORT_OVERRIDE';
+export const MFE_PORT_ENV = 'MFE_PORT';
 
 export function mfePort(packageDir: string): MicrofrontendsPort {
   const { name: appName, version } = getPackageJson(packageDir);
 
   // Check for port override via environment variable
-  const portOverride = process.env[MFE_PORT_OVERRIDE_ENV];
+  const portOverride = process.env[MFE_PORT_ENV];
   if (portOverride) {
     const port = Number.parseInt(portOverride, 10);
     if (!Number.isNaN(port) && port > 0 && port < 65536) {

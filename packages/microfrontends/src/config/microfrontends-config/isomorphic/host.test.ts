@@ -1,4 +1,5 @@
 import { Host, LocalHost } from './host';
+import { MFE_PORT_ENV } from './constants';
 
 describe('class Host', () => {
   describe('parseUrl', () => {
@@ -205,6 +206,63 @@ describe('class Host', () => {
       expect(host.protocol).toBe('http');
       expect(host.host).toBe('localhost');
       expect(host.port).toBe(7665);
+    });
+
+    describe('with MFE_PORT environment variable', () => {
+      const originalEnv = { ...process.env };
+
+      beforeEach(() => {
+        delete process.env[MFE_PORT_ENV];
+      });
+
+      afterEach(() => {
+        process.env = { ...originalEnv };
+      });
+
+      it('uses the override port when set to a valid number', () => {
+        process.env[MFE_PORT_ENV] = '4000';
+        const host = new LocalHost({ appName: 'my-app' });
+        expect(host.protocol).toBe('http');
+        expect(host.host).toBe('localhost');
+        expect(host.port).toBe(4000);
+      });
+
+      it('overrides config-provided port when env var is set', () => {
+        process.env[MFE_PORT_ENV] = '5000';
+        const host = new LocalHost({
+          appName: 'my-app',
+          local: { port: 3000 },
+        });
+        expect(host.port).toBe(5000);
+      });
+
+      it('ignores invalid override values (non-numeric)', () => {
+        process.env[MFE_PORT_ENV] = 'not-a-number';
+        const host = new LocalHost({ appName: 'my-app' });
+        // Falls back to generated port from app name
+        expect(host.port).toBe(4400);
+      });
+
+      it('ignores override values out of valid port range (too high)', () => {
+        process.env[MFE_PORT_ENV] = '70000';
+        const host = new LocalHost({ appName: 'my-app' });
+        // Falls back to generated port from app name
+        expect(host.port).toBe(4400);
+      });
+
+      it('ignores zero port value', () => {
+        process.env[MFE_PORT_ENV] = '0';
+        const host = new LocalHost({ appName: 'my-app' });
+        // Falls back to generated port from app name
+        expect(host.port).toBe(4400);
+      });
+
+      it('ignores negative port values', () => {
+        process.env[MFE_PORT_ENV] = '-1';
+        const host = new LocalHost({ appName: 'my-app' });
+        // Falls back to generated port from app name
+        expect(host.port).toBe(4400);
+      });
     });
   });
 });
