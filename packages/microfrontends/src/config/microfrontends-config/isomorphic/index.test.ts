@@ -6,6 +6,7 @@ import { parse } from 'jsonc-parser';
 import { fileURLToPath } from '../../../test-utils/file-url-to-path';
 import type { Config } from '../../schema/types';
 import { MicrofrontendConfigIsomorphic } from '.';
+import { MFE_LOCAL_PROXY_PORT_ENV } from './constants';
 import { hashApplicationName } from './utils/hash-application-name';
 
 const fixtures = fileURLToPath(new URL('../../__fixtures__', import.meta.url));
@@ -44,6 +45,47 @@ describe('class MicrofrontendConfigIsomorphic', () => {
         config,
       });
       expect(result.getLocalProxyPort()).toBe(3324);
+    });
+
+    describe('with MFE_LOCAL_PROXY_PORT environment variable', () => {
+      const originalEnv = { ...process.env };
+
+      beforeEach(() => {
+        delete process.env[MFE_LOCAL_PROXY_PORT_ENV];
+      });
+
+      afterEach(() => {
+        process.env = { ...originalEnv };
+      });
+
+      it('uses the override port when set to a valid number', () => {
+        process.env[MFE_LOCAL_PROXY_PORT_ENV] = '4000';
+        const config = parse(
+          fs.readFileSync(join(fixtures, 'simple.jsonc'), 'utf-8'),
+        ) as Config;
+        const result = new MicrofrontendConfigIsomorphic({ config });
+        expect(result.getLocalProxyPort()).toBe(4000);
+      });
+
+      it('ignores invalid override values (non-numeric)', () => {
+        process.env[MFE_LOCAL_PROXY_PORT_ENV] = 'not-a-number';
+        const config = parse(
+          fs.readFileSync(join(fixtures, 'simple.jsonc'), 'utf-8'),
+        ) as Config;
+        const result = new MicrofrontendConfigIsomorphic({ config });
+        // Falls back to config value
+        expect(result.getLocalProxyPort()).toBe(3324);
+      });
+
+      it('ignores override values out of valid port range', () => {
+        process.env[MFE_LOCAL_PROXY_PORT_ENV] = '70000';
+        const config = parse(
+          fs.readFileSync(join(fixtures, 'simple.jsonc'), 'utf-8'),
+        ) as Config;
+        const result = new MicrofrontendConfigIsomorphic({ config });
+        // Falls back to config value
+        expect(result.getLocalProxyPort()).toBe(3324);
+      });
     });
   });
 

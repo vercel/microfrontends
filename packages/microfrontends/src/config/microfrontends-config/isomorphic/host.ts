@@ -2,6 +2,7 @@ import type {
   LocalHostConfig as LocalHostConfigSchema,
   HostConfig as RemoteHostConfigSchema,
 } from '../../../bin/types';
+import { MFE_APP_PORT_ENV } from './constants';
 import { generatePortFromName } from './utils/generate-port';
 
 interface HostOptions {
@@ -74,7 +75,7 @@ export class Host {
     return {
       protocol,
       host: parsed.hostname,
-      port: parsed.port ? Number.parseInt(parsed.port) : undefined,
+      port: parsed.port ? Number.parseInt(parsed.port, 10) : undefined,
     };
   }
 
@@ -109,6 +110,25 @@ export class LocalHost extends Host {
     appName: string;
     local?: string | number | LocalHostConfigSchema;
   }) {
+    // Check for MFE_APP_PORT first - this allows multi-worktree setups
+    // to override the port for the local application
+    const portOverride = process.env[MFE_APP_PORT_ENV];
+    if (portOverride) {
+      const overridePort = Number.parseInt(portOverride, 10);
+      if (
+        !Number.isNaN(overridePort) &&
+        overridePort > 0 &&
+        overridePort < 65536
+      ) {
+        super({
+          protocol: 'http',
+          host: 'localhost',
+          port: overridePort,
+        });
+        return;
+      }
+    }
+
     let protocol: RemoteHostConfigSchema['protocol'];
     let host: string | undefined;
     let port: number | undefined;
@@ -116,7 +136,7 @@ export class LocalHost extends Host {
       port = local;
     } else if (typeof local === 'string') {
       if (/^\d+$/.test(local)) {
-        port = Number.parseInt(local);
+        port = Number.parseInt(local, 10);
       } else {
         const parsed = Host.parseUrl(local, 'http');
         protocol = parsed.protocol;

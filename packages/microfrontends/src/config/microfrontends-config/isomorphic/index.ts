@@ -7,7 +7,10 @@ import { MicrofrontendConfigClient } from '../client';
 import type { ClientConfig } from '../client/types';
 import { getConfigStringFromEnv } from '../utils/get-config-from-env';
 import { ChildApplication, DefaultApplication } from './application';
-import { DEFAULT_LOCAL_PROXY_PORT } from './constants';
+import {
+  DEFAULT_LOCAL_PROXY_PORT,
+  MFE_LOCAL_PROXY_PORT_ENV,
+} from './constants';
 import { hashApplicationName } from './utils/hash-application-name';
 import {
   validateConfigDefaultApplication,
@@ -188,9 +191,18 @@ export class MicrofrontendConfigIsomorphic {
   }
 
   /**
-   * Returns the configured port for the local proxy
+   * Returns the configured port for the local proxy.
+   * Can be overridden via MFE_LOCAL_PROXY_PORT environment variable.
    */
   getLocalProxyPort(): number {
+    // Check for port override via environment variable
+    const portOverride = process.env[MFE_LOCAL_PROXY_PORT_ENV];
+    if (portOverride) {
+      const port = Number.parseInt(portOverride, 10);
+      if (!Number.isNaN(port) && port > 0 && port < 65536) {
+        return port;
+      }
+    }
     return this.config.options?.localProxyPort ?? DEFAULT_LOCAL_PROXY_PORT;
   }
 
