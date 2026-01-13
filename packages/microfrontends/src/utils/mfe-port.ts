@@ -17,14 +17,15 @@ interface PortResult {
 /**
  * Environment variable to override the port for local development.
  * Useful when running multiple worktrees simultaneously.
+ * Note: Only works when a single application is running locally.
  */
-export const MFE_PORT_ENV = 'MFE_PORT';
+export const MFE_APP_PORT_ENV = 'MFE_APP_PORT';
 
 export function mfePort(packageDir: string): MicrofrontendsPort {
   const { name: appName, version } = getPackageJson(packageDir);
 
   // Check for port override via environment variable
-  const portOverride = process.env[MFE_PORT_ENV];
+  const portOverride = process.env[MFE_APP_PORT_ENV];
   if (portOverride) {
     const port = Number.parseInt(portOverride, 10);
     if (!Number.isNaN(port) && port > 0 && port < 65536) {
