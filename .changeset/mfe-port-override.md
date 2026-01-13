@@ -1,5 +1,5 @@
 ---
-'@vercel/microfrontends': minor
+'@vercel/microfrontends': patch
 ---
 
 Add environment variable overrides for local development ports, enabling multiple worktrees to run simultaneously:
