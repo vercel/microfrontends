@@ -11,6 +11,7 @@ import type {
   Application,
   ChildApplication,
 } from '../config/microfrontends-config/isomorphic/application';
+import { MFE_APP_PORT_ENV } from '../config/microfrontends-config/isomorphic/constants';
 import { hashApplicationName } from '../config/microfrontends-config/isomorphic/utils/hash-application-name';
 import {
   getAppEnvOverrideCookieName,
@@ -539,6 +540,15 @@ export class LocalProxy {
     if (unknownApps.length) {
       throw new Error(
         `The following apps passed via --local-apps are not in the microfrontends config: ${unknownApps.join(', ')} (microfrontends config contains: ${Array.from(allApps).join(', ')})`,
+      );
+    }
+
+    // Validate that MFE_APP_PORT is not used with multiple local apps
+    if (process.env[MFE_APP_PORT_ENV] && localApps.length > 1) {
+      throw new Error(
+        `${MFE_APP_PORT_ENV} cannot be used when multiple applications are running locally. ` +
+          `You have ${localApps.length} local apps: ${localApps.join(', ')}. ` +
+          `Either run a single app locally or remove the ${MFE_APP_PORT_ENV} environment variable.`,
       );
     }
   }

@@ -1,6 +1,6 @@
 import { cwd } from 'node:process';
 import type { MicrofrontendsPort } from '../utils/mfe-port';
-import { mfePort } from '../utils/mfe-port';
+import { MFE_APP_PORT_ENV, mfePort } from '../utils/mfe-port';
 import { logger } from './logger';
 
 /**
@@ -19,9 +19,12 @@ export function displayPort(): void {
  * Use stderr to print the header message so that it doesn't interfere with the
  * output of the command.
  */
-function header({ name, version, port }: MicrofrontendsPort): void {
+function header({ name, version, port, overridden }: MicrofrontendsPort): void {
+  const portSource = overridden
+    ? `${port} (override via ${MFE_APP_PORT_ENV})`
+    : port;
   logger.error(`
   ▲ ${name}@${version}
-    · setting port to ${port}
+    · setting port to ${portSource}
   `);
 }
