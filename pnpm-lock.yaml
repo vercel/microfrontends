@@ -771,8 +771,8 @@ importers:
         specifier: 20.11.30
         version: 20.11.30
       path-to-regexp:
-        specifier: 6.2.1
-        version: 6.2.1
+        specifier: 6.3.0
+        version: 6.3.0
       ts-config:
         specifier: workspace:*
         version: link:../ts-config
