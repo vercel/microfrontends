@@ -94,6 +94,15 @@ describe('validation', () => {
           '/\\:regex\\(\\[a-z\\]\\+\\)',
         ],
       },
+      {
+        test: 'non default path-to-regexp-patterns',
+        paths: [
+          '/test.:format.',
+          '/route.html.json',
+          '/route.json.html',
+          'example.:ext',
+        ],
+      },
     ])('should allow $test', ({ paths }) => {
       expect(() =>
         validateConfigPaths({
@@ -312,6 +321,48 @@ describe('validation', () => {
         path: '/city/:path((?!berlin|berlin/:path).*)',
         throws: new Error(
           `Invalid paths: Path /city/:path((?!berlin|berlin/:path).*) cannot use unsupported regular expression wildcard. If the path includes special characters, they must be escaped with backslash (e.g. '\\('). See supported paths in the documentation https://vercel.com/docs/microfrontends/path-routing#supported-path-expressions.`,
+        ),
+      },
+      {
+        path: '/test{.:format}+',
+        throws: new Error(
+          `Invalid paths: Optional paths are not supported: /test{.:format}+. See supported paths in the documentation https://vercel.com/docs/microfrontends/path-routing#supported-path-expressions.`,
+        ),
+      },
+      {
+        path: '/:test.:format',
+        throws: new Error(
+          `Invalid paths: Only one wildcard is allowed per path segment: /:test.:format. See supported paths in the documentation https://vercel.com/docs/microfrontends/path-routing#supported-path-expressions.`,
+        ),
+      },
+      {
+        path: '/:test{.:format}?',
+        throws: new Error(
+          `Invalid paths: Optional paths are not supported: /:test{.:format}?. See supported paths in the documentation https://vercel.com/docs/microfrontends/path-routing#supported-path-expressions.`,
+        ),
+      },
+      {
+        path: '/:test.:format?',
+        throws: new Error(
+          `Invalid paths: Optional paths are not supported: /:test.:format?. See supported paths in the documentation https://vercel.com/docs/microfrontends/path-routing#supported-path-expressions.`,
+        ),
+      },
+      {
+        path: '/:foo\\(:bar?\\)',
+        throws: new Error(
+          `Invalid paths: Optional paths are not supported: /:foo\\(:bar?\\). See supported paths in the documentation https://vercel.com/docs/microfrontends/path-routing#supported-path-expressions.`,
+        ),
+      },
+      {
+        path: '{$:foo}{$:bar}?',
+        throws: new Error(
+          `Invalid paths: Optional paths are not supported: {$:foo}{$:bar}?. See supported paths in the documentation https://vercel.com/docs/microfrontends/path-routing#supported-path-expressions.`,
+        ),
+      },
+      {
+        path: 'name/:attr1?{-:attr2}?{-:attr3}?',
+        throws: new Error(
+          `Invalid paths: Optional paths are not supported: name/:attr1?{-:attr2}?{-:attr3}?. See supported paths in the documentation https://vercel.com/docs/microfrontends/path-routing#supported-path-expressions.`,
         ),
       },
     ])('should not allow $path', ({ path, throws }) => {

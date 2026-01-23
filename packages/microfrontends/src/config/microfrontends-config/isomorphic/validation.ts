@@ -106,8 +106,8 @@ export const validateConfigPaths = (
   }
 };
 
-// From https://github.com/pillarjs/path-to-regexp/blob/b0778f5e8e6c6e9ee4e2f5b34e877cc5229f8036/src/index.ts#L143
-const PATH_DEFAULT_PATTERN = '[^\\/#\\?]+?';
+// From https://github.com/pillarjs/path-to-regexp/blob/75a92c3d7c42159f459ab42f346899152906ea8c/src/index.ts#L183-L184
+const PATH_DEFAULT_PATTERNS = ['[^\\/#\\?]+?', '(?:(?!\\.)[^\\/#\\?])+?'];
 
 function validatePathExpression(path: string): string | undefined {
   try {
@@ -131,7 +131,7 @@ function validatePathExpression(path: string): string | undefined {
           return `Only named wildcards are allowed: ${path} (hint: add ":path" to the wildcard)`;
         }
         if (
-          token.pattern !== PATH_DEFAULT_PATTERN &&
+          !PATH_DEFAULT_PATTERNS.includes(token.pattern) &&
           // Allows (a|b|c) and ((?!a|b|c).*) regex
           // Only limited regex is supported for now, due to performance considerations
           // Allows all letters, numbers, and hyphens. Other characters must be escaped.
