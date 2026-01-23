@@ -10,7 +10,7 @@
   },
   "devDependencies": {
     "@types/node": "20.11.30",
-    "path-to-regexp": "6.2.1",
+    "path-to-regexp": "6.3.0",
     "ts-config": "workspace:*",
     "tsx": "^4.6.2",
     "typescript": "5.7.3"
