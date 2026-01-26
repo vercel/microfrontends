@@ -1,5 +1,11 @@
 # @vercel/microfrontends
 
+## 2.3.0
+
+### Minor Changes
+
+- 9ba1733: Upgrade path-to-regexp from 6.2.1 to 6.3.0
+
 ## 2.2.2
 
 ### Patch Changes
