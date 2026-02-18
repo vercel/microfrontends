@@ -55,7 +55,7 @@ function findPackagePathWithGlob({
 
     const [packageJsonPath] = matchingPaths as [string];
     return dirname(packageJsonPath);
-  } catch (error) {
+  } catch {
     return null;
   }
 }

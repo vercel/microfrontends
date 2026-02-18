@@ -3,8 +3,8 @@
  */
 
 import { NextRequest } from 'next/server';
+import { hashApplicationName } from '../../config/microfrontends/utils/hash-application-name';
 import { MicrofrontendConfigIsomorphic } from '../../config/microfrontends-config/isomorphic';
-import { hashApplicationName } from '../../config/microfrontends-config/isomorphic/utils/hash-application-name';
 import type { Application, Config, PathGroup } from '../../config/schema/types';
 import { TEST_CONFIG } from '../../test-utils/fixtures/test-config';
 import { runMicrofrontendsMiddleware } from './middleware';

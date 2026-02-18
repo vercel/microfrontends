@@ -1,9 +1,9 @@
 import fs from 'node:fs';
 import { join } from 'node:path';
 import { parse } from 'jsonc-parser';
+import { generateDefaultAssetPrefixFromName } from '../config/microfrontends/utils';
 import { MicrofrontendConfigIsomorphic } from '../config/microfrontends-config/isomorphic';
 import { Host } from '../config/microfrontends-config/isomorphic/host';
-import { generateAssetPrefixFromName } from '../config/microfrontends-config/isomorphic/utils/generate-asset-prefix';
 import { OVERRIDES_ENV_COOKIE_PREFIX } from '../config/overrides/constants';
 import type { Config } from '../config/schema/types';
 import { fileURLToPath } from '../test-utils/file-url-to-path';
@@ -185,7 +185,7 @@ describe('class ProxyRequestRouter', () => {
       const router = new ProxyRequestRouter(config, {
         localApps: ['vercel-site', 'docs'],
       });
-      const assetPrefix = generateAssetPrefixFromName({ name: 'docs' });
+      const assetPrefix = generateDefaultAssetPrefixFromName({ name: 'docs' });
       expect(
         router.getTarget({
           url: `/${assetPrefix}/_next/static/asset.txt`,
@@ -205,7 +205,7 @@ describe('class ProxyRequestRouter', () => {
       const router = new ProxyRequestRouter(config, {
         localApps: ['vercel-site', 'docs'],
       });
-      const assetPrefix = generateAssetPrefixFromName({
+      const assetPrefix = generateDefaultAssetPrefixFromName({
         name: 'vercel-marketing',
       });
       expect(
@@ -228,14 +228,14 @@ describe('class ProxyRequestRouter', () => {
       });
       expect(
         router.getTarget({
-          url: `/${generateAssetPrefixFromName({ name: 'other-app' })}/_next/static/asset.txt`,
+          url: `/${generateDefaultAssetPrefixFromName({ name: 'other-app' })}/_next/static/asset.txt`,
           headers: {},
         }),
       ).toMatchObject({
         application: 'vercel-site',
         protocol: 'https',
         hostname: 'vercel.com',
-        path: `/${generateAssetPrefixFromName({ name: 'other-app' })}/_next/static/asset.txt`,
+        path: `/${generateDefaultAssetPrefixFromName({ name: 'other-app' })}/_next/static/asset.txt`,
       });
     });
 
@@ -268,7 +268,7 @@ describe('class ProxyRequestRouter', () => {
       const router = new ProxyRequestRouter(config, {
         localApps: ['vercel-site', 'docs'],
       });
-      const assetPrefix = generateAssetPrefixFromName({
+      const assetPrefix = generateDefaultAssetPrefixFromName({
         name: 'vercel-marketing',
       });
       expect(
@@ -300,7 +300,7 @@ describe('class ProxyRequestRouter', () => {
       const router = new ProxyRequestRouter(config, {
         localApps: ['vercel-site', 'docs'],
       });
-      const assetPrefix = generateAssetPrefixFromName({ name: 'docs' });
+      const assetPrefix = generateDefaultAssetPrefixFromName({ name: 'docs' });
       expect(
         router.getTarget({
           url: `/${assetPrefix}/.well-known/vercel/flags`,
@@ -320,7 +320,7 @@ describe('class ProxyRequestRouter', () => {
       const router = new ProxyRequestRouter(config, {
         localApps: ['vercel-site', 'docs'],
       });
-      const assetPrefix = generateAssetPrefixFromName({ name: 'docs' });
+      const assetPrefix = generateDefaultAssetPrefixFromName({ name: 'docs' });
       expect(
         router.getTarget({
           url: `/${assetPrefix}/_vercel/path`,
@@ -340,7 +340,7 @@ describe('class ProxyRequestRouter', () => {
       const router = new ProxyRequestRouter(config, {
         localApps: ['vercel-site', 'docs'],
       });
-      const assetPrefix = generateAssetPrefixFromName({ name: 'docs' });
+      const assetPrefix = generateDefaultAssetPrefixFromName({ name: 'docs' });
       expect(
         router.getTarget({
           url: `/${assetPrefix}/_vercel/path?k=v`,
@@ -423,7 +423,7 @@ describe('class ProxyRequestRouter', () => {
       const router = new ProxyRequestRouter(config, {
         localApps: ['docs'],
       });
-      const assetPrefix = generateAssetPrefixFromName({ name: 'docs' });
+      const assetPrefix = generateDefaultAssetPrefixFromName({ name: 'docs' });
       const url = `/_next/image?url=%2F${assetPrefix}%2F_next%2Fstatic%2Fmedia%2Ficon.png&w=64&q=75`;
       expect(
         router.getTarget({

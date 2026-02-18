@@ -4,9 +4,9 @@ import fs from 'node:fs';
 import { join } from 'node:path';
 import { parse } from 'jsonc-parser';
 import { fileURLToPath } from '../../../test-utils/file-url-to-path';
+import { hashApplicationName } from '../../microfrontends/utils/hash-application-name';
 import type { Config } from '../../schema/types';
 import { MicrofrontendConfigIsomorphic } from '../isomorphic';
-import { hashApplicationName } from '../isomorphic/utils/hash-application-name';
 
 const fixtures = fileURLToPath(new URL('../../__fixtures__', import.meta.url));
 

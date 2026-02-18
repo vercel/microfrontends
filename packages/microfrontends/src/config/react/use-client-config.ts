@@ -35,7 +35,7 @@ async function fetchClientConfigFromServer(): Promise<MicrofrontendConfigClient 
     const client = new MicrofrontendConfigClient(responseJson.config);
     cachedServerClient = client;
     return client;
-  } catch (err) {
+  } catch {
     return null;
   }
 }

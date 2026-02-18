@@ -1,3 +1,4 @@
+import { generateDefaultAssetPrefixFromName } from '../../microfrontends/utils';
 import type { ApplicationOverrideConfig } from '../../overrides';
 import type {
   Application as ApplicationConfig,
@@ -6,7 +7,6 @@ import type {
   PathGroup,
 } from '../../schema/types';
 import { Host, LocalHost } from './host';
-import { generateAssetPrefixFromName } from './utils/generate-asset-prefix';
 import { generateAutomationBypassEnvVarName } from './utils/generate-automation-bypass-env-var-name';
 import { validateAppPaths } from './validation';
 
@@ -64,7 +64,7 @@ export class Application {
   }
 
   getAssetPrefix(): string {
-    const generatedAssetPrefix = generateAssetPrefixFromName({
+    const generatedAssetPrefix = generateDefaultAssetPrefixFromName({
       name: this.name,
     });
     if ('assetPrefix' in this.serialized) {

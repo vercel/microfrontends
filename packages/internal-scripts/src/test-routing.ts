@@ -1,7 +1,7 @@
 import { pathToRegexp } from 'path-to-regexp';
 
 function main() {
-  const [pathExpr, pathToTest, ...args] = process.argv.slice(2);
+  const [pathExpr, pathToTest] = process.argv.slice(2);
 
   if (!pathExpr || !pathToTest) {
     console.error(
