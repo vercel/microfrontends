@@ -6,7 +6,7 @@ import { parse } from 'jsonc-parser';
 import { fileURLToPath } from '../../../test-utils/file-url-to-path';
 import type { Config } from '../../schema/types';
 import { MicrofrontendConfigIsomorphic } from '../isomorphic';
-import { hashApplicationName } from '../isomorphic/utils/hash-application-name';
+import { hashApplicationName } from '../../microfrontends/utils/hash-application-name';
 
 const fixtures = fileURLToPath(new URL('../../__fixtures__', import.meta.url));
 

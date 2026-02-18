@@ -1,5 +1,5 @@
 import { renderHook } from '@testing-library/react';
-import { hashApplicationName } from '../../../config/microfrontends-config/isomorphic/utils/hash-application-name';
+import { hashApplicationName } from '../../../config/microfrontends/utils/hash-application-name';
 import './microfrontends-link.test.mocks';
 import { useZoneForHref } from './microfrontends-link';
 

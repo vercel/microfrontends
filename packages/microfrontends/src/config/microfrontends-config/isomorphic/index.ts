@@ -11,7 +11,7 @@ import {
   DEFAULT_LOCAL_PROXY_PORT,
   MFE_LOCAL_PROXY_PORT_ENV,
 } from './constants';
-import { hashApplicationName } from './utils/hash-application-name';
+import { hashApplicationName } from '../../microfrontends/utils/hash-application-name';
 import {
   validateConfigDefaultApplication,
   validateConfigPaths,

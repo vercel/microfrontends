@@ -7,7 +7,7 @@ import { fileURLToPath } from '../../../test-utils/file-url-to-path';
 import type { Config } from '../../schema/types';
 import { MicrofrontendConfigIsomorphic } from '.';
 import { MFE_LOCAL_PROXY_PORT_ENV } from './constants';
-import { hashApplicationName } from './utils/hash-application-name';
+import { hashApplicationName } from '../../microfrontends/utils/hash-application-name';
 
 const fixtures = fileURLToPath(new URL('../../__fixtures__', import.meta.url));
 

@@ -12,7 +12,7 @@ import type {
   ChildApplication,
 } from '../config/microfrontends-config/isomorphic/application';
 import { MFE_APP_PORT_ENV } from '../config/microfrontends-config/isomorphic/constants';
-import { hashApplicationName } from '../config/microfrontends-config/isomorphic/utils/hash-application-name';
+import { hashApplicationName } from '../config/microfrontends/utils/hash-application-name';
 import {
   getAppEnvOverrideCookieName,
   parseOverrides,

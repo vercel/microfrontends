@@ -1,5 +1,5 @@
 import { MicrofrontendsServer } from '../../../config/microfrontends/server';
-import { hashApplicationName } from '../../../config/microfrontends-config/isomorphic/utils/hash-application-name';
+import { hashApplicationName } from '../../../config/microfrontends/utils/hash-application-name';
 import { TEST_CONFIG } from '../../../test-utils/fixtures/test-config';
 
 process.env.NEXT_PUBLIC_MFE_CURRENT_APPLICATION = 'dashboard';
