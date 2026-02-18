@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const { execSync } = require('child_process');
+const { execSync } = require('node:child_process');
 
 const OUTPUT_DIR = '/private/tmp/vercel-microfrontends';
 

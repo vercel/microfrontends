@@ -28,7 +28,7 @@ function main(): void {
     .addOption(new Option('--names <names...>').hideHelp())
     .option('--port <port>', 'Port proxy will use', (value) => {
       const parsedValue = Number.parseInt(value, 10);
-      if (isNaN(parsedValue) || parsedValue <= 0) {
+      if (Number.isNaN(parsedValue) || parsedValue <= 0) {
         throw new Error(
           'The value passed in to --port must be a positive number.',
         );

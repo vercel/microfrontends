@@ -2,4 +2,4 @@
 "@vercel/microfrontends": patch
 ---
 
-Expose generateAssetPrefixFromName
+Expose generateDefaultAssetPrefixFromName
