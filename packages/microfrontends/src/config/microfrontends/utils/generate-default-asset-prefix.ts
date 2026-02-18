@@ -2,7 +2,7 @@ import { hashApplicationName } from './hash-application-name';
 
 const PREFIX = 'vc-ap';
 
-export function generateAssetPrefixFromName({
+export function generateDefaultAssetPrefixFromName({
   name,
 }: {
   name: string;

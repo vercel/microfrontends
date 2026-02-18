@@ -1,7 +1,7 @@
 import { join } from 'node:path';
 import type { NextConfig } from 'next';
 import { MicrofrontendsServer } from '../../../config/microfrontends/server';
-import { generateAssetPrefixFromName } from '../../../config/microfrontends/utils';
+import { generateDefaultAssetPrefixFromName } from '../../../config/microfrontends/utils';
 import { fileURLToPath } from '../../../test-utils/file-url-to-path';
 import { transform } from './rewrites';
 
@@ -11,7 +11,7 @@ const fixtures = fileURLToPath(
   new URL('../../../config/__fixtures__', import.meta.url),
 );
 
-const docsAssetPrefix = generateAssetPrefixFromName({
+const docsAssetPrefix = generateDefaultAssetPrefixFromName({
   name: 'docs',
 });
 

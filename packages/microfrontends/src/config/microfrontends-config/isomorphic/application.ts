@@ -1,4 +1,4 @@
-import { generateAssetPrefixFromName } from '../../microfrontends/utils';
+import { generateDefaultAssetPrefixFromName } from '../../microfrontends/utils';
 import type { ApplicationOverrideConfig } from '../../overrides';
 import type {
   Application as ApplicationConfig,
@@ -64,7 +64,7 @@ export class Application {
   }
 
   getAssetPrefix(): string {
-    const generatedAssetPrefix = generateAssetPrefixFromName({
+    const generatedAssetPrefix = generateDefaultAssetPrefixFromName({
       name: this.name,
     });
     if ('assetPrefix' in this.serialized) {
