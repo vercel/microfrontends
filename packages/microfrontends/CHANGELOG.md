@@ -1,5 +1,11 @@
 # @vercel/microfrontends
 
+## 2.3.1
+
+### Patch Changes
+
+- 382fe66: Expose generateDefaultAssetPrefixFromName
+
 ## 2.3.0
 
 ### Minor Changes
