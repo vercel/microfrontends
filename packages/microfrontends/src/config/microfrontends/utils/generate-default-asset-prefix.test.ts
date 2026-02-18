@@ -1,4 +1,4 @@
-import { generateDefaultAssetPrefixFromName } from './generate-asset-prefix';
+import { generateDefaultAssetPrefixFromName } from './generate-default-asset-prefix';
 
 describe('generateDefaultAssetPrefixFromName', () => {
   it('generates a prefixed asset prefix for a given name', () => {
