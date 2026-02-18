@@ -1,9 +1,9 @@
 import fs from 'node:fs';
 import { join } from 'node:path';
 import { parse } from 'jsonc-parser';
+import { generateAssetPrefixFromName } from '../config/microfrontends/utils';
 import { MicrofrontendConfigIsomorphic } from '../config/microfrontends-config/isomorphic';
 import { Host } from '../config/microfrontends-config/isomorphic/host';
-import { generateAssetPrefixFromName } from '../config/microfrontends/utils';
 import { OVERRIDES_ENV_COOKIE_PREFIX } from '../config/overrides/constants';
 import type { Config } from '../config/schema/types';
 import { fileURLToPath } from '../test-utils/file-url-to-path';

@@ -1,3 +1,4 @@
+import { generateAssetPrefixFromName } from '../../microfrontends/utils';
 import type { ApplicationOverrideConfig } from '../../overrides';
 import type {
   Application as ApplicationConfig,
@@ -6,7 +7,6 @@ import type {
   PathGroup,
 } from '../../schema/types';
 import { Host, LocalHost } from './host';
-import { generateAssetPrefixFromName } from '../../microfrontends/utils';
 import { generateAutomationBypassEnvVarName } from './utils/generate-automation-bypass-env-var-name';
 import { validateAppPaths } from './validation';
 

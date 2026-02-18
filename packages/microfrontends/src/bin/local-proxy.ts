@@ -6,13 +6,13 @@ import Server from 'http-proxy';
 import { pathToRegexp } from 'path-to-regexp';
 import cliPkg from '../../package.json';
 import { MicrofrontendsServer } from '../config/microfrontends/server';
+import { hashApplicationName } from '../config/microfrontends/utils/hash-application-name';
 import { MicrofrontendConfigIsomorphic } from '../config/microfrontends-config/isomorphic';
 import type {
   Application,
   ChildApplication,
 } from '../config/microfrontends-config/isomorphic/application';
 import { MFE_APP_PORT_ENV } from '../config/microfrontends-config/isomorphic/constants';
-import { hashApplicationName } from '../config/microfrontends/utils/hash-application-name';
 import {
   getAppEnvOverrideCookieName,
   parseOverrides,

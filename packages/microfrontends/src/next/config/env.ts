@@ -1,10 +1,10 @@
 import { logger } from '../../bin/logger';
 import type { MicrofrontendsServer } from '../../config/microfrontends/server';
+import { hashApplicationName } from '../../config/microfrontends/utils/hash-application-name';
 import type {
   ChildApplication,
   DefaultApplication,
 } from '../../config/microfrontends-config/isomorphic/application';
-import { hashApplicationName } from '../../config/microfrontends/utils/hash-application-name';
 
 function debugEnv(env: Record<string, string>): void {
   const indent = ' '.repeat(4);

@@ -1,5 +1,6 @@
 import { parse } from 'jsonc-parser';
 import { MicrofrontendError } from '../../errors';
+import { hashApplicationName } from '../../microfrontends/utils/hash-application-name';
 import { type OverridesConfig, parseOverrides } from '../../overrides';
 import type { Config } from '../../schema/types';
 import { isDefaultApp } from '../../schema/utils/is-default-app';
@@ -11,7 +12,6 @@ import {
   DEFAULT_LOCAL_PROXY_PORT,
   MFE_LOCAL_PROXY_PORT_ENV,
 } from './constants';
-import { hashApplicationName } from '../../microfrontends/utils/hash-application-name';
 import {
   validateConfigDefaultApplication,
   validateConfigPaths,
