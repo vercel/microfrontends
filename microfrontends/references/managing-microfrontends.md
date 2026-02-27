@@ -1,0 +1,151 @@
+# Managing Microfrontends Reference
+
+## Table of Contents
+
+- [Adding Microfrontends](#adding-microfrontends)
+- [Removing Microfrontends](#removing-microfrontends)
+- [Fallback Environment](#fallback-environment)
+- [Sharing Settings](#sharing-settings)
+- [Optimizing Navigations](#optimizing-navigations)
+- [Observability Data Routing](#observability-data-routing)
+
+## Adding Microfrontends
+
+1. Visit **Settings** for the project to add
+2. Click **Microfrontends**
+3. Find the group and click **Add to Group**
+
+Changes take effect on the next deployment.
+
+## Removing Microfrontends
+
+1. Remove the microfrontend from `microfrontends.json` in the default app
+2. Visit **Settings** for the project
+3. Click **Microfrontends** → **Remove from Group**
+
+> The default application can only be removed after all other projects in the group are removed. Delete the group once empty.
+
+## Fallback Environment
+
+Controls where requests are routed when a microfrontend isn't built for a specific commit. This applies to Preview and Custom environments only — production always routes to each project's production deployment.
+
+### Options
+
+| Setting | Behavior |
+|---|---|
+| `Same Environment` | Falls back to a deployment in the same environment for the other project. Vercel auto-generates Preview deployments on the production branch. |
+| `Production` | Falls back to the promoted Production deployment of the other project. |
+| Custom environment name | Falls back to a deployment in the specified custom environment. |
+
+### Fallback behavior matrix
+
+| Current Environment | Fallback Setting | Built for Commit | Not Built for Commit |
+|---|---|---|---|
+| Preview | Same Environment | Preview | Preview |
+| Preview | Production | Preview | Production |
+| Preview | `staging` | Preview | `staging` |
+| `staging` | Same Environment | `staging` | `staging` |
+| `staging` | Production | `staging` | Production |
+
+Configure in **Settings** → Microfrontends group → **Fallback Environment**.
+
+> If using Same Environment or Custom Environment, ensure those environments have deployments to fall back to. Missing fallbacks cause `MICROFRONTENDS_MISSING_FALLBACK_ERROR`.
+
+### Branch domain fallbacks
+
+If a project has a domain assigned to a Git branch and fallback is set to Same Environment, deployments on that branch use the branch's project domain as fallback instead of the production branch. Add the branch domain to every project in the group.
+
+## Sharing Settings
+
+Use the [Vercel Terraform Provider](https://registry.terraform.io/providers/vercel/vercel/latest/docs) to synchronize settings across projects:
+
+- [Microfrontend group resource](https://registry.terraform.io/providers/vercel/vercel/latest/docs/resources/microfrontend_group)
+- [Microfrontend group membership resource](https://registry.terraform.io/providers/vercel/vercel/latest/docs/resources/microfrontend_group_membership)
+
+### Sharing environment variables
+
+Use [Shared Environment Variables](https://vercel.com/docs/environment-variables/shared-environment-variables) to manage secrets across projects.
+
+For same-name variables with different values per group, create a shared var with a unique name (e.g., `FLAG_SECRET_X`) then map it: `FLAG_SECRET=$FLAG_SECRET_X` in `.env` or build command.
+
+## Optimizing Navigations
+
+> **Note:** Currently only supported for Next.js.
+
+Navigations between top-level microfrontends cause hard navigations. Vercel optimizes these by prefetching and prerendering cross-zone links.
+
+### Setup for Next.js App Router
+
+Add `PrefetchCrossZoneLinks` to your root layout in **all** microfrontend apps:
+
+```tsx
+// app/layout.tsx
+import { PrefetchCrossZoneLinks } from '@vercel/microfrontends/next/client';
+
+export default function RootLayout({ children }) {
+  return (
+    <html>
+      <body>
+        {children}
+        <PrefetchCrossZoneLinks />
+      </body>
+    </html>
+  );
+}
+```
+
+`PrefetchCrossZoneLinks` accepts an optional `prerenderEagerness` prop (`'immediate' | 'eager' | 'moderate' | 'conservative'`, default `'conservative'`) that controls how aggressively cross-zone pages are prerendered in the background.
+
+### Setup for Next.js Pages Router
+
+Add `PrefetchCrossZoneLinks` to `_app.tsx`:
+
+```tsx
+// pages/_app.tsx
+import { PrefetchCrossZoneLinks } from '@vercel/microfrontends/next/client';
+
+export default function App({ Component, pageProps }) {
+  return (
+    <>
+      <Component {...pageProps} />
+      <PrefetchCrossZoneLinks />
+    </>
+  );
+}
+```
+
+### Using the Link component
+
+Use the microfrontends `Link` component instead of regular anchors for cross-zone links:
+
+```tsx
+import { Link } from '@vercel/microfrontends/next/client';
+
+export function Navigation() {
+  return (
+    <nav>
+      <Link href="/docs">Docs</Link>
+      <Link href="/blog">Blog</Link>
+    </nav>
+  );
+}
+```
+
+> **Note:** All paths from `microfrontends.json` become visible on the client side when using this feature.
+
+## Observability Data Routing
+
+By default, Speed Insights and Analytics data routes to the default application.
+
+To route a project's data to its own Vercel project page:
+
+1. Update dependencies:
+   - `@vercel/speed-insights` ≥ `1.2.0`
+   - `@vercel/analytics` ≥ `1.5.0`
+2. Go to **Settings** → **Microfrontends** for the project
+3. Find **Observability Routing** and enable it
+4. Takes effect on the next production deployment
+
+> Toggling does not move historical data.
+
+If using Turborepo with `--env-mode=strict`, add `ROUTE_OBSERVABILITY_TO_THIS_PROJECT` and `NEXT_PUBLIC_VERCEL_OBSERVABILITY_BASEPATH` to allowed env vars, or use `--env-mode=loose`.
