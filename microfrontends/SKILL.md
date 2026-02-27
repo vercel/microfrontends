@@ -323,7 +323,6 @@ Microfrontends share a **single domain**, so cookies and HTTP-level authenticati
 Each microfrontend builds independently, so visual consistency requires intentional effort:
 
 - Use a **shared design system** or component library (e.g., published as an npm package)
-- For tighter integration (e.g., shared headers/footers rendered from a single source), consider Module Federation with single-spa (see the `single-spa` example in this repo)
 - Ensure consistent CSS framework versions across microfrontends to avoid style drift
 
 ### Safe rollout of routing changes
