@@ -4,7 +4,7 @@ An agent skill for building, configuring, and deploying microfrontends on Vercel
 
 ## Structure
 
-- `SKILL.md` - Core skill with concepts, quickstart, configuration summary, and usage examples
+- `SKILL.md` - Core skill with concepts, quickstart, and pointers to references
 - `references/` - Detailed reference documentation
   - `configuration.md` - `microfrontends.json` schema, field details, naming, examples
   - `path-routing.md` - Path expressions, asset prefixes, flag-controlled routing
@@ -16,7 +16,7 @@ An agent skill for building, configuring, and deploying microfrontends on Vercel
 ## Install
 
 ```bash
-npx skills add vercel-labs/microfrontends
+npx skills add vercel/microfrontends
 ```
 
 ## Learn More
