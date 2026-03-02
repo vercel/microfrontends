@@ -2,6 +2,38 @@
 
 The `microfrontends.json` file is the single source of truth for microfrontend routing. It must be deployed with the default application.
 
+## Getting Started
+
+1. **Create a microfrontends group** in the Vercel Dashboard: Settings → Microfrontends → Create Group.
+2. **Add `microfrontends.json`** at the root of the default application (see [Full Schema](#full-schema) and [Example Configurations](#example-configurations)).
+3. **Install** in every microfrontend: `pnpm i @vercel/microfrontends`
+4. **Integrate with your framework** (see [Framework Setup](#framework-setup)).
+5. **Deploy** — push to Vercel. Config takes effect once `microfrontends.json` is deployed to production.
+
+## Framework Setup
+
+### Next.js
+
+```ts
+// next.config.ts
+import { withMicrofrontends } from '@vercel/microfrontends/next/config';
+export default withMicrofrontends(nextConfig);
+```
+
+For Pages Router support:
+
+```ts
+export default withMicrofrontends(nextConfig, { supportPagesRouter: true });
+```
+
+### SvelteKit
+
+Wrap the SvelteKit config with `withMicrofrontends` from `@vercel/microfrontends/experimental/sveltekit` and add the `microfrontends()` Vite plugin from `@vercel/microfrontends/experimental/vite`.
+
+### React Router / Vite
+
+Add the `microfrontends()` Vite plugin from `@vercel/microfrontends/experimental/vite`.
+
 ## Full Schema
 
 ```json
