@@ -28,5 +28,6 @@ This skill includes detailed reference docs in the `references/` directory. **Do
 | Local proxy setup, polyrepo config, Turborepo, ports, deployment protection | `references/local-development.md` |
 | Adding/removing projects, fallback environments, navigation, observability | `references/managing-microfrontends.md` |
 | Testing utilities (`validateMiddlewareConfig`, `validateRouting`, etc.), debug headers, common issues | `references/troubleshooting.md` |
+| Deployment protection, Vercel Firewall, WAF rules for microfrontends | `references/security.md` |
 
 When the user asks about a specific topic, use grep or search over the relevant reference file to find the answer without loading all references into context.
