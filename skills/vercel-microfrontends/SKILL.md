@@ -8,7 +8,6 @@ metadata:
 ---
 
 # Vercel Microfrontends
-
 Split a large application into independently deployable units that render as one cohesive app. Vercel handles routing on its global network using `microfrontends.json`.
 
 **Core concepts:** default app (has `microfrontends.json`, serves unmatched requests) · child apps (have `routing` path patterns) · asset prefix (prevents static-asset collisions) · independent deployments.
