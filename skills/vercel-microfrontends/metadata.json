@@ -1,0 +1,17 @@
+{
+  "version": "1.0.0",
+  "organization": "Vercel",
+  "date": "February 2026",
+  "abstract": "Guide for building, configuring, and deploying microfrontends on Vercel. Covers configuration (microfrontends.json), path-based routing, flag-controlled routing, local development proxy, asset prefixes, and framework integrations for Next.js, SvelteKit, React Router, and Vite. Includes reference documentation for configuration schema, path expressions, local development, managing microfrontends, and troubleshooting.",
+  "references": [
+    "https://vercel.com/docs/microfrontends",
+    "https://vercel.com/docs/microfrontends/quickstart",
+    "https://vercel.com/docs/microfrontends/configuration",
+    "https://vercel.com/docs/microfrontends/path-routing",
+    "https://vercel.com/docs/microfrontends/local-development",
+    "https://vercel.com/docs/microfrontends/managing-microfrontends",
+    "https://vercel.com/docs/microfrontends/troubleshooting",
+    "https://vercel.com/docs/microfrontends/managing-microfrontends/security",
+    "https://www.npmjs.com/package/@vercel/microfrontends"
+  ]
+}
