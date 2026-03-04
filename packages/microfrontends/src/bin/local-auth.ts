@@ -20,13 +20,19 @@ export const localAuthHtml = ({
     ? `<b><code>${app}</code></b> is overriding to a protected deployment <a target="_blank" href="https://${override}">${override}</a>.`
     : `<b><code>${app}</code></b> is falling back to a protected deployment <a target="_blank" href="https://${hostname}">${hostname}</a>.`;
 
+  const bypassDocsLink = `<a href="https://vercel.com/docs/deployment-protection/methods-to-bypass-deployment-protection/protection-bypass-automation">Protection Bypass for Automation</a>`;
   const content = automationBypass
-    ? `<b><code>${automationBypassEnvVarName}</code></b> is set with the value <b><code>${automationBypass}</code></b>, please verify this value is also configured as a <a href="https://vercel.com/docs/deployment-protection/methods-to-bypass-deployment-protection/protection-bypass-automation">Protection Bypass for Automation</a> secret in the Vercel project hosting the deployment.`
-    : `To access, ensure the default app's <b><code>${automationBypassEnvVarName}</code></b> secret is also added as a <a href="https://vercel.com/docs/deployment-protection/methods-to-bypass-deployment-protection/protection-bypass-automation">Protection Bypass for Automation</a> secret in the Vercel project hosting the deployment, then run <b><code>vc env pull</code></b> in the default app directory.`;
+    ? `<span><b><code>${automationBypassEnvVarName}</code></b> is set with the value <b><code>${automationBypass}</code></b>, please verify this value is also configured as a ${bypassDocsLink} secret in the <b><code>${app}</code></b> Vercel project.</span>`
+    : `To access, follow these steps:
+        <ol>
+          <li>In the <b><code>${defaultApp}</code></b> Vercel project, go to Settings → Deployment Protection → ensure ${bypassDocsLink} is enabled and a secret exists (add one if not). Copy the secret.</li>
+          <li>In the <b><code>${app}</code></b> Vercel project, go to Settings → Deployment Protection → add a new secret with the copied secret from <b><code>${defaultApp}</code></b>.</li>
+          <li>Run <b><code>vc env pull</code></b> in the <b><code>${defaultApp}</code></b> directory to pull the secret locally.</li>
+        </ol>`;
 
   const action = override
     ? `<buttton onClick="clearOverride()" class="button">Clear Override</button>`
-    : '';
+    : "";
 
   return `<!DOCTYPE html>
 	<html lang="en">
@@ -338,13 +344,11 @@ export const localAuthHtml = ({
 	  <body>
 		<div class="container">
 		  <main>
-			<p class="devinfo-container">
+			<div class="devinfo-container">
 			  	<span>${intro}</span>
 				<br/>
-				<span>${content}</span>
-				<br/>
-				<span>The environment variable should be set in the default app <b><code>${defaultApp}</code></b>, where the local proxy is running.</span>
-			</p>
+				<div>${content}</div>
+			</div>
 		
 			<a href="https://vercel.com/docs/microfrontends/local-development#falling-back-to-protected-deployments"><div class="note">Click here to learn more about setting up the environment variable.</div></a>
 		
