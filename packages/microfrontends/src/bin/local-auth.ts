@@ -21,8 +21,8 @@ export const localAuthHtml = ({
     : `<b><code>${app}</code></b> is falling back to a protected deployment <a target="_blank" href="https://${hostname}">${hostname}</a>.`;
 
   const content = automationBypass
-    ? `<b><code>${automationBypassEnvVarName}</code></b> is set with the value <b><code>${automationBypass}</code></b>, please verify this value equals the <a href="https://vercel.com/docs/deployment-protection/methods-to-bypass-deployment-protection/protection-bypass-automation">Protection Bypass for Automation</a> for the Vercel project hosting the deployment.`
-    : `To access, set a local environment variable <b><code>${automationBypassEnvVarName}</code></b> with the value of the <a href="https://vercel.com/docs/deployment-protection/methods-to-bypass-deployment-protection/protection-bypass-automation">Protection Bypass for Automation</a> for the Vercel project hosting the deployment.`;
+    ? `<b><code>${automationBypassEnvVarName}</code></b> is set with the value <b><code>${automationBypass}</code></b>, please verify this value is also configured as a <a href="https://vercel.com/docs/deployment-protection/methods-to-bypass-deployment-protection/protection-bypass-automation">Protection Bypass for Automation</a> secret in the Vercel project hosting the deployment.`
+    : `To access, ensure the default app's <b><code>${automationBypassEnvVarName}</code></b> secret is also added as a <a href="https://vercel.com/docs/deployment-protection/methods-to-bypass-deployment-protection/protection-bypass-automation">Protection Bypass for Automation</a> secret in the Vercel project hosting the deployment, then run <b><code>vc env pull</code></b> in the default app directory.`;
 
   const action = override
     ? `<buttton onClick="clearOverride()" class="button">Clear Override</button>`

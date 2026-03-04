@@ -20,6 +20,7 @@ The `@vercel/microfrontends` package includes test utilities imported from `@ver
 Validates that Next.js middleware is configured correctly for microfrontends. Run only on the **default application**.
 
 Checks:
+
 - Middleware matches `/.well-known/vercel/microfrontends/client-config`
 - Middleware does **not** match paths routed to child microfrontends (those requests never reach the default app's middleware)
 - Middleware **does** match all flagged paths
@@ -27,13 +28,13 @@ Checks:
 ```ts
 // tests/middleware.test.ts
 /* @jest-environment node */
-import { validateMiddlewareConfig } from '@vercel/microfrontends/next/testing';
-import { config } from '../middleware';
+import { validateMiddlewareConfig } from "@vercel/microfrontends/next/testing";
+import { config } from "../middleware";
 
-describe('middleware', () => {
-  test('matches microfrontends paths', () => {
+describe("middleware", () => {
+  test("matches microfrontends paths", () => {
     expect(() =>
-      validateMiddlewareConfig(config, './microfrontends.json'),
+      validateMiddlewareConfig(config, "./microfrontends.json"),
     ).not.toThrow();
   });
 });
@@ -60,19 +61,19 @@ Validates that middleware correctly rewrites flagged paths to the right microfro
 ```ts
 // tests/middleware.test.ts
 /* @jest-environment node */
-import { validateMiddlewareOnFlaggedPaths } from '@vercel/microfrontends/next/testing';
-import { middleware } from '../middleware';
+import { validateMiddlewareOnFlaggedPaths } from "@vercel/microfrontends/next/testing";
+import { middleware } from "../middleware";
 
 // Enable all flags before testing.
 // This mock is specific to the Flags SDK; adapt if using a custom flag implementation.
-jest.mock('flags/next', () => ({
+jest.mock("flags/next", () => ({
   flag: jest.fn().mockReturnValue(jest.fn().mockResolvedValue(true)),
 }));
 
-describe('middleware', () => {
-  test('rewrites for flagged paths', async () => {
+describe("middleware", () => {
+  test("rewrites for flagged paths", async () => {
     await expect(
-      validateMiddlewareOnFlaggedPaths('./microfrontends.json', middleware),
+      validateMiddlewareOnFlaggedPaths("./microfrontends.json", middleware),
     ).resolves.not.toThrow();
   });
 });
@@ -83,7 +84,10 @@ describe('middleware', () => {
 ```ts
 async function validateMiddlewareOnFlaggedPaths(
   microfrontendConfigOrPath: string | MicrofrontendConfigIsomorphic,
-  middleware: (request: NextRequest, event: NextFetchEvent) => Promise<Response | undefined>,
+  middleware: (
+    request: NextRequest,
+    event: NextFetchEvent,
+  ) => Promise<Response | undefined>,
 ): Promise<void>;
 ```
 
@@ -93,17 +97,17 @@ Validates that specific paths route to the correct microfrontend application. Ru
 
 ```ts
 // tests/microfrontends.test.ts
-import { validateRouting } from '@vercel/microfrontends/next/testing';
+import { validateRouting } from "@vercel/microfrontends/next/testing";
 
-describe('microfrontends', () => {
-  test('routing', () => {
+describe("microfrontends", () => {
+  test("routing", () => {
     expect(() => {
-      validateRouting('./microfrontends.json', {
-        marketing: ['/', '/products'],
-        docs: ['/docs', '/docs/api'],
+      validateRouting("./microfrontends.json", {
+        marketing: ["/", "/products"],
+        docs: ["/docs", "/docs/api"],
         dashboard: [
-          '/dashboard',
-          { path: '/new-dashboard', flag: 'enable-new-dashboard' },
+          "/dashboard",
+          { path: "/new-dashboard", flag: "enable-new-dashboard" },
         ],
       });
     }).not.toThrow();
@@ -121,6 +125,7 @@ function validateRouting(
 ```
 
 The `routesToTest` maps application names to arrays of paths. Each path can be:
+
 - A string: `'/docs'` — asserts this path routes to the named app
 - An object: `{ path: '/new-docs', flag: 'my-flag' }` — asserts this path routes to the named app when the flag is enabled
 
@@ -135,14 +140,14 @@ Enable debug headers to inspect routing decisions on deployed environments.
 
 ### Response headers
 
-| Header | Description |
-|---|---|
-| `x-vercel-mfe-app` | Microfrontend project that handled the request |
-| `x-vercel-mfe-target-deployment-id` | Deployment ID that handled the request |
+| Header                                   | Description                                                 |
+| ---------------------------------------- | ----------------------------------------------------------- |
+| `x-vercel-mfe-app`                       | Microfrontend project that handled the request              |
+| `x-vercel-mfe-target-deployment-id`      | Deployment ID that handled the request                      |
 | `x-vercel-mfe-default-app-deployment-id` | Default app deployment ID (source of `microfrontends.json`) |
-| `x-vercel-mfe-zone-from-middleware` | For flagged paths: which microfrontend middleware selected |
-| `x-vercel-mfe-matched-path` | Path pattern from `microfrontends.json` that matched |
-| `x-vercel-mfe-response-reason` | Internal reason for the routing decision |
+| `x-vercel-mfe-zone-from-middleware`      | For flagged paths: which microfrontend middleware selected  |
+| `x-vercel-mfe-matched-path`              | Path pattern from `microfrontends.json` that matched        |
+| `x-vercel-mfe-response-reason`           | Internal reason for the routing decision                    |
 
 ## Debug Routing Locally
 
@@ -156,6 +161,7 @@ export default withMicrofrontends(nextConfig, { debug: true });
 ```
 
 The proxy logs show:
+
 - Which path matched which routing rule
 - Whether the request went to a local app or fallback
 - Environment variable and rewrite changes
@@ -170,13 +176,13 @@ Microfrontend routing data appears in the **Observability** tab under the CDN se
 
 Routing is captured in [Session Tracing](https://vercel.com/docs/tracing/session-tracing). The Microfrontends span includes:
 
-| Attribute | Description |
-|---|---|
-| `vercel.mfe.app` | Microfrontend that handled the request |
-| `vercel.mfe.target_deployment_id` | Target deployment ID |
-| `vercel.mfe.default_app_deployment_id` | Default app deployment ID |
-| `vercel.mfe.app_from_middleware` | Microfrontend selected by middleware (flagged paths) |
-| `vercel.mfe.matched_path` | Matched path pattern |
+| Attribute                              | Description                                          |
+| -------------------------------------- | ---------------------------------------------------- |
+| `vercel.mfe.app`                       | Microfrontend that handled the request               |
+| `vercel.mfe.target_deployment_id`      | Target deployment ID                                 |
+| `vercel.mfe.default_app_deployment_id` | Default app deployment ID                            |
+| `vercel.mfe.app_from_middleware`       | Microfrontend selected by middleware (flagged paths) |
+| `vercel.mfe.matched_path`              | Matched path pattern                                 |
 
 ## Common Issues
 
@@ -207,5 +213,5 @@ Routing is captured in [Session Tracing](https://vercel.com/docs/tracing/session
 
 ### Deployment protection blocking fallbacks locally
 
-- Set the `AUTOMATION_BYPASS_<APP_NAME>` environment variable (see local development reference)
-- Run `vc env pull` to pull the bypass secret locally
+- The default app's `VERCEL_AUTOMATION_BYPASS_SECRET` is used to bypass protection on child projects — ensure that secret is also added as a [Protection Bypass for Automation](https://vercel.com/docs/deployment-protection/methods-to-bypass-deployment-protection/protection-bypass-automation) secret in each protected child project
+- Run `vc env pull` from the default app directory to pull `VERCEL_AUTOMATION_BYPASS_SECRET` locally
