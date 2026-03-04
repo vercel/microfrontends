@@ -27,7 +27,7 @@ export const localAuthHtml = ({
         <ol>
           <li>In the <b><code>${defaultApp}</code></b> Vercel project, go to Settings → Deployment Protection → ensure ${bypassDocsLink} is enabled and a secret exists (add one if not). Copy the secret.</li>
           <li>In the <b><code>${app}</code></b> Vercel project, go to Settings → Deployment Protection → add a new secret with the copied secret from <b><code>${defaultApp}</code></b>.</li>
-          <li>Run <b><code>vc env pull</code></b> in the <b><code>${defaultApp}</code></b> directory to pull the secret locally.</li>
+          <li>Add <b><code>${automationBypassEnvVarName}=&lt;secret&gt;</code></b> to the <b><code>${defaultApp}</code></b> local environment file (e.g. <b><code>.env.local</code></b>).</li>
         </ol>`;
 
   const action = override

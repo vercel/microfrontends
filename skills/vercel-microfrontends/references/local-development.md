@@ -222,4 +222,4 @@ The local proxy reads `VERCEL_AUTOMATION_BYPASS_SECRET` from the default app's e
 
 1. **Find the default app's secret**: in the default app's Vercel project, go to Settings → Deployment Protection → Protection Bypass for Automation → copy the secret (this is what Vercel exposes as `VERCEL_AUTOMATION_BYPASS_SECRET`)
 2. **Add that secret to each child project**: in each child project's Vercel project, go to Settings → Deployment Protection → add a Protection Bypass for Automation secret using the same value
-3. **Pull locally**: run `vc env pull` from the default app directory to get `VERCEL_AUTOMATION_BYPASS_SECRET` into `.env.local`
+3. **Set locally**: add `VERCEL_AUTOMATION_BYPASS_SECRET=<secret>` to the default app's local environment file (e.g. `.env.local`)

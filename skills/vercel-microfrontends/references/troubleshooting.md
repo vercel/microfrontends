@@ -214,4 +214,4 @@ Routing is captured in [Session Tracing](https://vercel.com/docs/tracing/session
 ### Deployment protection blocking fallbacks locally
 
 - The default app's `VERCEL_AUTOMATION_BYPASS_SECRET` is used to bypass protection on child projects — ensure that secret is also added as a [Protection Bypass for Automation](https://vercel.com/docs/deployment-protection/methods-to-bypass-deployment-protection/protection-bypass-automation) secret in each protected child project
-- Run `vc env pull` from the default app directory to pull `VERCEL_AUTOMATION_BYPASS_SECRET` locally
+- Add `VERCEL_AUTOMATION_BYPASS_SECRET=<secret>` to the default app's local environment file (e.g. `.env.local`)
