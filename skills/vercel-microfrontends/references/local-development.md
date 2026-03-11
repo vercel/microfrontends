@@ -18,6 +18,7 @@
 The `@vercel/microfrontends` local development proxy routes requests between locally running microfrontends and production fallbacks. This allows developers to run only the microfrontend they're working on while still being able to navigate the full application.
 
 **How it works:**
+
 - The proxy listens on a single port (default `3024`)
 - Requests matching a child app's routing paths are sent to the local dev server (if running) or to the production fallback
 - Requests not matching any child app go to the default app
@@ -58,6 +59,7 @@ Set a specific port in `microfrontends.json`:
 ```
 
 The `local` field accepts:
+
 - A port number: `3001`
 - A host: `my.localhost.me:3001`
 - A full URL: `https://my.localhost.me:3030`
@@ -163,11 +165,11 @@ microfrontends proxy --local-apps your-app-name
 microfrontends proxy [configPath] --local-apps <names...> [--port <port>]
 ```
 
-| Argument/Flag | Description |
-|---|---|
-| `[configPath]` | Path to `microfrontends.json`. Optional in monorepos (auto-detected). |
-| `--local-apps <names...>` | Space-separated list of locally running app names. |
-| `--port <port>` | Override the proxy port. |
+| Argument/Flag             | Description                                                           |
+| ------------------------- | --------------------------------------------------------------------- |
+| `[configPath]`            | Path to `microfrontends.json`. Optional in monorepos (auto-detected). |
+| `--local-apps <names...>` | Space-separated list of locally running app names.                    |
+| `--port <port>`           | Override the proxy port.                                              |
 
 Example with multiple local apps:
 
@@ -205,6 +207,7 @@ export default withMicrofrontends(nextConfig, { debug: true });
 ```
 
 Debug output shows:
+
 - Environment variables set by microfrontends
 - Rewrites configured
 - For each request: matched path, target application, local vs fallback
@@ -213,16 +216,10 @@ Debug output shows:
 
 To fall back to deployments with [Deployment Protection](https://vercel.com/docs/deployment-protection), set a bypass environment variable.
 
-### Variable naming convention
-
-`AUTOMATION_BYPASS_<TRANSFORMED_APP_NAME>` where the name is:
-- Uppercased
-- Non-letter/number characters replaced with underscore
-
-Example: app `my-docs-app` → `AUTOMATION_BYPASS_MY_DOCS_APP`
+The local proxy reads `VERCEL_AUTOMATION_BYPASS_SECRET` from the default app's environment (Vercel sets this automatically as a system environment variable) and sends its value as the `x-vercel-protection-bypass` header when proxying to protected child project deployments.
 
 ### Setup steps
 
-1. **Enable bypass** on the protected project: Settings → Deployment Protection → create Protection Bypass for Automation → copy secret
-2. **Add env var** to the default app project: Settings → Environment Variables → add `AUTOMATION_BYPASS_<NAME>` with the secret → set to Development environment
-3. **Pull locally**: run `vc env pull` from the default app directory
+1. **Find the default app's secret**: in the default app's Vercel project, go to Settings → Deployment Protection → Protection Bypass for Automation → copy the secret (this is what Vercel exposes as `VERCEL_AUTOMATION_BYPASS_SECRET`)
+2. **Add that secret to each child project**: in each child project's Vercel project, go to Settings → Deployment Protection → add a Protection Bypass for Automation secret using the same value
+3. **Set locally**: add `VERCEL_AUTOMATION_BYPASS_SECRET=<secret>` to the default app's local environment file (e.g. `.env.local`)

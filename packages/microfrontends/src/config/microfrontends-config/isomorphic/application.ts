@@ -73,6 +73,7 @@ export class Application {
     return generatedAssetPrefix;
   }
 
+  /** @deprecated Prefer `VERCEL_AUTOMATION_BYPASS_SECRET`. Use this only if each project needs its own distinct bypass secret. */
   getAutomationBypassEnvVarName(): string {
     return generateAutomationBypassEnvVarName({ name: this.name });
   }

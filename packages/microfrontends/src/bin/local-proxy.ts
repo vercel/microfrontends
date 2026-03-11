@@ -613,7 +613,14 @@ export class LocalProxy {
     if (target.protocol === 'https') {
       const { hostname, port, path } = target;
       const app = this.router.config.getApplication(target.application);
-      const automationBypass = process.env[app.getAutomationBypassEnvVarName()];
+      const perAppEnvVarName = app.getAutomationBypassEnvVarName();
+      const automationBypass =
+        process.env[perAppEnvVarName] ??
+        process.env.VERCEL_AUTOMATION_BYPASS_SECRET;
+      const automationBypassEnvVarName =
+        process.env[perAppEnvVarName] !== undefined
+          ? perAppEnvVarName
+          : 'VERCEL_AUTOMATION_BYPASS_SECRET';
 
       const cookies = parse(req.headers.cookie || '');
       const overrideCookieName = getAppEnvOverrideCookieName(
@@ -663,7 +670,7 @@ export class LocalProxy {
               app: target.application,
               hostname,
               defaultApp: defaultApp.packageName || defaultApp.name,
-              automationBypassEnvVarName: app.getAutomationBypassEnvVarName(),
+              automationBypassEnvVarName,
               automationBypass,
               override: cookies[overrideCookieName],
             }),
