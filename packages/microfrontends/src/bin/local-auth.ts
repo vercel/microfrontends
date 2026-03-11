@@ -32,7 +32,7 @@ export const localAuthHtml = ({
 
   const action = override
     ? `<buttton onClick="clearOverride()" class="button">Clear Override</button>`
-    : "";
+    : '';
 
   return `<!DOCTYPE html>
 	<html lang="en">
