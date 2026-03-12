@@ -4,7 +4,7 @@ The `microfrontends.json` file is the single source of truth for microfrontend r
 
 ## Getting Started
 
-1. **Create a microfrontends group** in the Vercel Dashboard: Settings → Microfrontends → Create Group.
+1. **Create a microfrontends group** using the CLI (`vercel microfrontends create-group`) or the Vercel Dashboard: Settings → Microfrontends → Create Group.
 2. **Add `microfrontends.json`** at the root of the default application (see [Full Schema](#full-schema) and [Example Configurations](#example-configurations)).
 3. **Install** in every microfrontend: `pnpm i @vercel/microfrontends`
 4. **Integrate with your framework** (see [Framework Setup](#framework-setup)).

@@ -4,6 +4,7 @@
 
 - [Adding Microfrontends](#adding-microfrontends)
 - [Removing Microfrontends](#removing-microfrontends)
+- [Deleting a Group](#deleting-a-group)
 - [Fallback Environment](#fallback-environment)
 - [Sharing Settings](#sharing-settings)
 - [Optimizing Navigations](#optimizing-navigations)
@@ -11,19 +12,46 @@
 
 ## Adding Microfrontends
 
-1. Visit **Settings** for the project to add
-2. Click **Microfrontends**
-3. Find the group and click **Add to Group**
+**CLI (preferred):** run from the project directory and follow the prompts:
+
+```bash
+vercel microfrontends add-to-group
+# or with flags:
+vercel mf add-to-group --group="My Group" --default-route=/docs
+```
+
+**Dashboard:** Settings → Microfrontends → find the group → **Add to Group**.
 
 Changes take effect on the next deployment.
 
 ## Removing Microfrontends
 
+**CLI (preferred):** run from the project directory:
+
+```bash
+vercel microfrontends remove-from-group
+```
+
+**Dashboard:**
 1. Remove the microfrontend from `microfrontends.json` in the default app
 2. Visit **Settings** for the project
 3. Click **Microfrontends** → **Remove from Group**
 
-> The default application can only be removed after all other projects in the group are removed. Delete the group once empty.
+> The default application can only be removed after all other projects in the group are removed.
+
+## Deleting a Group
+
+All projects must be removed from the group before it can be deleted. This action is not reversible.
+
+**CLI (preferred):**
+
+```bash
+vercel microfrontends delete-group
+# or with flags:
+vercel mf delete-group --group="My Group" --yes
+```
+
+**Dashboard:** once all projects are removed, the delete option becomes available in the group's settings.
 
 ## Fallback Environment
 
