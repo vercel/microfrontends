@@ -15,8 +15,8 @@ Split a large application into independently deployable units that render as one
 **Frameworks:** Next.js (App Router + Pages Router), SvelteKit, React Router, Vite — all via `@vercel/microfrontends`.
 
 **CLI (`vercel microfrontends` / `vercel mf`):**
-- `create-group` — interactively create a new group (options: `--name`, `--project` (repeatable), `--default-app`, `--default-route`)
-- `add-to-group` — add the current project to an existing group (options: `--group`, `--default-route`)
+- `create-group` — create a new group; requires interactive terminal (options: `--name`, `--project` (repeatable), `--default-app`, `--default-route`)
+- `add-to-group` — add the current project to an existing group; requires interactive terminal (options: `--group`, `--default-route`)
 - `remove-from-group` — remove the current project from its group; requires interactive terminal (option: `--yes` skips project-link prompt only)
 - `delete-group` — delete a group and all its settings, irreversible; requires interactive terminal (option: `--group` to pre-select group)
 - `pull` — pull remote `microfrontends.json` for local development (option: `--dpl`)
