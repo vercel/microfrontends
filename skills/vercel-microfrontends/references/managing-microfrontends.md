@@ -12,7 +12,7 @@
 
 ## Adding Microfrontends
 
-**CLI (preferred):** run from the project directory and follow the prompts:
+**CLI:** run from the project directory and follow the prompts:
 
 ```bash
 vercel microfrontends add-to-group
@@ -26,11 +26,13 @@ Changes take effect on the next deployment.
 
 ## Removing Microfrontends
 
-**CLI (preferred):** run from the project directory:
+**CLI:** run from the project directory and follow the prompts:
 
 ```bash
 vercel microfrontends remove-from-group
 ```
+
+After removal, update `microfrontends.json` in the default app to remove the project's entry — the CLI will warn you if it's still referenced but won't block the removal.
 
 **Dashboard:**
 1. Remove the microfrontend from `microfrontends.json` in the default app
@@ -41,17 +43,17 @@ vercel microfrontends remove-from-group
 
 ## Deleting a Group
 
-All projects must be removed from the group before it can be deleted. This action is not reversible.
+This action is not reversible. The CLI will warn you how many projects will be removed but does not require the group to be empty first. The dashboard requires all projects to be removed before the delete option becomes available.
 
-**CLI (preferred):**
+**CLI:** run from the project directory and follow the prompts:
 
 ```bash
 vercel microfrontends delete-group
-# or with flags:
-vercel mf delete-group --group="My Group" --yes
+# or pre-select the group with a flag:
+vercel mf delete-group --group="My Group"
 ```
 
-**Dashboard:** once all projects are removed, the delete option becomes available in the group's settings.
+**Dashboard:** remove all projects from the group first, then the delete option becomes available in the group's settings.
 
 ## Fallback Environment
 
