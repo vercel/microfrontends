@@ -31,7 +31,7 @@ This skill includes detailed reference docs in the `references/` directory. **Do
 | Getting started, quickstart, framework setup, `microfrontends.json` schema, fields, naming, examples | `references/configuration.md` |
 | Path expressions, asset prefixes, flag-controlled routing, middleware | `references/path-routing.md` |
 | Local proxy setup, polyrepo config, Turborepo, ports, deployment protection | `references/local-development.md` |
-| Adding/removing projects, fallback environments, navigation, observability | `references/managing-microfrontends.md` |
+| Inspecting groups (`inspect-group`), adding/removing projects, fallback environments, navigation, observability | `references/managing-microfrontends.md` |
 | Testing utilities (`validateMiddlewareConfig`, `validateRouting`, etc.), debug headers, common issues | `references/troubleshooting.md` |
 | Deployment protection, Vercel Firewall, WAF rules for microfrontends | `references/security.md` |
 
