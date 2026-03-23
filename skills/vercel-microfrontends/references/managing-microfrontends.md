@@ -2,12 +2,46 @@
 
 ## Table of Contents
 
+- [Inspecting a Group](#inspecting-a-group)
 - [Adding Microfrontends](#adding-microfrontends)
 - [Removing Microfrontends](#removing-microfrontends)
 - [Fallback Environment](#fallback-environment)
 - [Sharing Settings](#sharing-settings)
 - [Optimizing Navigations](#optimizing-navigations)
 - [Observability Data Routing](#observability-data-routing)
+
+## Inspecting a Group
+
+Use `vercel microfrontends inspect-group` to retrieve metadata about a microfrontends group and its projects. This is useful for setup automation and scripts — it provides the project names, frameworks, git repos, and root directories needed to generate `microfrontends.json` and wire up framework integrations.
+
+```bash
+vercel microfrontends inspect-group [options]
+```
+
+If you omit `--group`, the command is interactive and lets you select a group. In non-interactive environments, pass `--group`.
+
+### Options
+
+| Option | Description |
+|---|---|
+| `--group` | Name, slug, or ID of the microfrontends group to inspect |
+| `--config-file-name` | Custom microfrontends config file path/name relative to the default app root (must end with `.json` or `.jsonc`) |
+| `--format` | Output format. Use `json` for machine-readable output |
+
+### Examples
+
+```bash
+# Interactive selection
+vercel microfrontends inspect-group
+
+# JSON output for scripting/agents
+vercel mf inspect-group --group="My Group" --format=json
+
+# With a custom config filename
+vercel mf inspect-group --group="My Group" --config-file-name=microfrontends.jsonc --format=json
+```
+
+> **Tip for agents:** After the user creates a group, run `vercel mf inspect-group --group="<name>" --format=json` to get the project metadata needed to automate the remaining setup (generating `microfrontends.json`, installing `@vercel/microfrontends`, and adding framework integrations).
 
 ## Adding Microfrontends
 
