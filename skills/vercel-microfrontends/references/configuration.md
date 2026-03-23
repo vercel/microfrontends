@@ -7,8 +7,10 @@ The `microfrontends.json` file is the single source of truth for microfrontend r
 1. **Create a microfrontends group** using the CLI (`vercel microfrontends create-group`) or the Vercel Dashboard: Settings → Microfrontends → Create Group.
 2. **Add `microfrontends.json`** at the root of the default application (see [Full Schema](#full-schema) and [Example Configurations](#example-configurations)).
 3. **Install** in every microfrontend: `pnpm i @vercel/microfrontends`
-4. **Integrate with your framework** (see [Framework Setup](#framework-setup)).
+4. **Integrate with your framework** — add `withMicrofrontends` (Next.js/SvelteKit) or the `microfrontends()` Vite plugin to each app's config (see [Framework Setup](#framework-setup)).
 5. **Deploy** — push to Vercel. Config takes effect once `microfrontends.json` is deployed to production.
+
+> **Note:** If the user has already created the group (step 1), the immediate next steps are to set up `microfrontends.json` (step 2), install `@vercel/microfrontends` (step 3), and add the framework integration (step 4) in each project. Do not skip these — the group alone does nothing without the config and framework wiring.
 
 ## Framework Setup
 

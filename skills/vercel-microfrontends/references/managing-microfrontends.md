@@ -43,7 +43,7 @@ After removal, update `microfrontends.json` in the default app to remove the pro
 
 ## Deleting a Group
 
-This action is not reversible. The CLI will warn you how many projects will be removed but does not require the group to be empty first. The dashboard requires all projects to be removed before the delete option becomes available.
+This action is not reversible. You can delete a group even with projects still in it — all projects will be removed from the group automatically.
 
 **CLI:** run from the project directory and follow the prompts:
 
@@ -53,7 +53,7 @@ vercel microfrontends delete-group
 vercel mf delete-group --group="My Group"
 ```
 
-**Dashboard:** remove all projects from the group first, then the delete option becomes available in the group's settings.
+**Dashboard:** Go to the group's settings in **Settings** → **Microfrontends** and delete the group.
 
 ## Fallback Environment
 
