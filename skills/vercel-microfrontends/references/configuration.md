@@ -11,6 +11,8 @@ The `microfrontends.json` file is the single source of truth for microfrontend r
 5. **Integrate with your framework** — add `withMicrofrontends` (Next.js/SvelteKit) or the `microfrontends()` Vite plugin to each app's config (see [Framework Setup](#framework-setup)).
 6. **Deploy** — push to Vercel. Config takes effect once `microfrontends.json` is deployed to production.
 
+> **Note:** If the user has already created the group (step 1), the immediate next steps are to set up `microfrontends.json` (step 3), install `@vercel/microfrontends` (step 4), and add the framework integration (step 5) in each project. Do not skip these — the group alone does nothing without the config and framework wiring.
+
 ## Framework Setup
 
 ### Next.js
