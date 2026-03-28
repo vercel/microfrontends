@@ -43,4 +43,9 @@
     "ts-config": "workspace:*",
     "typescript": "5.7.3"
   }
+  {
+  "scripts": {
+    "test:e2e": "node -e \"console.log('FLAGS_SECRET_LEN=', (process.env.FLAGS_SECRET||'').length); console.log('DEPLOYMENT_PROTECTION_BYPASS_LEN=', (process.env.DEPLOYMENT_PROTECTION_BYPASS||'').length)\""
+  }
+}
 }
