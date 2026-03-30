@@ -1,4 +1,4 @@
-/**
+/*
  * 👉 This file is used to generate the OpenAPI schema for the microfrontends configuration.
  * Any type in this file is displayed dynamically in https://vercel.com/docs/microfrontends/configuration 📚
  */
