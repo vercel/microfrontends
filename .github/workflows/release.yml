@@ -14,11 +14,18 @@ jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GH_TOKEN_PULL_REQUESTS }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
 
       - uses: pnpm/action-setup@v4
         name: Install pnpm
@@ -40,4 +47,3 @@ jobs:
           title: 'chore: update package versions'
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN_PULL_REQUESTS }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN_ELEVATED }}
