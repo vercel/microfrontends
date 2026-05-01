@@ -11,6 +11,7 @@
   },
   "license": "MIT",
   "scripts": {
+    "prepare": "husky && cp CLAUDE.md AGENTS.md && cp README.md packages/microfrontends/README.md",
     "build": "turbo build",
     "build:releasable": "turbo @vercel/microfrontends#build",
     "build:single-spa-example": "turbo build -F single-spa-root -F single-spa-web -F single-spa-shared",
@@ -31,6 +32,7 @@
     "test:e2e": "turbo test:e2e",
     "test:local-proxy-turbo-integration": "pnpm run -F internal-scripts test-local-proxy-start",
     "typecheck": "turbo typecheck --continue",
+    "local-release": "node scripts/local-release.js",
     "version-packages": "changeset version"
   },
   "lint-staged": {

@@ -86,3 +86,10 @@ Key configuration concepts:
 4. **CLI & Local Proxy** (`src/bin/`)
    - `local-proxy.ts` - HTTP proxy for local development that routes requests between locally running microfrontends or falls back to production
    - `index.ts` - CLI commands (`microfrontends proxy`, `microfrontends port`)
+
+## Mirrored files
+
+`AGENTS.md` and `packages/microfrontends/README.md` are copies of `CLAUDE.md` and `README.md` respectively, regenerated on `pnpm install` via the `prepare` script. Do not edit them directly — changes will be overwritten. Edit the source files instead:
+
+- To update AI agent instructions: edit `CLAUDE.md`
+- To update the README: edit the root `README.md` (copied to `packages/microfrontends/README.md` on `pnpm install`)
