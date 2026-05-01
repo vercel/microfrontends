@@ -32,6 +32,7 @@
     "test:e2e": "turbo test:e2e",
     "test:local-proxy-turbo-integration": "pnpm run -F internal-scripts test-local-proxy-start",
     "typecheck": "turbo typecheck --continue",
+    "local-release": "node scripts/local-release.js",
     "version-packages": "changeset version"
   },
   "lint-staged": {
