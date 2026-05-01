@@ -11,6 +11,7 @@
   },
   "license": "MIT",
   "scripts": {
+    "prepare": "husky && cp CLAUDE.md AGENTS.md && cp README.md packages/microfrontends/README.md",
     "build": "turbo build",
     "build:releasable": "turbo @vercel/microfrontends#build",
     "build:single-spa-example": "turbo build -F single-spa-root -F single-spa-web -F single-spa-shared",
