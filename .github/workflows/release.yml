@@ -45,5 +45,8 @@ jobs:
           version: pnpm version-packages
           commit: 'chore: update package versions'
           title: 'chore: update package versions'
+          # Push via the GitHub API so commits and tags are signed by GitHub and
+          # satisfy the "Require signed commits" rule on `changeset-release/main`.
+          commitMode: github-api
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN_PULL_REQUESTS }}
