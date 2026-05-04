@@ -64,10 +64,23 @@ interface PrefetchCrossZoneLinksProps {
    * Default value is 'conservative'.
    */
   prerenderEagerness?: 'immediate' | 'eager' | 'moderate' | 'conservative';
+  /**
+   * Whether to emit a `prerender:` speculation rule alongside `prefetch:`.
+   * When `false`, only `prefetch:` rules are emitted; cross-zone prefetch
+   * is unaffected.
+   *
+   * Escape hatch for Chromium prerender activation crashes seen on
+   * cross-deployment same-origin navigations (Chrome 147+). Remove once
+   * the upstream Chromium issue is fixed.
+   *
+   * Default value is `true`.
+   */
+  prerender?: boolean;
 }
 
 export function PrefetchCrossZoneLinks({
   prerenderEagerness = 'conservative',
+  prerender = true,
 }: PrefetchCrossZoneLinksProps): JSX.Element | null {
   const { isLoading } = useClientConfig(
     process.env.NEXT_PUBLIC_MFE_CLIENT_CONFIG,
@@ -172,12 +185,16 @@ export function PrefetchCrossZoneLinks({
         where: PREFETCH_WHEN_VISIBLE_PREDICATES,
       },
     ],
-    prerender: [
-      {
-        eagerness: prerenderEagerness,
-        where: PREFETCH_ON_HOVER_PREDICATES,
-      },
-    ],
+    ...(prerender
+      ? {
+          prerender: [
+            {
+              eagerness: prerenderEagerness,
+              where: PREFETCH_ON_HOVER_PREDICATES,
+            },
+          ],
+        }
+      : {}),
   };
 
   return (
