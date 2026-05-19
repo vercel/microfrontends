@@ -1,5 +1,12 @@
 # @vercel/microfrontends
 
+## 2.3.3
+
+### Patch Changes
+
+- 9440654: Convert file level JSDoc to a regular block comment in schema types to prevent OpenAPI generators from incorrectly associating it with the `Config` interface declaration.
+- d9589cc: Disable prerender speculation rules on Chromium 147 to avoid a [browser crash](https://chromium-review.googlesource.com/c/chromium/src/+/7761927) triggered during cross-zone navigation. Prefetch rules are unaffected. The guard auto-resolves on Chrome 148+, which ships the upstream fix.
+
 ## 2.3.2
 
 ### Patch Changes
