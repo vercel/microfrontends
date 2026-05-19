@@ -1,5 +1,5 @@
 import Script from 'next/script.js';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useClientConfig } from '../../../config/react/use-client-config';
 
 const PREFETCH_ATTR = 'data-prefetch';
@@ -73,6 +73,7 @@ export function PrefetchCrossZoneLinks({
     process.env.NEXT_PUBLIC_MFE_CLIENT_CONFIG,
   );
   const [links, setLinks] = useState<HTMLAnchorElement[]>([]);
+  const canPrerender = useRef(isPrerenderSafe());
 
   useEffect(() => {
     if (isLoading) {
@@ -172,12 +173,16 @@ export function PrefetchCrossZoneLinks({
         where: PREFETCH_WHEN_VISIBLE_PREDICATES,
       },
     ],
-    prerender: [
-      {
-        eagerness: prerenderEagerness,
-        where: PREFETCH_ON_HOVER_PREDICATES,
-      },
-    ],
+    ...(canPrerender.current
+      ? {
+          prerender: [
+            {
+              eagerness: prerenderEagerness,
+              where: PREFETCH_ON_HOVER_PREDICATES,
+            },
+          ],
+        }
+      : {}),
   };
 
   return (
@@ -190,4 +195,31 @@ export function PrefetchCrossZoneLinks({
       type="speculationrules"
     />
   );
+}
+
+/**
+ * Chromium 147 ships a resurrected CHECK in MarkPrerenderMatchedWithPrefetch
+ * (CL 7641455) that crashes the browser process when prerender + prefetch
+ * matching is invoked more than once per URL — which happens on cross-zone
+ * MFE navigations. The CHECK was removed in CL 7761927 and the fix
+ * cherry-picked into M148 (148.0.7778.43). No other major version is
+ * affected: < 147 never had the resurrected CHECK, >= 148 has the fix.
+ *
+ * Non-Chromium browsers never process `<script type="speculationrules">`
+ * at all, so the prerender entry is inert for them — no need to exclude.
+ *
+ * On the server (navigator undefined) we return `true` because the
+ * `next/script` afterInteractive strategy defers injection to the client;
+ * the server-side value is never materialised into HTML.
+ *
+ * @see https://chromium-review.googlesource.com/c/chromium/src/+/7761927
+ * @see https://vercel.slack.com/archives/C0B1DHDQ3S7 (inc-6387)
+ *
+ * TODO: Remove once Chrome 147 usage drops below the long-tail threshold.
+ */
+function isPrerenderSafe(): boolean {
+  if (typeof navigator === 'undefined') return true;
+  const match = navigator.userAgent.match(/Chrome\/(\d+)/);
+  if (!match) return true;
+  return Number(match[1]) !== 147;
 }
