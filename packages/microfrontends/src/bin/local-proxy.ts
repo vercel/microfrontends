@@ -477,8 +477,10 @@ export class LocalProxy {
     this.proxy = Server.createProxyServer({ secure: true });
     this.proxy.on('error', (err, req, res) => {
       if (res instanceof http.ServerResponse) {
+        /** Already closed; nothing left to send. */
         if (res.destroyed || res.writableEnded) return;
 
+        /** Headers are committed; abort instead of writing a 500. */
         if (res.headersSent) {
           res.destroy(err);
           return;
@@ -709,8 +711,10 @@ export class LocalProxy {
       proxyReq.on('error', (err) => {
         logger.error('Proxy request error: ', err);
 
+        /** Already closed; nothing left to send. */
         if (res.destroyed || res.writableEnded) return;
 
+        /** Headers are committed; abort instead of writing a 500. */
         if (res.headersSent) {
           res.destroy(err);
           return;
