@@ -477,6 +477,13 @@ export class LocalProxy {
     this.proxy = Server.createProxyServer({ secure: true });
     this.proxy.on('error', (err, req, res) => {
       if (res instanceof http.ServerResponse) {
+        if (res.destroyed || res.writableEnded) return;
+
+        if (res.headersSent) {
+          res.destroy(err);
+          return;
+        }
+
         res.writeHead(500, {
           'Content-Type': 'text/plain',
         });
@@ -701,6 +708,14 @@ export class LocalProxy {
       req.pipe(proxyReq);
       proxyReq.on('error', (err) => {
         logger.error('Proxy request error: ', err);
+
+        if (res.destroyed || res.writableEnded) return;
+
+        if (res.headersSent) {
+          res.destroy(err);
+          return;
+        }
+
         res.writeHead(500, { 'Content-Type': 'text/plain' });
         res.end(
           `Error proxying request for ${target.application} to ${hostname}:${port}${path}`,
