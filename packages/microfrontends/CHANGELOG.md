@@ -1,5 +1,11 @@
 # @vercel/microfrontends
 
+## 2.3.4
+
+### Patch Changes
+
+- 7af3542: Prevent local proxy crashes when upstream errors occur after response headers have already been sent.
+
 ## 2.3.3
 
 ### Patch Changes
