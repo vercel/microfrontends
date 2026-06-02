@@ -55,10 +55,8 @@ export function rewriteRedirectLocation(
   const redirectUrl = new URL(locationHeader, localhost);
   const localUrl = new URL(localhost);
 
-  if (redirectUrl.protocol === 'http:' || redirectUrl.protocol === 'https:') {
-    redirectUrl.protocol = localUrl.protocol;
-    redirectUrl.host = localUrl.host;
-  }
+  redirectUrl.protocol = localUrl.protocol;
+  redirectUrl.host = localUrl.host;
 
   return redirectUrl.toString();
 }
