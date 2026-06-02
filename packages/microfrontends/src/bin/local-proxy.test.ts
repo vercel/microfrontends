@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import type { IncomingMessage, ServerResponse } from 'node:http';
 import { join } from 'node:path';
 import { parse } from 'jsonc-parser';
 import { generateDefaultAssetPrefixFromName } from '../config/microfrontends/utils';
@@ -7,7 +8,11 @@ import { Host } from '../config/microfrontends-config/isomorphic/host';
 import { OVERRIDES_ENV_COOKIE_PREFIX } from '../config/overrides/constants';
 import type { Config } from '../config/schema/types';
 import { fileURLToPath } from '../test-utils/file-url-to-path';
-import { LocalProxy, ProxyRequestRouter } from './local-proxy';
+import {
+  LocalProxy,
+  ProxyRequestRouter,
+  rewriteRedirectLocation,
+} from './local-proxy';
 
 const fixtures = fileURLToPath(
   new URL('../config/__fixtures__', import.meta.url),
@@ -19,6 +24,36 @@ function simpleConfig(): MicrofrontendConfigIsomorphic {
       fs.readFileSync(join(fixtures, 'simple.jsonc'), 'utf-8'),
     ) as Config,
   });
+}
+
+function mockRequest(url: string): IncomingMessage & { pipe: jest.Mock } {
+  return {
+    url,
+    method: 'GET',
+    headers: {
+      host: 'localhost:6720',
+    },
+    pipe: jest.fn(),
+  } as unknown as IncomingMessage & { pipe: jest.Mock };
+}
+
+function mockResponse(): ServerResponse & {
+  destroy: jest.Mock;
+  end: jest.Mock;
+  writeHead: jest.Mock;
+} {
+  return {
+    destroy: jest.fn(),
+    destroyed: false,
+    end: jest.fn(),
+    headersSent: false,
+    writableEnded: false,
+    writeHead: jest.fn(),
+  } as unknown as ServerResponse & {
+    destroy: jest.Mock;
+    end: jest.Mock;
+    writeHead: jest.Mock;
+  };
 }
 
 describe('class ProxyRequestRouter', () => {
@@ -617,6 +652,31 @@ describe('class ProxyRequestRouter', () => {
 });
 
 describe('class LocalProxy', () => {
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  describe('handleRequest', () => {
+    it('does not normalize absolute URLs inside request query parameters', () => {
+      const proxy = new LocalProxy(simpleConfig(), {
+        localApps: ['vercel-site'],
+        proxyPort: 6720,
+      });
+      const proxyWeb = jest
+        .spyOn(proxy.proxy, 'web')
+        .mockImplementation(() => undefined);
+      const req = mockRequest(
+        '/free-tools/tiktok-audience-analytics?url=https://www.tiktok.com/@streamhits01/video/7611535128661118230',
+      );
+      const res = mockResponse();
+
+      proxy.handleRequest(req, res);
+
+      expect(res.writeHead).not.toHaveBeenCalled();
+      expect(proxyWeb).toHaveBeenCalled();
+    });
+  });
+
   describe('fromFile', () => {
     it('should fail on invalid config filename', () => {
       expect(() => {
@@ -688,5 +748,29 @@ describe('class LocalProxy', () => {
         }),
       ).not.toThrow();
     });
+  });
+});
+
+describe('rewriteRedirectLocation', () => {
+  it('does not rewrite absolute URLs inside redirect Location query parameters', () => {
+    expect(
+      rewriteRedirectLocation(
+        '/free-tools/tiktok-audience-analytics?url=https://www.tiktok.com/@streamhits01/video/7611535128661118230',
+        'http://localhost:6720',
+      ),
+    ).toBe(
+      'http://localhost:6720/free-tools/tiktok-audience-analytics?url=https://www.tiktok.com/@streamhits01/video/7611535128661118230',
+    );
+  });
+
+  it('rewrites absolute redirect origins back to localhost', () => {
+    expect(
+      rewriteRedirectLocation(
+        'https://marketing.vercel.com/free-tools/tiktok-audience-analytics?url=https://www.tiktok.com/@streamhits01/video/7611535128661118230',
+        'http://localhost:6720',
+      ),
+    ).toBe(
+      'http://localhost:6720/free-tools/tiktok-audience-analytics?url=https://www.tiktok.com/@streamhits01/video/7611535128661118230',
+    );
   });
 });

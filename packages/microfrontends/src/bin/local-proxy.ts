@@ -40,6 +40,29 @@ const MFE_FLAG_VALUE = 'vercel-mfe-flag-value';
 // This flag informs middleware to ignore the flag function and use this value instead.
 const MFE_FLAG_VALUE_HEADER = `x-${MFE_FLAG_VALUE}`;
 
+function normalizeRepeatedSlashesInPath(url: string): string {
+  const searchStart = url.indexOf('?');
+  const path = searchStart === -1 ? url : url.slice(0, searchStart);
+  const search = searchStart === -1 ? '' : url.slice(searchStart);
+
+  return `${path.replaceAll(/\/[\\/]+/g, '/')}${search}`;
+}
+
+export function rewriteRedirectLocation(
+  locationHeader: string,
+  localhost: string,
+): string {
+  const redirectUrl = new URL(locationHeader, localhost);
+  const localUrl = new URL(localhost);
+
+  if (redirectUrl.protocol === 'http:' || redirectUrl.protocol === 'https:') {
+    redirectUrl.protocol = localUrl.protocol;
+    redirectUrl.host = localUrl.host;
+  }
+
+  return redirectUrl.toString();
+}
+
 interface ProxyTarget {
   application: string;
   url: URL;
@@ -594,7 +617,7 @@ export class LocalProxy {
       // If the URL contains '//', send a 307 redirect to the normalized URL, preserving all request headers
       const originalUrl = req.url;
       if (originalUrl) {
-        const normalizedUrl = originalUrl.replaceAll(/\/[\\/]+/g, '/');
+        const normalizedUrl = normalizeRepeatedSlashesInPath(originalUrl);
         if (normalizedUrl !== originalUrl) {
           res.writeHead(307, {
             Location: normalizedUrl,
@@ -695,12 +718,10 @@ export class LocalProxy {
         ) {
           const locationHeader = realRes.headers.location;
           if (locationHeader) {
-            const redirectUrl = new URL(
-              locationHeader.replace(/https:\/\/[^/]+\//, '/'),
+            realRes.headers.location = rewriteRedirectLocation(
+              locationHeader,
               localhost,
             );
-
-            realRes.headers.location = redirectUrl.toString();
           }
         }
 
