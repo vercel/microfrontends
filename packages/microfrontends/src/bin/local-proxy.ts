@@ -39,6 +39,7 @@ const MFE_FLAG_VALUE = 'vercel-mfe-flag-value';
 // - with flag enabled middleware will route the request to the zone
 // This flag informs middleware to ignore the flag function and use this value instead.
 const MFE_FLAG_VALUE_HEADER = `x-${MFE_FLAG_VALUE}`;
+const VERCEL_TOOLBAR_PROXY_BASE_PATH = '/.well-known/vercel-toolbar';
 
 interface ProxyTarget {
   application: string;
@@ -217,6 +218,16 @@ export class ProxyRequestRouter {
     middlewareMfeZone?: string;
     mfeFlagValue?: boolean;
   }): ProxyTarget | null {
+    const toolbarTarget = this.checkVercelToolbar({
+      path,
+      url,
+      referer,
+      applications,
+    });
+    if (toolbarTarget) {
+      return toolbarTarget;
+    }
+
     for (const application of Object.values(applications)) {
       const target = this.getApplicationTarget(application);
       if (middlewareMfeZone) {
@@ -354,6 +365,59 @@ export class ProxyRequestRouter {
     };
   }
 
+  checkVercelToolbar({
+    path,
+    url,
+    referer = undefined,
+    applications,
+  }: {
+    path: string;
+    url: URL;
+    referer?: string;
+    applications: ChildApplication[];
+  }): ProxyTarget | null {
+    const isVercelToolbarRequest =
+      url.pathname === VERCEL_TOOLBAR_PROXY_BASE_PATH ||
+      url.pathname.startsWith(`${VERCEL_TOOLBAR_PROXY_BASE_PATH}/`);
+    if (!isVercelToolbarRequest) {
+      return null;
+    }
+
+    if (referer) {
+      const refererURL = new URL(referer);
+      const refererTarget =
+        this.findMatchingApplication({
+          path: `${refererURL.pathname}${refererURL.search}`,
+          url: refererURL,
+          applications,
+        }) ?? this.getDefaultHost(this.config);
+
+      if (refererTarget.isLocal) {
+        logger.debug(
+          ` ${path} - Routing Vercel Toolbar request to referring application: ${formatProxyTarget(refererTarget)}`,
+        );
+        return {
+          ...refererTarget,
+          path: `${url.pathname}${url.search}`,
+        };
+      }
+    }
+
+    const localApp = this.getSingleLocalApp();
+    if (!localApp) {
+      return null;
+    }
+
+    const target = this.getApplicationTarget(localApp);
+    logger.debug(
+      ` ${path} - Routing Vercel Toolbar request to only locally running application: ${formatProxyTarget(target)}`,
+    );
+    return {
+      ...target,
+      path: `${url.pathname}${url.search}`,
+    };
+  }
+
   checkNextSourceMap({ url }: { url: URL }): ProxyTarget | null {
     const isSourceMap = pathToRegexp('/__nextjs_source-map').test(url.pathname);
     if (!isSourceMap) {
@@ -425,20 +489,31 @@ export class ProxyRequestRouter {
 
   isDefaultAppLocal(): boolean {
     const defaultApp = this.config.getDefaultApplication();
-    return Boolean(
-      this.localApps.find(
-        (name) => name === defaultApp.name || name === defaultApp.packageName,
-      ),
-    );
+    return this.isApplicationLocal(defaultApp);
   }
 
   getArbitraryLocalApp() {
     for (const application of this.config.getAllApplications()) {
-      const name = application.name;
-      if (this.localApps.includes(name)) {
+      if (this.isApplicationLocal(application)) {
         return application;
       }
     }
+  }
+
+  getSingleLocalApp(): Application | undefined {
+    const localApplications = this.config
+      .getAllApplications()
+      .filter((application) => this.isApplicationLocal(application));
+
+    return localApplications.length === 1 ? localApplications[0] : undefined;
+  }
+
+  isApplicationLocal(application: Application): boolean {
+    return Boolean(
+      this.localApps.find(
+        (name) => name === application.name || name === application.packageName,
+      ),
+    );
   }
 }
 

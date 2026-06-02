@@ -378,6 +378,48 @@ describe('class ProxyRequestRouter', () => {
       });
     });
 
+    it('redirects vercel toolbar requests to referring application', () => {
+      const config = simpleConfig();
+      const router = new ProxyRequestRouter(config, {
+        localApps: ['vercel-site', 'vercel-marketing'],
+      });
+      const url = '/.well-known/vercel-toolbar/microfrontend-config';
+      expect(
+        router.getTarget({
+          url,
+          headers: {
+            referer: 'http://localhost:3024/blog/',
+          },
+        }),
+      ).toMatchObject({
+        application: 'vercel-marketing',
+        protocol: 'http',
+        hostname: 'localhost',
+        port: 5984,
+        path: url,
+      });
+    });
+
+    it('redirects vercel toolbar requests to the single local application without a referer', () => {
+      const config = simpleConfig();
+      const router = new ProxyRequestRouter(config, {
+        localApps: ['vercel-marketing'],
+      });
+      const url = '/.well-known/vercel-toolbar/microfrontend-config?from=zero';
+      expect(
+        router.getTarget({
+          url,
+          headers: {},
+        }),
+      ).toMatchObject({
+        application: 'vercel-marketing',
+        protocol: 'http',
+        hostname: 'localhost',
+        port: 5984,
+        path: url,
+      });
+    });
+
     it('redirects next source map to locally running application', () => {
       const config = simpleConfig();
       const router = new ProxyRequestRouter(config, {
