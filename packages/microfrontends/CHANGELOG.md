@@ -1,5 +1,12 @@
 # @vercel/microfrontends
 
+## 2.3.5
+
+### Patch Changes
+
+- 5fbc4e3: Preserve absolute URLs in query parameters when the local proxy normalizes request URLs and rewrites redirect Location headers.
+- 9a01e16: Route Vercel Toolbar well-known requests through the local proxy to the locally running application that served the page. This supports `@vercel/toolbar@0.2.6+`, which uses `/.well-known/vercel-toolbar/*` for local dev server access.
+
 ## 2.3.4
 
 ### Patch Changes
