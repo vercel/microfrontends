@@ -1,6 +1,8 @@
 import fs from 'node:fs';
 import type { IncomingMessage, ServerResponse } from 'node:http';
+import * as https from 'node:https';
 import { join } from 'node:path';
+import { PassThrough } from 'node:stream';
 import { parse } from 'jsonc-parser';
 import { generateDefaultAssetPrefixFromName } from '../config/microfrontends/utils';
 import { MicrofrontendConfigIsomorphic } from '../config/microfrontends-config/isomorphic';
@@ -13,6 +15,11 @@ import {
   ProxyRequestRouter,
   rewriteRedirectLocation,
 } from './local-proxy';
+
+jest.mock('node:https', () => ({
+  ...jest.requireActual('node:https'),
+  request: jest.fn(),
+}));
 
 const fixtures = fileURLToPath(
   new URL('../config/__fixtures__', import.meta.url),
@@ -716,6 +723,47 @@ describe('class LocalProxy', () => {
 
       expect(res.writeHead).not.toHaveBeenCalled();
       expect(proxyWeb).toHaveBeenCalled();
+    });
+
+    it('does not crash when the upstream fallback response errors mid-stream', () => {
+      // An unknown path with vercel-site not local routes to its https fallback,
+      // exercising the custom https.request streaming path.
+      const proxy = new LocalProxy(simpleConfig(), {
+        localApps: ['docs'],
+        proxyPort: 6720,
+      });
+
+      const realRes = new PassThrough() as PassThrough & {
+        statusCode?: number;
+        headers?: Record<string, string>;
+      };
+      realRes.statusCode = 200;
+      realRes.headers = {};
+      // Avoid piping into the mock response object.
+      jest.spyOn(realRes, 'pipe').mockReturnValue(realRes as never);
+
+      const proxyReq = new PassThrough();
+      (https.request as unknown as jest.Mock).mockImplementation(
+        (_options: unknown, cb: (r: IncomingMessage) => void) => {
+          cb(realRes as unknown as IncomingMessage);
+          return proxyReq;
+        },
+      );
+
+      const req = mockRequest('/a-path-that-surely-does-not-match-any-routes');
+      (req as unknown as { on: jest.Mock }).on = jest.fn();
+      const res = mockResponse();
+      (res as unknown as { on: jest.Mock }).on = jest.fn();
+
+      expect(() => proxy.handleRequest(req, res)).not.toThrow();
+
+      // Simulate the upstream (production fallback) connection resetting after
+      // response headers were already sent. Without an error handler on the
+      // upstream response stream this throws and crashes the proxy process.
+      expect(() =>
+        realRes.emit('error', new Error('socket hang up')),
+      ).not.toThrow();
+      expect(res.destroy).toHaveBeenCalled();
     });
   });
 

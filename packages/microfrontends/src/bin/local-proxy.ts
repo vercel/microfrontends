@@ -800,6 +800,16 @@ export class LocalProxy {
 
         res.writeHead(realRes.statusCode || 200, realRes.headers);
         realRes.pipe(res, { end: true });
+
+        // If the upstream (production fallback) connection drops mid-stream,
+        // tear down the client response rather than letting the unhandled
+        // 'error' event crash the proxy process.
+        realRes.on('error', (err) => {
+          logger.error('Proxy upstream response error: ', err);
+          if (!res.destroyed && !res.writableEnded) {
+            res.destroy(err);
+          }
+        });
       });
       req.pipe(proxyReq);
       proxyReq.on('error', (err) => {
@@ -818,6 +828,16 @@ export class LocalProxy {
         res.end(
           `Error proxying request for ${target.application} to ${hostname}:${port}${path}`,
         );
+      });
+
+      // A client hang-up while we are piping must abort the upstream request
+      // instead of surfacing as an unhandled stream error on req/res.
+      req.on('error', (err) => {
+        logger.error('Proxy client request error: ', err);
+        proxyReq.destroy(err);
+      });
+      res.on('error', () => {
+        proxyReq.destroy();
       });
     } else {
       const headers: Record<string, string> = {};
