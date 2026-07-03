@@ -162,20 +162,25 @@ microfrontends proxy --local-apps your-app-name
 ## Proxy Command Reference
 
 ```
-microfrontends proxy [configPath] --local-apps <names...> [--port <port>]
+microfrontends proxy [configPath] --local-apps <names...> [--port <port>] [--origin <origin>]
 ```
 
-| Argument/Flag             | Description                                                           |
-| ------------------------- | --------------------------------------------------------------------- |
-| `[configPath]`            | Path to `microfrontends.json`. Optional in monorepos (auto-detected). |
-| `--local-apps <names...>` | Space-separated list of locally running app names.                    |
-| `--port <port>`           | Override the proxy port.                                              |
+| Argument/Flag              | Description                                                                                         |
+| -------------------------- | --------------------------------------------------------------------------------------------------- |
+| `[configPath]`             | Path to `microfrontends.json`. Optional in monorepos (auto-detected).                               |
+| `--local-apps <names...>`  | Space-separated list of locally running app names.                                                  |
+| `--port <port>`            | Override the proxy port.                                                                            |
+| `--origin <origin>`        | `http` or `https` origin used to reach the proxy, such as `https://web.localhost`. |
 
 Example with multiple local apps:
 
 ```bash
 microfrontends proxy microfrontends.json --local-apps web docs
 ```
+
+Set the origin with `--origin` or `MFE_LOCAL_PROXY_ORIGIN`. If it is not configured, the proxy uses `http://localhost:<proxyPort>`.
+
+The proxy uses the origin when it needs to preserve the URL clients used to reach the proxy.
 
 ## Port Configuration
 

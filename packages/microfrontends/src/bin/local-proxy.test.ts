@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import type { IncomingMessage, ServerResponse } from 'node:http';
+import * as http from 'node:http';
 import * as https from 'node:https';
 import { join } from 'node:path';
 import { PassThrough } from 'node:stream';
@@ -13,6 +14,7 @@ import { fileURLToPath } from '../test-utils/file-url-to-path';
 import {
   LocalProxy,
   ProxyRequestRouter,
+  parseConfiguredOrigin,
   rewriteRedirectLocation,
 } from './local-proxy';
 
@@ -20,6 +22,13 @@ jest.mock('node:https', () => ({
   ...jest.requireActual('node:https'),
   request: jest.fn(),
 }));
+
+jest.mock('node:http', () => ({
+  ...jest.requireActual('node:http'),
+  createServer: jest.fn(),
+}));
+
+const ORIGIN_ENV_VAR = 'MFE_LOCAL_PROXY_ORIGIN';
 
 const fixtures = fileURLToPath(
   new URL('../config/__fixtures__', import.meta.url),
@@ -33,12 +42,16 @@ function simpleConfig(): MicrofrontendConfigIsomorphic {
   });
 }
 
-function mockRequest(url: string): IncomingMessage & { pipe: jest.Mock } {
+function mockRequest(
+  url: string,
+  headers: IncomingMessage['headers'] = {},
+): IncomingMessage & { pipe: jest.Mock } {
   return {
     url,
     method: 'GET',
     headers: {
       host: 'localhost:6720',
+      ...headers,
     },
     pipe: jest.fn(),
   } as unknown as IncomingMessage & { pipe: jest.Mock };
@@ -706,6 +719,74 @@ describe('class LocalProxy', () => {
   });
 
   describe('handleRequest', () => {
+    it('sends the resolved origin as forwarded headers to local apps', () => {
+      const proxy = new LocalProxy(simpleConfig(), {
+        localApps: ['vercel-site'],
+        proxyPort: 6720,
+        origin: 'https://vercel.localhost',
+      });
+      const proxyWeb = jest
+        .spyOn(proxy.proxy, 'web')
+        .mockImplementation(() => undefined);
+      const req = mockRequest(
+        '/_next/image?url=%2Funknown%2Fpath%2Fimage.png&w=64&q=75',
+      );
+      const res = mockResponse();
+
+      proxy.handleRequest(req, res);
+
+      expect(proxyWeb).toHaveBeenCalledWith(
+        expect.anything(),
+        res,
+        expect.objectContaining({
+          headers: expect.objectContaining({
+            'x-forwarded-proto': 'https',
+            'x-forwarded-host': 'vercel.localhost',
+            'x-forwarded-port': '443',
+            'x-vercel-mfe-local-proxy-origin': '1',
+          }),
+        }),
+      );
+    });
+
+    it('passes inbound forwarded headers through untouched when no origin is configured', () => {
+      const proxy = new LocalProxy(simpleConfig(), {
+        localApps: ['vercel-site'],
+        proxyPort: 6720,
+      });
+      const proxyWeb = jest
+        .spyOn(proxy.proxy, 'web')
+        .mockImplementation(() => undefined);
+      const req = mockRequest(
+        '/_next/image?url=%2Funknown%2Fpath%2Fimage.png&w=64&q=75',
+        {
+          'x-forwarded-proto': 'https',
+          'x-forwarded-host': 'forwarded.localhost',
+        },
+      );
+      const res = mockResponse();
+
+      proxy.handleRequest(req, res);
+
+      // Inbound forwarded headers stay on the request itself so http-proxy
+      // relays them as-is; the proxy is transparent without a configured origin.
+      const [forwardedReq, , options] = proxyWeb.mock.calls[0] as [
+        IncomingMessage,
+        unknown,
+        { headers: Record<string, string> },
+      ];
+      expect(forwardedReq.headers['x-forwarded-proto']).toBe('https');
+      expect(forwardedReq.headers['x-forwarded-host']).toBe(
+        'forwarded.localhost',
+      );
+
+      // With no origin configured, the proxy injects no forwarded headers,
+      // so it never overrides the inbound values with localhost.
+      expect(options.headers).not.toHaveProperty('x-forwarded-proto');
+      expect(options.headers).not.toHaveProperty('x-forwarded-host');
+      expect(options.headers).not.toHaveProperty('x-forwarded-port');
+    });
+
     it('does not normalize absolute URLs inside request query parameters', () => {
       const proxy = new LocalProxy(simpleConfig(), {
         localApps: ['vercel-site'],
@@ -723,6 +804,63 @@ describe('class LocalProxy', () => {
 
       expect(res.writeHead).not.toHaveBeenCalled();
       expect(proxyWeb).toHaveBeenCalled();
+    });
+
+    it('rewrites fallback redirects to the configured origin and forwards it upstream', () => {
+      const proxy = new LocalProxy(simpleConfig(), {
+        localApps: ['docs'],
+        proxyPort: 6720,
+        origin: 'https://vercel.localhost',
+      });
+
+      const realRes = new PassThrough() as PassThrough & {
+        statusCode?: number;
+        headers?: Record<string, string>;
+      };
+      realRes.statusCode = 307;
+      realRes.headers = {
+        location: 'https://vercel.com/login?next=/dashboard',
+      };
+      jest.spyOn(realRes, 'pipe').mockReturnValue(realRes as never);
+
+      const proxyReq = new PassThrough();
+      (https.request as unknown as jest.Mock).mockImplementation(
+        (_options: unknown, cb: (r: IncomingMessage) => void) => {
+          cb(realRes as unknown as IncomingMessage);
+          return proxyReq;
+        },
+      );
+
+      const req = mockRequest('/a-path-that-surely-does-not-match-any-routes');
+      (req as unknown as { on: jest.Mock }).on = jest.fn();
+      const res = mockResponse();
+      (res as unknown as { on: jest.Mock }).on = jest.fn();
+
+      proxy.handleRequest(req, res);
+
+      expect(https.request).toHaveBeenCalledWith(
+        expect.objectContaining({
+          hostname: 'vercel.com',
+          headers: expect.objectContaining({
+            host: 'vercel.com',
+            'x-forwarded-proto': 'https',
+            'x-forwarded-host': 'vercel.localhost',
+            'x-forwarded-port': '443',
+          }),
+        }),
+        expect.any(Function),
+      );
+      const [requestOptions] = (https.request as unknown as jest.Mock).mock
+        .calls[0] as [{ headers: Record<string, string | string[]> }];
+      expect(requestOptions.headers).not.toHaveProperty(
+        'x-vercel-mfe-local-proxy-origin',
+      );
+      expect(res.writeHead).toHaveBeenCalledWith(
+        307,
+        expect.objectContaining({
+          location: 'https://vercel.localhost/login?next=/dashboard',
+        }),
+      );
     });
 
     it('does not crash when the upstream fallback response errors mid-stream', () => {
@@ -764,6 +902,183 @@ describe('class LocalProxy', () => {
         realRes.emit('error', new Error('socket hang up')),
       ).not.toThrow();
       expect(res.destroy).toHaveBeenCalled();
+    });
+  });
+
+  describe('configured origin resolution', () => {
+    let originalEnvValue: string | undefined;
+
+    beforeEach(() => {
+      originalEnvValue = process.env[ORIGIN_ENV_VAR];
+    });
+
+    afterEach(() => {
+      if (originalEnvValue === undefined) {
+        delete process.env[ORIGIN_ENV_VAR];
+      } else {
+        process.env[ORIGIN_ENV_VAR] = originalEnvValue;
+      }
+    });
+
+    it('uses MFE_LOCAL_PROXY_ORIGIN when no origin option is provided', () => {
+      process.env[ORIGIN_ENV_VAR] = 'https://env.localhost';
+      const proxy = new LocalProxy(simpleConfig(), {
+        localApps: ['vercel-site'],
+        proxyPort: 6720,
+      });
+      const proxyWeb = jest
+        .spyOn(proxy.proxy, 'web')
+        .mockImplementation(() => undefined);
+      const req = mockRequest(
+        '/_next/image?url=%2Funknown%2Fpath%2Fimage.png&w=64&q=75',
+      );
+      const res = mockResponse();
+
+      proxy.handleRequest(req, res);
+
+      expect(proxyWeb).toHaveBeenCalledWith(
+        expect.anything(),
+        res,
+        expect.objectContaining({
+          headers: expect.objectContaining({
+            'x-forwarded-proto': 'https',
+            'x-forwarded-host': 'env.localhost',
+            'x-forwarded-port': '443',
+          }),
+        }),
+      );
+    });
+
+    it('prefers the origin option over MFE_LOCAL_PROXY_ORIGIN when both are set', () => {
+      process.env[ORIGIN_ENV_VAR] = 'https://env.localhost';
+      const proxy = new LocalProxy(simpleConfig(), {
+        localApps: ['vercel-site'],
+        proxyPort: 6720,
+        origin: 'https://option.localhost',
+      });
+      const proxyWeb = jest
+        .spyOn(proxy.proxy, 'web')
+        .mockImplementation(() => undefined);
+      const req = mockRequest(
+        '/_next/image?url=%2Funknown%2Fpath%2Fimage.png&w=64&q=75',
+      );
+      const res = mockResponse();
+
+      proxy.handleRequest(req, res);
+
+      expect(proxyWeb).toHaveBeenCalledWith(
+        expect.anything(),
+        res,
+        expect.objectContaining({
+          headers: expect.objectContaining({
+            'x-forwarded-proto': 'https',
+            'x-forwarded-host': 'option.localhost',
+            'x-forwarded-port': '443',
+          }),
+        }),
+      );
+    });
+
+    it('throws when MFE_LOCAL_PROXY_ORIGIN is invalid and no origin option is provided', () => {
+      process.env[ORIGIN_ENV_VAR] = 'not-a-valid-origin';
+
+      expect(
+        () =>
+          new LocalProxy(simpleConfig(), {
+            localApps: ['vercel-site'],
+            proxyPort: 6720,
+          }),
+      ).toThrow('Invalid origin "not-a-valid-origin"');
+    });
+  });
+
+  describe('startServer', () => {
+    function mockHttpServer(): { on: jest.Mock; listen: jest.Mock } {
+      const server = { on: jest.fn(), listen: jest.fn() };
+      (http.createServer as unknown as jest.Mock).mockReturnValue(server);
+      return server;
+    }
+
+    function getUpgradeHandler(server: {
+      on: jest.Mock;
+    }): (req: unknown, socket: unknown, head: unknown) => void {
+      const call = server.on.mock.calls.find(
+        ([event]: [string]) => event === 'upgrade',
+      ) as [string, (req: unknown, socket: unknown, head: unknown) => void];
+      if (!call) {
+        throw new Error('upgrade handler was not registered');
+      }
+      return call[1];
+    }
+
+    it('adds x-forwarded-* headers to websocket upgrades when an origin is configured', () => {
+      const proxy = new LocalProxy(simpleConfig(), {
+        localApps: ['vercel-site'],
+        proxyPort: 6720,
+        origin: 'https://vercel.localhost',
+      });
+      const proxyWs = jest
+        .spyOn(proxy.proxy, 'ws')
+        .mockImplementation(() => undefined);
+      const server = mockHttpServer();
+
+      proxy.startServer();
+      const upgradeHandler = getUpgradeHandler(server);
+      const req = mockRequest(
+        '/_next/image?url=%2Funknown%2Fpath%2Fimage.png&w=64&q=75',
+      );
+      const socket = {};
+      const head = {};
+
+      upgradeHandler(req, socket, head);
+
+      expect(proxyWs).toHaveBeenCalledWith(
+        req,
+        socket,
+        head,
+        expect.objectContaining({
+          headers: expect.objectContaining({
+            'x-forwarded-proto': 'https',
+            'x-forwarded-host': 'vercel.localhost',
+            'x-forwarded-port': '443',
+            'x-vercel-mfe-local-proxy-origin': '1',
+          }),
+        }),
+      );
+    });
+
+    it('omits x-forwarded-* headers from websocket upgrades when no origin is configured', () => {
+      const proxy = new LocalProxy(simpleConfig(), {
+        localApps: ['vercel-site'],
+        proxyPort: 6720,
+      });
+      const proxyWs = jest
+        .spyOn(proxy.proxy, 'ws')
+        .mockImplementation(() => undefined);
+      const server = mockHttpServer();
+
+      proxy.startServer();
+      const upgradeHandler = getUpgradeHandler(server);
+      const req = mockRequest(
+        '/_next/image?url=%2Funknown%2Fpath%2Fimage.png&w=64&q=75',
+      );
+      const socket = {};
+      const head = {};
+
+      upgradeHandler(req, socket, head);
+
+      const [, , , options] = proxyWs.mock.calls[0] as [
+        unknown,
+        unknown,
+        unknown,
+        { headers: Record<string, string> },
+      ];
+      expect(options.headers).not.toHaveProperty('x-forwarded-proto');
+      expect(options.headers).not.toHaveProperty('x-forwarded-host');
+      expect(options.headers).not.toHaveProperty('x-forwarded-port');
+      expect(options.headers).toMatchObject({
+        'x-vercel-mfe-local-proxy-origin': '1',
+      });
     });
   });
 
@@ -841,6 +1156,29 @@ describe('class LocalProxy', () => {
   });
 });
 
+describe('parseConfiguredOrigin', () => {
+  it('normalizes valid http and https origins', () => {
+    expect(parseConfiguredOrigin('https://vercel.localhost/')).toBe(
+      'https://vercel.localhost',
+    );
+    expect(parseConfiguredOrigin('http://localhost:6720')).toBe(
+      'http://localhost:6720',
+    );
+  });
+
+  it('rejects origins with extra URL components', () => {
+    expect(() =>
+      parseConfiguredOrigin('https://user@vercel.localhost'),
+    ).toThrow('Invalid origin');
+    expect(() =>
+      parseConfiguredOrigin('https://vercel.localhost/path'),
+    ).toThrow('Invalid origin');
+    expect(() => parseConfiguredOrigin('ftp://localhost')).toThrow(
+      'Invalid origin',
+    );
+  });
+});
+
 describe('rewriteRedirectLocation', () => {
   it('does not rewrite absolute URLs inside redirect Location query parameters', () => {
     expect(
@@ -861,6 +1199,17 @@ describe('rewriteRedirectLocation', () => {
       ),
     ).toBe(
       'http://localhost:6720/free-tools/tiktok-audience-analytics?url=https://www.tiktok.com/@streamhits01/video/7611535128661118230',
+    );
+  });
+
+  it('rewrites redirect origins back to an HTTPS origin', () => {
+    expect(
+      rewriteRedirectLocation(
+        'https://marketing.vercel.com/free-tools/tiktok-audience-analytics?url=https://www.tiktok.com/@streamhits01/video/7611535128661118230',
+        'https://vercel.localhost',
+      ),
+    ).toBe(
+      'https://vercel.localhost/free-tools/tiktok-audience-analytics?url=https://www.tiktok.com/@streamhits01/video/7611535128661118230',
     );
   });
 });

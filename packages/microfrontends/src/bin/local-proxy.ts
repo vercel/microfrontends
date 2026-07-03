@@ -40,6 +40,7 @@ const MFE_FLAG_VALUE = 'vercel-mfe-flag-value';
 // This flag informs middleware to ignore the flag function and use this value instead.
 const MFE_FLAG_VALUE_HEADER = `x-${MFE_FLAG_VALUE}`;
 const VERCEL_TOOLBAR_PROXY_BASE_PATH = '/.well-known/vercel-toolbar';
+const ORIGIN_ENV = 'MFE_LOCAL_PROXY_ORIGIN';
 
 function normalizeRepeatedSlashesInPath(url: string): string {
   const searchStart = url.indexOf('?');
@@ -51,15 +52,69 @@ function normalizeRepeatedSlashesInPath(url: string): string {
 
 export function rewriteRedirectLocation(
   locationHeader: string,
-  localhost: string,
+  origin: string,
 ): string {
-  const redirectUrl = new URL(locationHeader, localhost);
-  const localUrl = new URL(localhost);
+  const redirectUrl = new URL(locationHeader, origin);
+  const originUrl = new URL(origin);
 
-  redirectUrl.protocol = localUrl.protocol;
-  redirectUrl.host = localUrl.host;
+  redirectUrl.protocol = originUrl.protocol;
+  redirectUrl.host = originUrl.host;
 
   return redirectUrl.toString();
+}
+
+export function parseConfiguredOrigin(
+  origin: string | undefined,
+): string | undefined {
+  if (!origin) {
+    return undefined;
+  }
+
+  const parsed = parseBrowserOrigin(origin);
+  if (!parsed) {
+    throw new Error(
+      `Invalid origin "${origin}". Expected an absolute http(s) origin with no path, search, hash, username, or password.`,
+    );
+  }
+
+  return parsed.origin;
+}
+
+function parseBrowserOrigin(origin: string): URL | undefined {
+  try {
+    const url = new URL(origin);
+    const hasOnlyOrigin =
+      url.protocol === 'http:' || url.protocol === 'https:'
+        ? url.username === '' &&
+          url.password === '' &&
+          url.pathname === '/' &&
+          url.search === '' &&
+          url.hash === ''
+        : false;
+
+    return hasOnlyOrigin ? url : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+function forwardedHeadersForOrigin(origin: string): Record<string, string> {
+  const url = new URL(origin);
+  return {
+    'x-forwarded-proto': url.protocol.slice(0, -1),
+    'x-forwarded-host': url.host,
+    'x-forwarded-port': url.port || (url.protocol === 'https:' ? '443' : '80'),
+  };
+}
+
+function stripLocalProxyHeader(
+  headers: http.IncomingHttpHeaders,
+): http.IncomingHttpHeaders {
+  return Object.fromEntries(
+    Object.entries(headers).filter(
+      ([key]) => key.toLowerCase() !== MFE_LOCAL_PROXY_HEADER,
+    ),
+  );
 }
 
 interface ProxyTarget {
@@ -554,6 +609,7 @@ export class LocalProxy {
   proxyPort: number;
   router: ProxyRequestRouter;
   configFilePath?: string;
+  configuredOrigin?: string;
 
   constructor(
     config: MicrofrontendConfigIsomorphic,
@@ -561,15 +617,20 @@ export class LocalProxy {
       localApps,
       proxyPort,
       configFilePath,
+      origin,
     }: {
       localApps: string[];
       proxyPort?: number;
       configFilePath?: string;
+      origin?: string;
     },
   ) {
     this.router = new ProxyRequestRouter(config, { localApps });
     this.proxyPort = proxyPort ?? this.router.config.getLocalProxyPort();
     this.configFilePath = configFilePath;
+    this.configuredOrigin =
+      parseConfiguredOrigin(origin) ??
+      parseConfiguredOrigin(process.env[ORIGIN_ENV]);
     this.proxy = Server.createProxyServer({ secure: true });
     this.proxy.on('error', (err, req, res) => {
       if (res instanceof http.ServerResponse) {
@@ -605,9 +666,11 @@ export class LocalProxy {
     {
       localApps,
       proxyPort,
+      origin,
     }: {
       localApps: LocalProxyOptions['localApps'];
       proxyPort?: number;
+      origin?: string;
     },
   ): LocalProxy {
     let microfrontends: MicrofrontendsServer | undefined;
@@ -623,6 +686,7 @@ export class LocalProxy {
     return new LocalProxy(microfrontends.config, {
       localApps,
       proxyPort,
+      origin,
       configFilePath: filePath,
     });
   }
@@ -666,7 +730,11 @@ export class LocalProxy {
     httpServer.on('upgrade', (req, socket, head) => {
       const target = this.router.getTarget(req);
       try {
-        const headers: Record<string, string> = {};
+        // Mirror the request path: only assert forwarded headers when an origin
+        // is configured, keeping upgrades transparent otherwise.
+        const headers: Record<string, string> = this.configuredOrigin
+          ? forwardedHeadersForOrigin(this.getOrigin())
+          : {};
         headers[MFE_LOCAL_PROXY_HEADER] = '1';
         this.proxy.ws(req, socket, head, {
           target: target.url,
@@ -715,6 +783,16 @@ export class LocalProxy {
 
     const target = this.router.getTarget(req);
     const { req: strippedReq, mfeFlagValue } = removeMfeFlagQuery(req);
+    // Fallback redirects are always rewritten back onto the proxy's
+    // browser-facing origin (localhost when none is configured), so redirect
+    // rewriting needs a concrete origin regardless of configuration.
+    const origin = this.getOrigin();
+    // Injecting x-forwarded-* is additive: only assert them when an origin is
+    // explicitly configured. Without one, the proxy is transparent and inbound
+    // forwarded headers pass through untouched.
+    const forwardedHeaders = this.configuredOrigin
+      ? forwardedHeadersForOrigin(this.configuredOrigin)
+      : {};
     if (target.protocol === 'https') {
       const { hostname, port, path } = target;
       const app = this.router.config.getApplication(target.application);
@@ -731,13 +809,15 @@ export class LocalProxy {
       const overrideCookieName = getAppEnvOverrideCookieName(
         target.application,
       );
+      const fallbackHeaders = stripLocalProxyHeader(req.headers);
       const requestOptions = {
         hostname,
         path,
         method: req.method,
         headers: {
-          ...req.headers,
+          ...fallbackHeaders,
           host: hostname,
+          ...forwardedHeaders,
           cookie: Object.entries(cookies)
             .reduce<string[]>((acc, [name, value]) => {
               if (
@@ -760,7 +840,6 @@ export class LocalProxy {
         port,
       };
 
-      const localhost = `http://localhost:${this.proxyPort}`;
       const proxyReq = https.request(requestOptions, (realRes) => {
         // This is a vercel deployment protected by deployment protection
         if (
@@ -782,7 +861,7 @@ export class LocalProxy {
           );
         }
 
-        // Intercept redirect requests to make sure they resolve back to localhost
+        // Intercept fallback redirects so they stay on the configured proxy origin.
         if (
           realRes.statusCode === 307 ||
           realRes.statusCode === 308 ||
@@ -793,7 +872,7 @@ export class LocalProxy {
           if (locationHeader) {
             realRes.headers.location = rewriteRedirectLocation(
               locationHeader,
-              localhost,
+              origin,
             );
           }
         }
@@ -840,7 +919,7 @@ export class LocalProxy {
         proxyReq.destroy();
       });
     } else {
-      const headers: Record<string, string> = {};
+      const headers: Record<string, string> = { ...forwardedHeaders };
       headers[MFE_LOCAL_PROXY_HEADER] = '1';
       if (mfeFlagValue !== undefined) {
         headers[MFE_FLAG_VALUE_HEADER] = mfeFlagValue.toString();
@@ -850,6 +929,10 @@ export class LocalProxy {
         headers,
       });
     }
+  }
+
+  getOrigin(): string {
+    return this.configuredOrigin ?? `http://localhost:${this.proxyPort}`;
   }
 
   // Handles requests that return data from the local proxy itself.
@@ -923,6 +1006,9 @@ export class LocalProxy {
     logger.info(`\n▲ Microfrontends Proxy (${cliPkg.version}) Started`);
 
     logger.info(`  - Proxy URL: http://localhost:${this.proxyPort}`);
+    if (this.configuredOrigin) {
+      logger.info(`  - Browser origin: ${this.configuredOrigin}`);
+    }
 
     if (this.configFilePath) {
       logger.info(`  - Config: ${this.configFilePath}`);

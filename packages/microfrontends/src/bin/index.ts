@@ -35,6 +35,7 @@ function main(): void {
       }
       return parsedValue;
     })
+    .option('--origin <origin>', 'Origin browsers use to reach the proxy')
     .action((filePath: string | undefined, options: LocalProxyOptions) => {
       if (options.names && options.localApps.length) {
         throw new Error(
@@ -44,6 +45,7 @@ function main(): void {
       const localProxy = LocalProxy.fromFile(filePath, {
         localApps: options.names ?? options.localApps,
         proxyPort: options.port,
+        origin: options.origin,
       });
       localProxy.startServer();
     });
