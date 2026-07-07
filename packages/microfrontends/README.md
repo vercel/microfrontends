@@ -21,6 +21,12 @@ Follow the [quickstart](https://vercel.com/docs/microfrontends/quickstart) docum
 
 You can use the frameworks and microfrontends frameworks of your choice. `@vercel/microfrontends` supports Next.js, SvelteKit, React Router, Vite, and React.
 
+## Local proxy origin
+
+The local development proxy can preserve the origin used to reach it. Set it explicitly with `microfrontends proxy --origin <origin>` or `MFE_LOCAL_PROXY_ORIGIN`.
+
+The origin must be an absolute `http` or `https` origin, such as `https://myapp.localhost`, with no path, query string, hash, username, or password. The proxy uses this origin anywhere it needs to preserve the URL clients used to reach the proxy.
+
 ## Need help?
 
 Reach out for help in the [Vercel Community](https://community.vercel.com).
