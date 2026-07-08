@@ -3,11 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "VC_MICROFRONTENDS_CONFIG_FILE_NAME=microfrontends-custom.jsonc MFE_DEBUG=1 next build",
+    "build": "MFE_DEBUG=1 next build",
     "dev": "next dev --port $(microfrontends port)",
     "lint": "VC_MICROFRONTENDS_CONFIG_FILE_NAME=microfrontends-custom.jsonc next typegen && biome check",
     "start": "next start",
-    "typecheck": "VC_MICROFRONTENDS_CONFIG_FILE_NAME=microfrontends-custom.jsonc next typegen && tsc --noEmit"
+    "typecheck": "next typegen && tsc --noEmit"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.1.1",
