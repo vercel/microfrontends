@@ -17,6 +17,7 @@ import {
   parseConfiguredOrigin,
   rewriteRedirectLocation,
 } from './local-proxy';
+import { logger } from './logger';
 
 jest.mock('node:https', () => ({
   ...jest.requireActual('node:https'),
@@ -999,6 +1000,11 @@ describe('class LocalProxy', () => {
       return server;
     }
 
+    function callListenCallback(server: { listen: jest.Mock }): void {
+      const call = server.listen.mock.calls[0] as [number, () => void];
+      call[1]();
+    }
+
     function getUpgradeHandler(server: {
       on: jest.Mock;
     }): (req: unknown, socket: unknown, head: unknown) => void {
@@ -1010,6 +1016,60 @@ describe('class LocalProxy', () => {
       }
       return call[1];
     }
+
+    it('logs the localhost proxy URL when no origin is configured', () => {
+      const info = jest
+        .spyOn(logger, 'info')
+        .mockImplementation(() => undefined);
+      const proxy = new LocalProxy(simpleConfig(), {
+        localApps: ['vercel-site'],
+        proxyPort: 6720,
+      });
+      const server = mockHttpServer();
+
+      proxy.startServer();
+      callListenCallback(server);
+
+      expect(info).toHaveBeenCalledWith('  - Proxy URL: http://localhost:6720');
+    });
+
+    it('logs the configured origin with the localhost proxy URL', () => {
+      const info = jest
+        .spyOn(logger, 'info')
+        .mockImplementation(() => undefined);
+      const proxy = new LocalProxy(simpleConfig(), {
+        localApps: ['vercel-site'],
+        proxyPort: 6720,
+        origin: 'https://vercel.localhost',
+      });
+      const server = mockHttpServer();
+
+      proxy.startServer();
+      callListenCallback(server);
+
+      expect(info).toHaveBeenCalledWith(
+        '  - Proxy URL: https://vercel.localhost (http://localhost:6720)',
+      );
+    });
+
+    it('does not log a separate browser origin line when an origin is configured', () => {
+      const info = jest
+        .spyOn(logger, 'info')
+        .mockImplementation(() => undefined);
+      const proxy = new LocalProxy(simpleConfig(), {
+        localApps: ['vercel-site'],
+        proxyPort: 6720,
+        origin: 'https://vercel.localhost',
+      });
+      const server = mockHttpServer();
+
+      proxy.startServer();
+      callListenCallback(server);
+
+      expect(info).not.toHaveBeenCalledWith(
+        expect.stringContaining('Browser origin'),
+      );
+    });
 
     it('adds x-forwarded-* headers to websocket upgrades when an origin is configured', () => {
       const proxy = new LocalProxy(simpleConfig(), {
