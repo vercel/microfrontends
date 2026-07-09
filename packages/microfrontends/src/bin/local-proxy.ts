@@ -1003,12 +1003,13 @@ export class LocalProxy {
       }
     }
 
-    logger.info(`\n▲ Microfrontends Proxy (${cliPkg.version}) Started`);
+    const localProxyUrl = `http://localhost:${this.proxyPort}`;
+    const proxyUrl = this.configuredOrigin
+      ? `${this.configuredOrigin} (${localProxyUrl})`
+      : localProxyUrl;
 
-    logger.info(`  - Proxy URL: http://localhost:${this.proxyPort}`);
-    if (this.configuredOrigin) {
-      logger.info(`  - Browser origin: ${this.configuredOrigin}`);
-    }
+    logger.info(`\n▲ Microfrontends Proxy (${cliPkg.version}) Started`);
+    logger.info(`  - Proxy URL: ${proxyUrl}`);
 
     if (this.configFilePath) {
       logger.info(`  - Config: ${this.configFilePath}`);
