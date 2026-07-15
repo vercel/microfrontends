@@ -61,6 +61,16 @@
         {
           "group": "child rate limit",
           "paths": ["/api/check-rate-limit"]
+        },
+        {
+          "group": "campaign",
+          "paths": [
+            // "/campaign/:path((?!index|6am-parent|ios/fake-door|snowcast/beta|storm-radar/instructions|uber-parent).*)"
+            "/campaign/:path((?!index|6am-parent|uber-parent).*)",
+            "/campaign/ios/:path((?!fake-door).*)",
+            "/campaign/snowcast/:path((?!beta).*)",
+            "/campaign/storm-radar/:path((?!instructions).*)"
+          ]
         }
       ]
     }
