@@ -129,20 +129,6 @@ export const validateConfigPaths = (
           );
       }
 
-      if (!overlaps) {
-        overlaps =
-          hasAmbiguousNegativeLookaheadOverlap(
-            path,
-            matcher,
-            candidatePaths.get(matchPath) ?? [],
-          ) ||
-          hasAmbiguousNegativeLookaheadOverlap(
-            matchPath,
-            matchMatcher,
-            candidatePaths.get(path) ?? [],
-          );
-      }
-
       if (overlaps) {
         const source = `"${sourcePath}" of application${sourceIds.length > 0 ? 's' : ''} ${sourceIds.join(', ')}`;
         const destination = `"${destinationPath}" of application${destinationIds.length > 0 ? 's' : ''} ${destinationIds.join(', ')}`;
@@ -257,53 +243,6 @@ function synthesizeMatchingPaths(
   }
 
   return candidates.filter((candidate) => matcher.test(candidate));
-}
-
-/**
- * Negative lookaheads are also used as routing exclusions by the platform. A
- * partial exclusion such as `(?!badge).*` is ambiguous next to a parameterized
- * route beginning with `badge-`: the path sources look disjoint to
- * path-to-regexp even though the platform can still select both routes. Only
- * consider a family excluded when its negative alternative includes the
- * separator (`badge-`), or when it names the complete segment.
- */
-function hasAmbiguousNegativeLookaheadOverlap(
-  path: string,
-  matcher: RegExp,
-  candidates: string[],
-): boolean {
-  const exclusions = parsePathRegexp(path).flatMap((token) => {
-    if (typeof token === 'string') {
-      return [];
-    }
-    const disallowed = token.pattern.match(
-      /^\(\?!(?<disallowed>[\w\\{}.~-]+(?:\|[\w\\{}.~-]+)*)\)\.\*$/,
-    )?.groups?.disallowed;
-    return (
-      disallowed?.split('|').map((value) => value.replace(/\\(.)/g, '$1')) ?? []
-    );
-  });
-  if (exclusions.length === 0) {
-    return false;
-  }
-
-  const relaxedPath = path.replace(/\(\(\?![^()]+\)\.\*\)/g, '(.*)');
-  const relaxedMatcher = pathToRegexp(relaxedPath);
-
-  return candidates.some((candidate) => {
-    if (matcher.test(candidate) || !relaxedMatcher.test(candidate)) {
-      return false;
-    }
-
-    const segments = candidate.split('/');
-    return !segments.some((segment) =>
-      exclusions.some(
-        (exclusion) =>
-          segment === exclusion ||
-          (/[-_.~]$/.test(exclusion) && segment.startsWith(exclusion)),
-      ),
-    );
-  });
 }
 
 // From https://github.com/pillarjs/path-to-regexp/blob/75a92c3d7c42159f459ab42f346899152906ea8c/src/index.ts#L183-L184

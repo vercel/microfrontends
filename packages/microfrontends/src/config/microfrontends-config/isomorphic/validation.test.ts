@@ -443,30 +443,6 @@ describe('validation', () => {
         validateConfigPaths(createApplicationConfigs('/foo', '/foo/:path+'));
       }).not.toThrow();
     });
-
-    it('detects overlaps hidden by incomplete negative-lookahead exclusions', () => {
-      expect(() => {
-        validateConfigPaths(
-          createApplicationConfigs(
-            '/assets/:path((?!badge).*)/:path*',
-            '/assets/badge-:year.svg',
-          ),
-        );
-      }).toThrow(
-        'Invalid paths: Overlapping path detected between ' +
-          '"/assets/:path((?!badge).*)/:path*" of applications default and ' +
-          '"/assets/badge-:year.svg" of applications alternate',
-      );
-
-      expect(() => {
-        validateConfigPaths(
-          createApplicationConfigs(
-            '/assets/:path((?!badge\\.svg|badge-).*)/:path*',
-            '/assets/badge-:year.svg',
-          ),
-        );
-      }).not.toThrow();
-    });
   });
 
   describe('validateAppPaths', () => {
