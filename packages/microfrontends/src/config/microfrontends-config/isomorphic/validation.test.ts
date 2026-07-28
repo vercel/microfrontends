@@ -426,6 +426,14 @@ describe('validation', () => {
         'Invalid paths: Overlapping path detected between "/foo/:path+" of ' +
           'applications alternate and "/foo/bar/baz" of applications default',
       );
+      expect(() => {
+        validateConfigPaths(
+          createApplicationConfigs('/foo/:slug', '/:section/bar'),
+        );
+      }).toThrow(
+        'Invalid paths: Overlapping path detected between "/foo/:slug" of ' +
+          'applications default and "/:section/bar" of applications alternate',
+      );
     });
     it('should pass on disjoint paths', () => {
       expect(() => {
@@ -433,6 +441,14 @@ describe('validation', () => {
       }).not.toThrow();
       expect(() => {
         validateConfigPaths(createApplicationConfigs('/foo', '/foo/:path+'));
+      }).not.toThrow();
+      expect(() => {
+        validateConfigPaths(
+          createApplicationConfigs(
+            '/oss/:path((?!program-badge).*)/:path*',
+            '/oss/program-badge-:path.svg',
+          ),
+        );
       }).not.toThrow();
     });
   });

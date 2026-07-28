@@ -62,31 +62,76 @@ export const validateConfigPaths = (
     }
   }
   const entries = Array.from(pathsByApplicationId.entries());
+  const candidateValues = getCandidateValues(entries.map(([path]) => path));
+  const candidatePaths = new Map(
+    entries.map(([path, { matcher }]) => [
+      path,
+      synthesizeMatchingPaths(path, matcher, candidateValues),
+    ]),
+  );
 
-  for (const [path, { applications: ids, matcher, applicationId }] of entries) {
+  for (let index = 0; index < entries.length; index++) {
+    const entry = entries[index];
+    if (!entry) {
+      continue;
+    }
+    const [path, { applications: ids, matcher, applicationId }] = entry;
     if (ids.length > 1) {
       errors.push(
         `Duplicate path "${path}" for applications "${ids.join(', ')}"`,
       );
     }
 
-    for (const [
-      matchPath,
-      { applications: matchIds, applicationId: matchApplicationId },
-    ] of entries) {
-      if (path === matchPath) {
-        // we're comparing to ourselves, so skip
+    for (
+      let matchIndex = index + 1;
+      matchIndex < entries.length;
+      matchIndex++
+    ) {
+      const matchEntry = entries[matchIndex];
+      if (!matchEntry) {
         continue;
       }
+      const [
+        matchPath,
+        {
+          applications: matchIds,
+          matcher: matchMatcher,
+          applicationId: matchApplicationId,
+        },
+      ] = matchEntry;
 
       if (applicationId === matchApplicationId) {
         // we're comparing to paths within our own application, which are allowed to overlap, so skip
         continue;
       }
 
-      if (matcher.test(matchPath)) {
-        const source = `"${path}" of application${ids.length > 0 ? 's' : ''} ${ids.join(', ')}`;
-        const destination = `"${matchPath}" of application${matchIds.length > 0 ? 's' : ''} ${matchIds.join(', ')}`;
+      let sourcePath = path;
+      let sourceIds = ids;
+      let destinationPath = matchPath;
+      let destinationIds = matchIds;
+      let overlaps = matcher.test(matchPath);
+
+      if (!overlaps && matchMatcher.test(path)) {
+        overlaps = true;
+        sourcePath = matchPath;
+        sourceIds = matchIds;
+        destinationPath = path;
+        destinationIds = ids;
+      }
+
+      if (!overlaps) {
+        overlaps =
+          (candidatePaths.get(path) ?? []).some((candidate) =>
+            matchMatcher.test(candidate),
+          ) ||
+          (candidatePaths.get(matchPath) ?? []).some((candidate) =>
+            matcher.test(candidate),
+          );
+      }
+
+      if (overlaps) {
+        const source = `"${sourcePath}" of application${sourceIds.length > 0 ? 's' : ''} ${sourceIds.join(', ')}`;
+        const destination = `"${destinationPath}" of application${destinationIds.length > 0 ? 's' : ''} ${destinationIds.join(', ')}`;
 
         errors.push(
           `Overlapping path detected between ${source} and ${destination}`,
@@ -105,6 +150,100 @@ export const validateConfigPaths = (
     );
   }
 };
+
+const DEFAULT_CANDIDATE_VALUES = [
+  'a',
+  'b',
+  'foo',
+  'bar',
+  'baz',
+  'path',
+  '123',
+  'file.svg',
+];
+const MAX_SYNTHESIZED_PATHS = 1024;
+
+/**
+ * Collect useful wildcard values from the literal parts of every expression.
+ * These let us find intersections where neither expression's source text is a
+ * valid URL, such as `/foo/:slug` and `/:section/bar`.
+ */
+function getCandidateValues(paths: string[]): string[] {
+  const values = new Set(DEFAULT_CANDIDATE_VALUES);
+
+  for (const path of paths) {
+    const tokens = parsePathRegexp(path);
+    for (const token of tokens) {
+      if (typeof token === 'string') {
+        for (const value of token.match(/[\w.~-]+/g) ?? []) {
+          values.add(value);
+        }
+      } else {
+        const positiveAlternatives = token.pattern.match(
+          /^(?<alternatives>[\w\\{}~-]+(?:\|[\w\\{}~-]+)+)$/,
+        )?.groups?.alternatives;
+        for (const value of positiveAlternatives?.split('|') ?? []) {
+          values.add(value.replace(/\\(.)/g, '$1'));
+        }
+      }
+    }
+  }
+
+  const singleSegmentValues = Array.from(values);
+  for (const first of singleSegmentValues.slice(0, 8)) {
+    for (const second of singleSegmentValues.slice(0, 8)) {
+      values.add(`${first}/${second}`);
+    }
+  }
+
+  return Array.from(values);
+}
+
+/**
+ * Produce concrete examples for a path expression. Path conflicts cannot be
+ * detected by testing one expression's source text against another matcher:
+ * source text containing `:parameters` is not a URL. The supported expression
+ * grammar is deliberately small, so a bounded set of representative wildcard
+ * values is sufficient to exercise literal, alternative, negative-lookahead,
+ * and repeated parameters.
+ */
+function synthesizeMatchingPaths(
+  path: string,
+  matcher: RegExp,
+  candidateValues: string[],
+): string[] {
+  const tokens = parsePathRegexp(path);
+  let candidates = [''];
+
+  for (const token of tokens) {
+    if (typeof token === 'string') {
+      candidates = candidates.map((candidate) => candidate + token);
+      continue;
+    }
+
+    const repetitions =
+      token.modifier === '*' ? ['', ...candidateValues] : candidateValues;
+    const renderedValues = repetitions.map((value) => {
+      if (!value) {
+        return '';
+      }
+      if (token.modifier !== '*' && token.modifier !== '+') {
+        return `${token.prefix}${value}${token.suffix}`;
+      }
+      return value
+        .split('/')
+        .map((part) => `${token.prefix}${part}${token.suffix}`)
+        .join('');
+    });
+
+    candidates = candidates.flatMap((candidate) =>
+      renderedValues.map((value) => candidate + value),
+    );
+    candidates = candidates.slice(0, MAX_SYNTHESIZED_PATHS);
+  }
+
+  return candidates.filter((candidate) => matcher.test(candidate));
+}
 
 // From https://github.com/pillarjs/path-to-regexp/blob/75a92c3d7c42159f459ab42f346899152906ea8c/src/index.ts#L183-L184
 const PATH_DEFAULT_PATTERNS = ['[^\\/#\\?]+?', '(?:(?!\\.)[^\\/#\\?])+?'];
