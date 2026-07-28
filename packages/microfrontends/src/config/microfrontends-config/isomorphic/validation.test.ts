@@ -444,19 +444,28 @@ describe('validation', () => {
       }).not.toThrow();
     });
 
-    it('handles the OSS program badge routes from vercel/front#78286', () => {
-      const landersPath =
-        '/oss/:path((?!program-badge\\.svg|program-badge-).*)/:path*';
-      const marketingPath = '/oss/program-badge-:path.svg';
-      const programBadgePath = '/oss/program-badge-2026.svg';
+    it('detects overlaps hidden by incomplete negative-lookahead exclusions', () => {
+      expect(() => {
+        validateConfigPaths(
+          createApplicationConfigs(
+            '/assets/:path((?!badge).*)/:path*',
+            '/assets/badge-:year.svg',
+          ),
+        );
+      }).toThrow(
+        'Invalid paths: Overlapping path detected between ' +
+          '"/assets/:path((?!badge).*)/:path*" of applications default and ' +
+          '"/assets/badge-:year.svg" of applications alternate',
+      );
 
       expect(() => {
         validateConfigPaths(
-          createApplicationConfigs(landersPath, marketingPath),
+          createApplicationConfigs(
+            '/assets/:path((?!badge\\.svg|badge-).*)/:path*',
+            '/assets/badge-:year.svg',
+          ),
         );
       }).not.toThrow();
-      expect(pathToRegexp(landersPath).test(programBadgePath)).toBe(false);
-      expect(pathToRegexp(marketingPath).test(programBadgePath)).toBe(true);
     });
   });
 
