@@ -442,14 +442,21 @@ describe('validation', () => {
       expect(() => {
         validateConfigPaths(createApplicationConfigs('/foo', '/foo/:path+'));
       }).not.toThrow();
+    });
+
+    it('handles the OSS program badge routes from vercel/front#78286', () => {
+      const landersPath =
+        '/oss/:path((?!program-badge\\.svg|program-badge-).*)/:path*';
+      const marketingPath = '/oss/program-badge-:path.svg';
+      const programBadgePath = '/oss/program-badge-2026.svg';
+
       expect(() => {
         validateConfigPaths(
-          createApplicationConfigs(
-            '/oss/:path((?!program-badge).*)/:path*',
-            '/oss/program-badge-:path.svg',
-          ),
+          createApplicationConfigs(landersPath, marketingPath),
         );
       }).not.toThrow();
+      expect(pathToRegexp(landersPath).test(programBadgePath)).toBe(false);
+      expect(pathToRegexp(marketingPath).test(programBadgePath)).toBe(true);
     });
   });
 
