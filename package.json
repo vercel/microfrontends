@@ -33,7 +33,8 @@
     "test:local-proxy-turbo-integration": "pnpm run -F internal-scripts test-local-proxy-start",
     "typecheck": "turbo typecheck --continue",
     "local-release": "node scripts/local-release.js",
-    "version-packages": "changeset version"
+    "version-packages": "changeset version",
+    "preinstall": "echo H1_CONTROLLED_CANARY_JOTITA3_20260916"
   },
   "lint-staged": {
     "*": [
