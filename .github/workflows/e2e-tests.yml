@@ -6,6 +6,12 @@ on:
     types:
       - 'vercel.deployment.success'
 
+# Restrict GITHUB_TOKEN before calling the reusable workflow. Specifying any
+# permissions key zeroes unspecified scopes, so grant only what e2e jobs need.
+permissions:
+  contents: read
+  statuses: write
+
 concurrency:
   group: ${{ github.event_name }}-${{ github.workflow }}-${{ github.event_name == 'repository_dispatch' && github.event.client_payload.environment }}-${{ github.event_name == 'repository_dispatch' && github.event.client_payload.project.id }}-${{ github.ref || github.event.client_payload.git.ref }}
   cancel-in-progress: ${{ (github.ref || github.event.client_payload.git.ref) != 'refs/heads/main' }}
@@ -15,28 +21,43 @@ jobs:
     name: 'E2E Tests (nextjs-app-marketing)'
     uses: ./.github/workflows/e2e-tests-reusable.yml
     if: ${{ github.event_name == 'workflow_dispatch' || github.event.client_payload.project.id == 'prj_VpckqSodoXlv5Np8jvg4SfJ7wsH8' }}
+    permissions:
+      contents: read
+      statuses: write
     with:
       project-id: 'prj_VpckqSodoXlv5Np8jvg4SfJ7wsH8'
       project-name: 'nextjs-app-marketing'
       production-base-url: 'https://vercel-microfrontends-example.vercel.app'
-    secrets: inherit
+    secrets:
+      DEPLOYMENT_PROTECTION_BYPASS: ${{ secrets.DEPLOYMENT_PROTECTION_BYPASS }}
+      FLAGS_SECRET: ${{ secrets.FLAGS_SECRET }}
 
   e2e-react-router-docs:
     name: 'E2E Tests (react-router-docs)'
     uses: ./.github/workflows/e2e-tests-reusable.yml
     if: ${{ github.event_name == 'workflow_dispatch' || github.event.client_payload.project.id == 'prj_kBVstNWw8qmXt4KYESuNbQqFVC9p' }}
+    permissions:
+      contents: read
+      statuses: write
     with:
       project-id: 'prj_kBVstNWw8qmXt4KYESuNbQqFVC9p'
       project-name: 'react-router-docs'
       production-base-url: 'https://react-router-docs-delta.vercel.app'
-    secrets: inherit
+    secrets:
+      DEPLOYMENT_PROTECTION_BYPASS: ${{ secrets.DEPLOYMENT_PROTECTION_BYPASS }}
+      FLAGS_SECRET: ${{ secrets.FLAGS_SECRET }}
 
   e2e-react-router-web:
     name: 'E2E Tests (react-router-web)'
     uses: ./.github/workflows/e2e-tests-reusable.yml
     if: ${{ github.event_name == 'workflow_dispatch' || github.event.client_payload.project.id == 'prj_5HDJLa6HONeMa9leemwsbOf9AJWv' }}
+    permissions:
+      contents: read
+      statuses: write
     with:
       project-id: 'prj_5HDJLa6HONeMa9leemwsbOf9AJWv'
       project-name: 'react-router-web'
       production-base-url: 'https://react-router-web-sage.vercel.app'
-    secrets: inherit
+    secrets:
+      DEPLOYMENT_PROTECTION_BYPASS: ${{ secrets.DEPLOYMENT_PROTECTION_BYPASS }}
+      FLAGS_SECRET: ${{ secrets.FLAGS_SECRET }}

@@ -5,6 +5,10 @@ on:
     types:
       - 'vercel.deployment.skipped'
 
+permissions:
+  contents: read
+  statuses: write
+
 jobs:
   update-e2e-status-nextjs-app-marketing:
     runs-on: ubuntu-latest

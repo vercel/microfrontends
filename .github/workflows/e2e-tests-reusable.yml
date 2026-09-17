@@ -15,6 +15,19 @@ on:
         required: true
         type: string
         description: 'The fallback base URL to use for the tests if not running in a deployment context.'
+    secrets:
+      DEPLOYMENT_PROTECTION_BYPASS:
+        required: true
+        description: 'Bypass token for Vercel Deployment Protection'
+      FLAGS_SECRET:
+        required: true
+        description: 'Flags secret shared across microfrontends'
+
+# Least privilege: this workflow checks out git SHAs from repository_dispatch
+# payloads. Never grant contents: write here.
+permissions:
+  contents: read
+  statuses: write
 
 jobs:
   run:
@@ -22,15 +35,139 @@ jobs:
     if: ${{ github.event_name == 'workflow_dispatch' || github.event.client_payload.project.id == inputs.project-id }}
     timeout-minutes: 10
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      statuses: write
 
     steps:
+      - name: Validate deployment SHA
+        id: validate-sha
+        uses: actions/github-script@v7
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          WORKFLOW_SHA: ${{ github.sha }}
+          PAYLOAD_SHA: ${{ github.event.client_payload.git.sha }}
+          PAYLOAD_REF: ${{ github.event.client_payload.git.ref }}
+          PAYLOAD_GIT_ORG: ${{ github.event.client_payload.git.org }}
+          PAYLOAD_GIT_REPO: ${{ github.event.client_payload.git.repo }}
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const toGitApiRef = (ref) => {
+              if (!ref || ref.includes('..') || ref.includes('\\')) {
+                return null;
+              }
+              const stripped = ref.replace(/^refs\//, '');
+              if (stripped.startsWith('pull/')) {
+                return null;
+              }
+              if (stripped.startsWith('heads/') || stripped.startsWith('tags/')) {
+                return stripped;
+              }
+              return `heads/${stripped}`;
+            };
+
+            const resolveRefSha = async (octokit, repoOwner, repoName, ref) => {
+              const { data } = await octokit.rest.git.getRef({
+                owner: repoOwner,
+                repo: repoName,
+                ref,
+              });
+              if (data.object.type === 'tag') {
+                const { data: tag } = await octokit.rest.git.getTag({
+                  owner: repoOwner,
+                  repo: repoName,
+                  tag_sha: data.object.sha,
+                });
+                return tag.object.sha;
+              }
+              return data.object.sha;
+            };
+
+            const eventName = process.env.EVENT_NAME;
+            const workflowSha = process.env.WORKFLOW_SHA || '';
+            const payloadSha = process.env.PAYLOAD_SHA || '';
+            const gitRef = process.env.PAYLOAD_REF || '';
+            const gitOrg = process.env.PAYLOAD_GIT_ORG || '';
+            const gitRepo = process.env.PAYLOAD_GIT_REPO || '';
+            const { owner, repo } = context.repo;
+
+            if (eventName === 'workflow_dispatch') {
+              core.setOutput('sha', workflowSha);
+              return;
+            }
+
+            // Fail closed: only first-party refs in this repository are trusted.
+            // Fork preview SHAs are stored as pull refs and must not be checked out
+            // with repository secrets.
+            if (!/^[0-9a-f]{40}$/i.test(payloadSha)) {
+              core.setFailed('client_payload.git.sha is missing or not a full commit SHA');
+              return;
+            }
+
+            if (gitOrg && gitOrg.toLowerCase() !== owner.toLowerCase()) {
+              core.setFailed(`Refusing dispatch from git.org=${gitOrg}`);
+              return;
+            }
+
+            if (gitRepo) {
+              const expectedFull = `${owner}/${repo}`.toLowerCase();
+              const actual = gitRepo.toLowerCase();
+              if (actual !== repo.toLowerCase() && actual !== expectedFull) {
+                core.setFailed(`Refusing dispatch from git.repo=${gitRepo}`);
+                return;
+              }
+            }
+
+            const apiRef = toGitApiRef(gitRef);
+            if (!apiRef) {
+              core.setFailed('client_payload.git.ref is missing or is not a first-party branch/tag');
+              return;
+            }
+
+            let refSha;
+            try {
+              refSha = await resolveRefSha(github, owner, repo, apiRef);
+            } catch (error) {
+              core.setFailed(
+                `Refusing SHA ${payloadSha}: ref ${gitRef} does not exist in ${owner}/${repo}`,
+              );
+              return;
+            }
+
+            if (refSha.toLowerCase() === payloadSha.toLowerCase()) {
+              core.setOutput('sha', payloadSha.toLowerCase());
+              return;
+            }
+
+            try {
+              const { data: comparison } = await github.rest.repos.compareCommits({
+                owner,
+                repo,
+                base: payloadSha,
+                head: refSha,
+              });
+              // behind_by === 0 means payload SHA is an ancestor of the first-party ref.
+              if (comparison.behind_by === 0) {
+                core.setOutput('sha', payloadSha.toLowerCase());
+                return;
+              }
+              core.setFailed(
+                `Refusing SHA ${payloadSha}: not on trusted ref ${apiRef} (${refSha}) in ${owner}/${repo}`,
+              );
+            } catch (error) {
+              core.setFailed(
+                `Refusing SHA ${payloadSha}: not present on trusted ref ${apiRef} in ${owner}/${repo}`,
+              );
+            }
+
       - name: Update E2E Status
         uses: actions/github-script@v7
         env:
           GHA_RUN_ID: ${{ github.run_id }}
-          SHA: ${{ (github.event_name == 'workflow_dispatch' && github.sha) || github.event.client_payload.git.sha }}
+          SHA: ${{ steps.validate-sha.outputs.sha }}
         with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             await github.rest.repos.createCommitStatus({
               owner: 'vercel',
@@ -45,7 +182,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          ref: ${{ (github.event_name == 'workflow_dispatch' && github.sha) || github.event.client_payload.git.sha }}
+          ref: ${{ steps.validate-sha.outputs.sha }}
+          persist-credentials: false
 
       - uses: pnpm/action-setup@v4
         name: Install pnpm
@@ -77,14 +215,14 @@ jobs:
           FLAGS_SECRET: ${{ secrets.FLAGS_SECRET }}
 
       - name: Update E2E Status
-        if: ${{ always() }}
+        if: ${{ always() && steps.validate-sha.outcome == 'success' }}
         uses: actions/github-script@v7
         env:
           GHA_RUN_ID: ${{ github.run_id }}
           TESTS_OUTCOME: ${{ steps.e2e-tests.outcome }}
-          SHA: ${{ (github.event_name == 'workflow_dispatch' && github.sha) || github.event.client_payload.git.sha }}
+          SHA: ${{ steps.validate-sha.outputs.sha }}
         with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             await github.rest.repos.createCommitStatus({
               owner: 'vercel',
