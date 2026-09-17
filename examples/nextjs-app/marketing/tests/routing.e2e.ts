@@ -50,6 +50,10 @@ test.describe('routing cases', () => {
       path: '/bar/hello(3)',
       expected: '[docs] Bar Page hello(3)',
     },
+    {
+      path: '/campaign/ces-2026',
+      expected: '[campaign] on docs ["ces-2026"]',
+    },
   ]) {
     test(`should have correct title for ${path}`, async ({ page }) => {
       await page.goto(path);
