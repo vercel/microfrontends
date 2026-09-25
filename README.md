@@ -27,6 +27,8 @@ The local development proxy can preserve the origin used to reach it. Set it exp
 
 The origin must be an absolute `http` or `https` origin, such as `https://myapp.localhost`, with no path, query string, hash, username, or password. The proxy uses this origin anywhere it needs to preserve the URL clients used to reach the proxy.
 
+Proxied requests include this value in the `x-vercel-mfe-local-proxy-origin` header, including requests that fall back to a deployed application. When no origin is configured, the header contains the proxy's default `http://localhost:<port>` origin.
+
 ## Need help?
 
 Reach out for help in the [Vercel Community](https://community.vercel.com).

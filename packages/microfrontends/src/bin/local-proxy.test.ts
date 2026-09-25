@@ -744,7 +744,7 @@ describe('class LocalProxy', () => {
             'x-forwarded-proto': 'https',
             'x-forwarded-host': 'vercel.localhost',
             'x-forwarded-port': '443',
-            'x-vercel-mfe-local-proxy-origin': '1',
+            'x-vercel-mfe-local-proxy-origin': 'https://vercel.localhost',
           }),
         }),
       );
@@ -832,7 +832,9 @@ describe('class LocalProxy', () => {
         },
       );
 
-      const req = mockRequest('/a-path-that-surely-does-not-match-any-routes');
+      const req = mockRequest('/a-path-that-surely-does-not-match-any-routes', {
+        'x-vercel-mfe-local-proxy-origin': 'https://spoofed.example.com',
+      });
       (req as unknown as { on: jest.Mock }).on = jest.fn();
       const res = mockResponse();
       (res as unknown as { on: jest.Mock }).on = jest.fn();
@@ -847,14 +849,10 @@ describe('class LocalProxy', () => {
             'x-forwarded-proto': 'https',
             'x-forwarded-host': 'vercel.localhost',
             'x-forwarded-port': '443',
+            'x-vercel-mfe-local-proxy-origin': 'https://vercel.localhost',
           }),
         }),
         expect.any(Function),
-      );
-      const [requestOptions] = (https.request as unknown as jest.Mock).mock
-        .calls[0] as [{ headers: Record<string, string | string[]> }];
-      expect(requestOptions.headers).not.toHaveProperty(
-        'x-vercel-mfe-local-proxy-origin',
       );
       expect(res.writeHead).toHaveBeenCalledWith(
         307,
@@ -1101,7 +1099,7 @@ describe('class LocalProxy', () => {
             'x-forwarded-proto': 'https',
             'x-forwarded-host': 'vercel.localhost',
             'x-forwarded-port': '443',
-            'x-vercel-mfe-local-proxy-origin': '1',
+            'x-vercel-mfe-local-proxy-origin': 'https://vercel.localhost',
           }),
         }),
       );
@@ -1137,7 +1135,7 @@ describe('class LocalProxy', () => {
       expect(options.headers).not.toHaveProperty('x-forwarded-host');
       expect(options.headers).not.toHaveProperty('x-forwarded-port');
       expect(options.headers).toMatchObject({
-        'x-vercel-mfe-local-proxy-origin': '1',
+        'x-vercel-mfe-local-proxy-origin': 'http://localhost:6720',
       });
     });
   });

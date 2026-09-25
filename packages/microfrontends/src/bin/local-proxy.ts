@@ -21,9 +21,10 @@ import { localAuthHtml } from './local-auth';
 import { logger } from './logger';
 import type { LocalProxyApplicationResponse, LocalProxyOptions } from './types';
 
-// This is a header set to `1` by the local proxy on all outgoing requests to locally running applications.
-// Applications may optionally route all traffic that they receive without the header to the local proxy.
-// This allows the application to appear as if it is serving routes from another microfrontend.
+// This header is set by the local proxy on all outgoing requests and contains the
+// browser-facing origin. Applications may optionally route all traffic that they
+// receive without the header to the local proxy. This allows the application to
+// appear as if it is serving routes from another microfrontend.
 const MFE_LOCAL_PROXY_HEADER = 'x-vercel-mfe-local-proxy-origin';
 
 // This is a query parameter that can be passed to the local proxy to be used as the value of any flags
@@ -735,7 +736,7 @@ export class LocalProxy {
         const headers: Record<string, string> = this.configuredOrigin
           ? forwardedHeadersForOrigin(this.getOrigin())
           : {};
-        headers[MFE_LOCAL_PROXY_HEADER] = '1';
+        headers[MFE_LOCAL_PROXY_HEADER] = this.getOrigin();
         this.proxy.ws(req, socket, head, {
           target: target.url,
           headers,
@@ -818,6 +819,7 @@ export class LocalProxy {
           ...fallbackHeaders,
           host: hostname,
           ...forwardedHeaders,
+          [MFE_LOCAL_PROXY_HEADER]: origin,
           cookie: Object.entries(cookies)
             .reduce<string[]>((acc, [name, value]) => {
               if (
@@ -920,7 +922,7 @@ export class LocalProxy {
       });
     } else {
       const headers: Record<string, string> = { ...forwardedHeaders };
-      headers[MFE_LOCAL_PROXY_HEADER] = '1';
+      headers[MFE_LOCAL_PROXY_HEADER] = origin;
       if (mfeFlagValue !== undefined) {
         headers[MFE_FLAG_VALUE_HEADER] = mfeFlagValue.toString();
       }
