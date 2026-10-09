@@ -740,6 +740,7 @@ describe('class LocalProxy', () => {
         expect.anything(),
         res,
         expect.objectContaining({
+          toProxy: true,
           headers: expect.objectContaining({
             'x-forwarded-proto': 'https',
             'x-forwarded-host': 'vercel.localhost',
@@ -1097,6 +1098,7 @@ describe('class LocalProxy', () => {
         socket,
         head,
         expect.objectContaining({
+          toProxy: true,
           headers: expect.objectContaining({
             'x-forwarded-proto': 'https',
             'x-forwarded-host': 'vercel.localhost',
