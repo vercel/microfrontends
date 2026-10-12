@@ -1,5 +1,12 @@
 # @vercel/microfrontends
 
+## 2.4.1
+
+### Patch Changes
+
+- 55a1af8: Print the configured local proxy origin in the startup URL while keeping the localhost proxy target visible.
+- 2f8276b: Avoid Node.js `url.parse()` deprecation warnings when routing requests through the local proxy.
+
 ## 2.4.0
 
 ### Minor Changes
