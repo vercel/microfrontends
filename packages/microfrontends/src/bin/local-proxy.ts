@@ -739,6 +739,9 @@ export class LocalProxy {
         this.proxy.ws(req, socket, head, {
           target: target.url,
           headers,
+          // Forward the origin-form request target directly instead of letting
+          // http-proxy parse it with Node.js's deprecated url.parse().
+          toProxy: true,
         });
       } catch (err) {
         logger.error('Error proxying ws: ', err);
@@ -927,6 +930,9 @@ export class LocalProxy {
       this.proxy.web(strippedReq, res, {
         target: target.url,
         headers,
+        // Forward the origin-form request target directly instead of letting
+        // http-proxy parse it with Node.js's deprecated url.parse().
+        toProxy: true,
       });
     }
   }
