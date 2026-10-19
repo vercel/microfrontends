@@ -5,6 +5,7 @@
 import { NextRequest } from 'next/server';
 import { hashApplicationName } from '../../config/microfrontends/utils/hash-application-name';
 import { MicrofrontendConfigIsomorphic } from '../../config/microfrontends-config/isomorphic';
+import { getAppEnvOverrideCookieName } from '../../config/overrides';
 import type { Application, Config, PathGroup } from '../../config/schema/types';
 import { TEST_CONFIG } from '../../test-utils/fixtures/test-config';
 import { runMicrofrontendsMiddleware } from './middleware';
@@ -291,6 +292,109 @@ describe('runMicrofrontendsMiddleware', () => {
       expect(await response?.json()).toEqual({
         config: expectedConfig,
       });
+    });
+  });
+
+  describe('caching', () => {
+    function addFlaggedDocsPath() {
+      modifyRouting(config.applications.docs, {
+        group: 'flagged',
+        paths: ['/docs/flagged'],
+        flag: 'docsFlag',
+      });
+      setEnvVars();
+    }
+
+    afterEach(() => {
+      jest.restoreAllMocks();
+    });
+
+    it('reuses the parsed config across requests', async () => {
+      addFlaggedDocsPath();
+      const fromEnvSpy = jest.spyOn(MicrofrontendConfigIsomorphic, 'fromEnv');
+      const flagValues = { docsFlag: () => Promise.resolve(true) };
+
+      for (const path of ['/docs/flagged', '/docs/flagged', '/other']) {
+        await runMicrofrontendsMiddleware({
+          request: new NextRequest(`https://vercel.com${path}`, {
+            headers: { cookie: 'session=abc' },
+          }),
+          flagValues,
+        });
+      }
+      expect(fromEnvSpy).toHaveBeenCalledTimes(1);
+    });
+
+    it('rebuilds when the config changes', async () => {
+      addFlaggedDocsPath();
+      const flagValues = { docsFlag: () => Promise.resolve(true) };
+
+      const before = await runMicrofrontendsMiddleware({
+        request: new NextRequest('https://vercel.com/docs/flagged-2'),
+        flagValues,
+      });
+      expect(before).toBeUndefined();
+
+      modifyRouting(config.applications.docs, {
+        group: 'flagged-2',
+        paths: ['/docs/flagged-2'],
+        flag: 'docsFlag',
+      });
+      setEnvVars();
+
+      const after = await runMicrofrontendsMiddleware({
+        request: new NextRequest('https://vercel.com/docs/flagged-2'),
+        flagValues,
+      });
+      expect(
+        after?.headers.get('x-middleware-request-x-vercel-mfe-zone'),
+      ).toEqual('docs');
+    });
+
+    it('rebuilds when override cookies change', async () => {
+      addFlaggedDocsPath();
+      const fromEnvSpy = jest.spyOn(MicrofrontendConfigIsomorphic, 'fromEnv');
+      const flagValues = { docsFlag: () => Promise.resolve(true) };
+      const overrideCookie = getAppEnvOverrideCookieName('docs');
+
+      for (const cookie of [
+        'session=abc',
+        `${overrideCookie}=docs-preview.vercel.app`,
+        `${overrideCookie}=docs-preview.vercel.app; session=def`,
+        `${overrideCookie}=docs-other.vercel.app`,
+      ]) {
+        await runMicrofrontendsMiddleware({
+          request: new NextRequest('https://vercel.com/docs/flagged', {
+            headers: { cookie },
+          }),
+          flagValues,
+        });
+      }
+      expect(fromEnvSpy).toHaveBeenCalledTimes(3);
+      expect(fromEnvSpy.mock.calls[1]?.[0].cookies).toEqual(
+        expect.arrayContaining([
+          { name: overrideCookie, value: 'docs-preview.vercel.app' },
+        ]),
+      );
+    });
+
+    it('rebuilds for different flag values', async () => {
+      addFlaggedDocsPath();
+      const enabledFlag = jest.fn(() => Promise.resolve(true));
+      const disabledFlag = jest.fn(() => Promise.resolve(false));
+
+      const enabled = await runMicrofrontendsMiddleware({
+        request: new NextRequest('https://vercel.com/docs/flagged'),
+        flagValues: { docsFlag: enabledFlag },
+      });
+      const disabled = await runMicrofrontendsMiddleware({
+        request: new NextRequest('https://vercel.com/docs/flagged'),
+        flagValues: { docsFlag: disabledFlag },
+      });
+      expect(enabled).toBeDefined();
+      expect(disabled).toBeUndefined();
+      expect(enabledFlag).toHaveBeenCalledTimes(1);
+      expect(disabledFlag).toHaveBeenCalledTimes(1);
     });
   });
 });

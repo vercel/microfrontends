@@ -7,6 +7,11 @@ import { localProxyIsRunning } from '../../bin/local-proxy-is-running';
 import { logger } from '../../bin/logger';
 import { MicrofrontendConfigIsomorphic } from '../../config/microfrontends-config/isomorphic';
 import type { ChildApplication } from '../../config/microfrontends-config/isomorphic/application';
+import {
+  MFE_APP_PORT_ENV,
+  MFE_LOCAL_PROXY_PORT_ENV,
+} from '../../config/microfrontends-config/isomorphic/constants';
+import { isOverrideCookie } from '../../config/overrides';
 import { getWellKnownClientData } from '../../config/well-known/endpoints';
 import type { WellKnownClientData } from '../../config/well-known/types';
 import type {
@@ -100,6 +105,75 @@ function getWellKnownClientConfigMiddleware(
   };
 }
 
+// Parsing and validating the config and compiling every routing path is
+// expensive for large configs, so the built middlewares are reused across
+// requests as long as everything they are derived from is unchanged.
+const MAX_CACHED_MIDDLEWARES_PER_FLAG_VALUES = 100;
+const middlewaresCache = new WeakMap<
+  Record<string, () => Promise<boolean>>,
+  Map<string, MicrofrontendsMiddleware[]>
+>();
+
+let lastEnvValues: (string | undefined)[] | undefined;
+let lastEnvKey = '';
+
+function getEnvCacheKey(): string {
+  const envValues = [
+    process.env.MFE_CONFIG,
+    process.env.NEXT_PUBLIC_MFE_CURRENT_APPLICATION,
+    process.env[MFE_APP_PORT_ENV],
+    process.env[MFE_LOCAL_PROXY_PORT_ENV],
+  ];
+  // Reuse the same key string while the env is unchanged so that the cache
+  // lookup doesn't have to hash the full config string on every request
+  if (
+    !lastEnvValues ||
+    envValues.some((value, i) => value !== lastEnvValues?.[i])
+  ) {
+    lastEnvValues = envValues;
+    lastEnvKey = envValues.join('\0');
+  }
+  return lastEnvKey;
+}
+
+function getMiddlewaresCacheKey(
+  cookies: { name: string; value: string }[],
+): string {
+  let key = getEnvCacheKey();
+  for (const cookie of cookies) {
+    if (isOverrideCookie(cookie)) {
+      key += `\0${cookie.name}=${cookie.value}`;
+    }
+  }
+  return key;
+}
+
+function getCachedMicrofrontendsMiddleware({
+  request,
+  flagValues,
+}: {
+  request: NextRequest;
+  flagValues: Record<string, () => Promise<boolean>>;
+}): MicrofrontendsMiddleware[] {
+  const cookies = request.cookies.getAll();
+  const key = getMiddlewaresCacheKey(cookies);
+  let cache = middlewaresCache.get(flagValues);
+  const cached = cache?.get(key);
+  if (cached) {
+    return cached;
+  }
+
+  const middlewares = buildMicrofrontendsMiddleware({ cookies, flagValues });
+  if (!cache) {
+    cache = new Map();
+    middlewaresCache.set(flagValues, cache);
+  } else if (cache.size >= MAX_CACHED_MIDDLEWARES_PER_FLAG_VALUES) {
+    cache.clear();
+  }
+  cache.set(key, middlewares);
+  return middlewares;
+}
+
 /**
  * Returns an array of middleware functions that will handle routing to the
  * right micro-frontends for the provided configuration.
@@ -114,9 +188,18 @@ export function getMicrofrontendsMiddleware({
   request: NextRequest;
   flagValues: Record<string, () => Promise<boolean>>;
 }): MicrofrontendsMiddleware[] {
-  const microfrontends = MicrofrontendConfigIsomorphic.fromEnv({
-    cookies: request.cookies.getAll(),
-  });
+  // Return a copy so callers can't modify the cached middlewares
+  return getCachedMicrofrontendsMiddleware({ request, flagValues }).slice();
+}
+
+function buildMicrofrontendsMiddleware({
+  cookies,
+  flagValues,
+}: {
+  cookies: { name: string; value: string }[];
+  flagValues: Record<string, () => Promise<boolean>>;
+}): MicrofrontendsMiddleware[] {
+  const microfrontends = MicrofrontendConfigIsomorphic.fromEnv({ cookies });
   const middlewares: MicrofrontendsMiddleware[] = [];
 
   if (!process.env.NEXT_PUBLIC_MFE_CURRENT_APPLICATION) {
@@ -187,7 +270,7 @@ export async function runMicrofrontendsMiddleware({
   flagValues: Record<string, () => Promise<boolean>>;
 }): Promise<Response | undefined> {
   const pathname = request.nextUrl.pathname;
-  const middlewares = getMicrofrontendsMiddleware({
+  const middlewares = getCachedMicrofrontendsMiddleware({
     request,
     flagValues,
   });
