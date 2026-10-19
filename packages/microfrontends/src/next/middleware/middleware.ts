@@ -105,14 +105,29 @@ function getWellKnownClientConfigMiddleware(
   };
 }
 
+const WELL_KNOWN_CLIENT_CONFIG_PATH =
+  '/.well-known/vercel/microfrontends/client-config';
+
+interface FlaggedPath {
+  application: ChildApplication;
+  flagName: string;
+  group: string | undefined;
+  pattern: RegExp;
+}
+
+interface MicrofrontendsRouting {
+  microfrontends: MicrofrontendConfigIsomorphic;
+  isDefaultApplication: boolean;
+  localProxyPort: number;
+  flaggedPaths: FlaggedPath[];
+}
+
 // Parsing and validating the config and compiling every routing path is
-// expensive for large configs, so the built middlewares are reused across
-// requests as long as everything they are derived from is unchanged.
-const MAX_CACHED_MIDDLEWARES_PER_FLAG_VALUES = 100;
-const middlewaresCache = new WeakMap<
-  Record<string, () => Promise<boolean>>,
-  Map<string, MicrofrontendsMiddleware[]>
->();
+// expensive for large configs, so this is reused across requests as long as
+// everything it is derived from is unchanged. Flag values are applied per
+// request, since callers may create a new `flagValues` object per request.
+const MAX_CACHED_ROUTING = 100;
+const routingCache = new Map<string, MicrofrontendsRouting>();
 
 let lastEnvValues: (string | undefined)[] | undefined;
 let lastEnvKey = '';
@@ -136,7 +151,7 @@ function getEnvCacheKey(): string {
   return lastEnvKey;
 }
 
-function getMiddlewaresCacheKey(
+function getRoutingCacheKey(
   cookies: { name: string; value: string }[],
 ): string {
   let key = getEnvCacheKey();
@@ -148,30 +163,76 @@ function getMiddlewaresCacheKey(
   return key;
 }
 
-function getCachedMicrofrontendsMiddleware({
-  request,
-  flagValues,
-}: {
-  request: NextRequest;
-  flagValues: Record<string, () => Promise<boolean>>;
-}): MicrofrontendsMiddleware[] {
+function buildMicrofrontendsRouting(
+  cookies: { name: string; value: string }[],
+): MicrofrontendsRouting {
+  const microfrontends = MicrofrontendConfigIsomorphic.fromEnv({ cookies });
+
+  if (!process.env.NEXT_PUBLIC_MFE_CURRENT_APPLICATION) {
+    throw new Error(
+      'The NEXT_PUBLIC_MFE_CURRENT_APPLICATION environment variable is not set. Did you run `withMicrofrontends` in your Next.js config?',
+    );
+  }
+
+  const currentApplication = microfrontends.getApplication(
+    process.env.NEXT_PUBLIC_MFE_CURRENT_APPLICATION,
+  );
+
+  const flaggedPaths: FlaggedPath[] = [];
+  const isDefaultApplication = currentApplication.isDefault();
+  if (isDefaultApplication) {
+    for (const application of microfrontends.getChildApplications()) {
+      for (const pathGroup of application.routing) {
+        const flagName = pathGroup.flag;
+        if (flagName) {
+          for (const path of pathGroup.paths) {
+            flaggedPaths.push({
+              application,
+              flagName,
+              group: pathGroup.group,
+              pattern: pathToRegexp(path),
+            });
+          }
+        }
+      }
+    }
+  }
+
+  return {
+    microfrontends,
+    isDefaultApplication,
+    localProxyPort: microfrontends.getLocalProxyPort(),
+    flaggedPaths,
+  };
+}
+
+function getMicrofrontendsRouting(request: NextRequest): MicrofrontendsRouting {
   const cookies = request.cookies.getAll();
-  const key = getMiddlewaresCacheKey(cookies);
-  let cache = middlewaresCache.get(flagValues);
-  const cached = cache?.get(key);
+  const key = getRoutingCacheKey(cookies);
+  const cached = routingCache.get(key);
   if (cached) {
     return cached;
   }
 
-  const middlewares = buildMicrofrontendsMiddleware({ cookies, flagValues });
-  if (!cache) {
-    cache = new Map();
-    middlewaresCache.set(flagValues, cache);
-  } else if (cache.size >= MAX_CACHED_MIDDLEWARES_PER_FLAG_VALUES) {
-    cache.clear();
+  const routing = buildMicrofrontendsRouting(cookies);
+  if (routingCache.size >= MAX_CACHED_ROUTING) {
+    routingCache.clear();
   }
-  cache.set(key, middlewares);
-  return middlewares;
+  routingCache.set(key, routing);
+  return routing;
+}
+
+function getFlagFn(
+  { application, flagName, group }: FlaggedPath,
+  flagValues: Record<string, () => Promise<boolean>>,
+): () => Promise<boolean> {
+  const flagFn = flagValues[flagName];
+  if (!flagFn) {
+    throw new Error(
+      `Flag "${flagName}" was specified to control routing for path group "${group}" in application ${application.name} but not found in provided flag values. See https://vercel.com/docs/microfrontends/path-routing#add-microfrontends-middleware for more information.`,
+    );
+  }
+  return flagFn;
 }
 
 /**
@@ -188,66 +249,32 @@ export function getMicrofrontendsMiddleware({
   request: NextRequest;
   flagValues: Record<string, () => Promise<boolean>>;
 }): MicrofrontendsMiddleware[] {
-  // Return a copy so callers can't modify the cached middlewares
-  return getCachedMicrofrontendsMiddleware({ request, flagValues }).slice();
-}
-
-function buildMicrofrontendsMiddleware({
-  cookies,
-  flagValues,
-}: {
-  cookies: { name: string; value: string }[];
-  flagValues: Record<string, () => Promise<boolean>>;
-}): MicrofrontendsMiddleware[] {
-  const microfrontends = MicrofrontendConfigIsomorphic.fromEnv({ cookies });
+  const routing = getMicrofrontendsRouting(request);
   const middlewares: MicrofrontendsMiddleware[] = [];
 
-  if (!process.env.NEXT_PUBLIC_MFE_CURRENT_APPLICATION) {
-    throw new Error(
-      'The NEXT_PUBLIC_MFE_CURRENT_APPLICATION environment variable is not set. Did you run `withMicrofrontends` in your Next.js config?',
-    );
-  }
-
-  const currentApplication = microfrontends.getApplication(
-    process.env.NEXT_PUBLIC_MFE_CURRENT_APPLICATION,
-  );
-
-  if (!currentApplication.isDefault()) {
+  if (!routing.isDefaultApplication) {
     return middlewares;
   }
 
   middlewares.push({
-    src: '/.well-known/vercel/microfrontends/client-config',
-    fn: getWellKnownClientConfigMiddleware(microfrontends, flagValues),
+    src: WELL_KNOWN_CLIENT_CONFIG_PATH,
+    fn: getWellKnownClientConfigMiddleware(routing.microfrontends, flagValues),
   });
 
-  const localProxyPort = microfrontends.getLocalProxyPort();
-
-  for (const application of microfrontends.getChildApplications()) {
-    for (const pathGroup of application.routing) {
-      const flagName = pathGroup.flag;
-      if (flagName) {
-        const flagFn = flagValues[flagName];
-        if (!flagFn) {
-          throw new Error(
-            `Flag "${flagName}" was specified to control routing for path group "${pathGroup.group}" in application ${application.name} but not found in provided flag values. See https://vercel.com/docs/microfrontends/path-routing#add-microfrontends-middleware for more information.`,
-          );
-        }
-        for (const path of pathGroup.paths) {
-          const pattern = pathToRegexp(path);
-          middlewares.push({
-            src: pattern,
-            fn: getFlagHandler({
-              application,
-              flagFn,
-              flagName,
-              pattern,
-              localProxyPort,
-            }),
-          });
-        }
-      }
-    }
+  for (const flaggedPath of routing.flaggedPaths) {
+    const flagFn = getFlagFn(flaggedPath, flagValues);
+    // Copy the cached pattern so callers can't modify it
+    const pattern = new RegExp(flaggedPath.pattern);
+    middlewares.push({
+      src: pattern,
+      fn: getFlagHandler({
+        application: flaggedPath.application,
+        flagFn,
+        flagName: flaggedPath.flagName,
+        pattern,
+        localProxyPort: routing.localProxyPort,
+      }),
+    });
   }
 
   return middlewares;
@@ -269,19 +296,37 @@ export async function runMicrofrontendsMiddleware({
   request: NextRequest;
   flagValues: Record<string, () => Promise<boolean>>;
 }): Promise<Response | undefined> {
-  const pathname = request.nextUrl.pathname;
-  const middlewares = getCachedMicrofrontendsMiddleware({
-    request,
-    flagValues,
-  });
+  const routing = getMicrofrontendsRouting(request);
+  if (!routing.isDefaultApplication) {
+    return;
+  }
 
-  for (const mware of middlewares) {
-    if (
-      typeof mware.src === 'string'
-        ? pathname === mware.src
-        : mware.src.test(pathname)
-    ) {
-      const response = await mware.fn(request);
+  // Equivalent to running the middlewares from `getMicrofrontendsMiddleware`,
+  // without creating handlers for paths that don't match
+  for (const flaggedPath of routing.flaggedPaths) {
+    getFlagFn(flaggedPath, flagValues);
+  }
+
+  const pathname = request.nextUrl.pathname;
+  if (pathname === WELL_KNOWN_CLIENT_CONFIG_PATH) {
+    const response = await getWellKnownClientConfigMiddleware(
+      routing.microfrontends,
+      flagValues,
+    )(request);
+    if (response) {
+      return response;
+    }
+  }
+
+  for (const flaggedPath of routing.flaggedPaths) {
+    if (flaggedPath.pattern.test(pathname)) {
+      const response = await getFlagHandler({
+        application: flaggedPath.application,
+        flagFn: getFlagFn(flaggedPath, flagValues),
+        flagName: flaggedPath.flagName,
+        pattern: flaggedPath.pattern,
+        localProxyPort: routing.localProxyPort,
+      })(request);
       if (response) {
         return response;
       }

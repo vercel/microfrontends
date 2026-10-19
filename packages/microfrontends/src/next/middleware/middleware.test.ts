@@ -8,7 +8,10 @@ import { MicrofrontendConfigIsomorphic } from '../../config/microfrontends-confi
 import { getAppEnvOverrideCookieName } from '../../config/overrides';
 import type { Application, Config, PathGroup } from '../../config/schema/types';
 import { TEST_CONFIG } from '../../test-utils/fixtures/test-config';
-import { runMicrofrontendsMiddleware } from './middleware';
+import {
+  getMicrofrontendsMiddleware,
+  runMicrofrontendsMiddleware,
+} from './middleware';
 
 const OLD_ENV = process.env;
 
@@ -296,9 +299,14 @@ describe('runMicrofrontendsMiddleware', () => {
   });
 
   describe('caching', () => {
+    let testId = 0;
+
     function addFlaggedDocsPath() {
+      // The parsed config is cached by its contents, so use a unique config
+      // per test to avoid reusing one cached by an earlier test
+      testId++;
       modifyRouting(config.applications.docs, {
-        group: 'flagged',
+        group: `flagged-${testId}`,
         paths: ['/docs/flagged'],
         flag: 'docsFlag',
       });
@@ -378,11 +386,13 @@ describe('runMicrofrontendsMiddleware', () => {
       );
     });
 
-    it('rebuilds for different flag values', async () => {
+    it('reuses the parsed config for new flag values objects', async () => {
       addFlaggedDocsPath();
+      const fromEnvSpy = jest.spyOn(MicrofrontendConfigIsomorphic, 'fromEnv');
       const enabledFlag = jest.fn(() => Promise.resolve(true));
       const disabledFlag = jest.fn(() => Promise.resolve(false));
 
+      // Flag values are commonly created inside the middleware function
       const enabled = await runMicrofrontendsMiddleware({
         request: new NextRequest('https://vercel.com/docs/flagged'),
         flagValues: { docsFlag: enabledFlag },
@@ -391,10 +401,46 @@ describe('runMicrofrontendsMiddleware', () => {
         request: new NextRequest('https://vercel.com/docs/flagged'),
         flagValues: { docsFlag: disabledFlag },
       });
+      await expect(
+        runMicrofrontendsMiddleware({
+          request: new NextRequest('https://vercel.com/docs/flagged'),
+          flagValues: {},
+        }),
+      ).rejects.toThrow('Flag "docsFlag" was specified');
+
       expect(enabled).toBeDefined();
       expect(disabled).toBeUndefined();
       expect(enabledFlag).toHaveBeenCalledTimes(1);
       expect(disabledFlag).toHaveBeenCalledTimes(1);
+      expect(fromEnvSpy).toHaveBeenCalledTimes(1);
+    });
+
+    it('returns middlewares that callers can modify', async () => {
+      addFlaggedDocsPath();
+      const flagValues = { docsFlag: () => Promise.resolve(true) };
+      const request = new NextRequest('https://vercel.com/docs/flagged');
+
+      const middlewares = getMicrofrontendsMiddleware({ request, flagValues });
+      const flagged = middlewares.find((m) => typeof m.src !== 'string');
+      if (!flagged || typeof flagged.src === 'string') {
+        throw new Error('Expected a flagged middleware');
+      }
+      flagged.fn = () => Promise.resolve(undefined);
+      middlewares.length = 0;
+
+      const response = await runMicrofrontendsMiddleware({
+        request,
+        flagValues,
+      });
+      expect(
+        response?.headers.get('x-middleware-request-x-vercel-mfe-zone'),
+      ).toEqual('docs');
+
+      const again = getMicrofrontendsMiddleware({ request, flagValues });
+      const flaggedAgain = again.find((m) => typeof m.src !== 'string');
+      expect(flaggedAgain).not.toBe(flagged);
+      expect(flaggedAgain?.src).not.toBe(flagged.src);
+      expect(flaggedAgain?.src).toEqual(flagged.src);
     });
   });
 });
