@@ -359,7 +359,7 @@ describe('runMicrofrontendsMiddleware', () => {
       ).toEqual('docs');
     });
 
-    it('rebuilds when override cookies change', async () => {
+    it('reuses the parsed config when override cookies change', async () => {
       addFlaggedDocsPath();
       const fromEnvSpy = jest.spyOn(MicrofrontendConfigIsomorphic, 'fromEnv');
       const flagValues = { docsFlag: () => Promise.resolve(true) };
@@ -368,22 +368,19 @@ describe('runMicrofrontendsMiddleware', () => {
       for (const cookie of [
         'session=abc',
         `${overrideCookie}=docs-preview.vercel.app`,
-        `${overrideCookie}=docs-preview.vercel.app; session=def`,
         `${overrideCookie}=docs-other.vercel.app`,
       ]) {
-        await runMicrofrontendsMiddleware({
+        const response = await runMicrofrontendsMiddleware({
           request: new NextRequest('https://vercel.com/docs/flagged', {
             headers: { cookie },
           }),
           flagValues,
         });
+        expect(
+          response?.headers.get('x-middleware-request-x-vercel-mfe-zone'),
+        ).toEqual('docs');
       }
-      expect(fromEnvSpy).toHaveBeenCalledTimes(3);
-      expect(fromEnvSpy.mock.calls[1]?.[0].cookies).toEqual(
-        expect.arrayContaining([
-          { name: overrideCookie, value: 'docs-preview.vercel.app' },
-        ]),
-      );
+      expect(fromEnvSpy).toHaveBeenCalledTimes(1);
     });
 
     it('reuses the parsed config for new flag values objects', async () => {
