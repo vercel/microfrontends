@@ -11,7 +11,6 @@ import {
   MFE_APP_PORT_ENV,
   MFE_LOCAL_PROXY_PORT_ENV,
 } from '../../config/microfrontends-config/isomorphic/constants';
-import { isOverrideCookie } from '../../config/overrides';
 import { getWellKnownClientData } from '../../config/well-known/endpoints';
 import type { WellKnownClientData } from '../../config/well-known/types';
 import type {
@@ -124,10 +123,12 @@ interface MicrofrontendsRouting {
 
 // Parsing and validating the config and compiling every routing path is
 // expensive for large configs, so this is reused across requests as long as
-// everything it is derived from is unchanged. Flag values are applied per
+// the env it is derived from is unchanged. Flag values are applied per
 // request, since callers may create a new `flagValues` object per request.
-const MAX_CACHED_ROUTING = 100;
-const routingCache = new Map<string, MicrofrontendsRouting>();
+// Override cookies aren't part of the key: they only change application
+// hosts, which the middleware doesn't use (the Vercel proxy and the local
+// proxy apply overrides).
+let cachedRouting: { key: string; routing: MicrofrontendsRouting } | undefined;
 
 let lastEnvValues: (string | undefined)[] | undefined;
 let lastEnvKey = '';
@@ -151,22 +152,8 @@ function getEnvCacheKey(): string {
   return lastEnvKey;
 }
 
-function getRoutingCacheKey(
-  cookies: { name: string; value: string }[],
-): string {
-  let key = getEnvCacheKey();
-  for (const cookie of cookies) {
-    if (isOverrideCookie(cookie)) {
-      key += `\0${cookie.name}=${cookie.value}`;
-    }
-  }
-  return key;
-}
-
-function buildMicrofrontendsRouting(
-  cookies: { name: string; value: string }[],
-): MicrofrontendsRouting {
-  const microfrontends = MicrofrontendConfigIsomorphic.fromEnv({ cookies });
+function buildMicrofrontendsRouting(): MicrofrontendsRouting {
+  const microfrontends = MicrofrontendConfigIsomorphic.fromEnv({});
 
   if (!process.env.NEXT_PUBLIC_MFE_CURRENT_APPLICATION) {
     throw new Error(
@@ -206,20 +193,12 @@ function buildMicrofrontendsRouting(
   };
 }
 
-function getMicrofrontendsRouting(request: NextRequest): MicrofrontendsRouting {
-  const cookies = request.cookies.getAll();
-  const key = getRoutingCacheKey(cookies);
-  const cached = routingCache.get(key);
-  if (cached) {
-    return cached;
+function getMicrofrontendsRouting(): MicrofrontendsRouting {
+  const key = getEnvCacheKey();
+  if (cachedRouting?.key !== key) {
+    cachedRouting = { key, routing: buildMicrofrontendsRouting() };
   }
-
-  const routing = buildMicrofrontendsRouting(cookies);
-  if (routingCache.size >= MAX_CACHED_ROUTING) {
-    routingCache.clear();
-  }
-  routingCache.set(key, routing);
-  return routing;
+  return cachedRouting.routing;
 }
 
 function getFlagFn(
@@ -243,13 +222,13 @@ function getFlagFn(
  * @param flagValues - An object that maps flag names to functions that return the flag value.
  */
 export function getMicrofrontendsMiddleware({
-  request,
   flagValues,
 }: {
+  // Kept for backwards compatibility, routing no longer depends on the request
   request: NextRequest;
   flagValues: Record<string, () => Promise<boolean>>;
 }): MicrofrontendsMiddleware[] {
-  const routing = getMicrofrontendsRouting(request);
+  const routing = getMicrofrontendsRouting();
   const middlewares: MicrofrontendsMiddleware[] = [];
 
   if (!routing.isDefaultApplication) {
@@ -296,7 +275,7 @@ export async function runMicrofrontendsMiddleware({
   request: NextRequest;
   flagValues: Record<string, () => Promise<boolean>>;
 }): Promise<Response | undefined> {
-  const routing = getMicrofrontendsRouting(request);
+  const routing = getMicrofrontendsRouting();
   if (!routing.isDefaultApplication) {
     return;
   }
