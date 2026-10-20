@@ -275,37 +275,19 @@ export async function runMicrofrontendsMiddleware({
   request: NextRequest;
   flagValues: Record<string, () => Promise<boolean>>;
 }): Promise<Response | undefined> {
-  const routing = getMicrofrontendsRouting();
-  if (!routing.isDefaultApplication) {
-    return;
-  }
-
-  // Equivalent to running the middlewares from `getMicrofrontendsMiddleware`,
-  // without creating handlers for paths that don't match
-  for (const flaggedPath of routing.flaggedPaths) {
-    getFlagFn(flaggedPath, flagValues);
-  }
-
   const pathname = request.nextUrl.pathname;
-  if (pathname === WELL_KNOWN_CLIENT_CONFIG_PATH) {
-    const response = await getWellKnownClientConfigMiddleware(
-      routing.microfrontends,
-      flagValues,
-    )(request);
-    if (response) {
-      return response;
-    }
-  }
+  const middlewares = getMicrofrontendsMiddleware({
+    request,
+    flagValues,
+  });
 
-  for (const flaggedPath of routing.flaggedPaths) {
-    if (flaggedPath.pattern.test(pathname)) {
-      const response = await getFlagHandler({
-        application: flaggedPath.application,
-        flagFn: getFlagFn(flaggedPath, flagValues),
-        flagName: flaggedPath.flagName,
-        pattern: flaggedPath.pattern,
-        localProxyPort: routing.localProxyPort,
-      })(request);
+  for (const mware of middlewares) {
+    if (
+      typeof mware.src === 'string'
+        ? pathname === mware.src
+        : mware.src.test(pathname)
+    ) {
+      const response = await mware.fn(request);
       if (response) {
         return response;
       }
