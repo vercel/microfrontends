@@ -1,6 +1,6 @@
 {
   "name": "@vercel/microfrontends",
-  "version": "2.4.1",
+  "version": "2.4.2",
   "private": false,
   "description": "Defines configuration and utilities for microfrontends development",
   "keywords": [
