@@ -1,5 +1,11 @@
 # @vercel/microfrontends
 
+## 2.4.2
+
+### Patch Changes
+
+- 41b2275: Reuse the parsed config and compiled path matchers in `runMicrofrontendsMiddleware` across requests instead of rebuilding them on every request
+
 ## 2.4.1
 
 ### Patch Changes
