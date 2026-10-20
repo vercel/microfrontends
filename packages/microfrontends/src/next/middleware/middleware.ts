@@ -7,6 +7,10 @@ import { localProxyIsRunning } from '../../bin/local-proxy-is-running';
 import { logger } from '../../bin/logger';
 import { MicrofrontendConfigIsomorphic } from '../../config/microfrontends-config/isomorphic';
 import type { ChildApplication } from '../../config/microfrontends-config/isomorphic/application';
+import {
+  MFE_APP_PORT_ENV,
+  MFE_LOCAL_PROXY_PORT_ENV,
+} from '../../config/microfrontends-config/isomorphic/constants';
 import { getWellKnownClientData } from '../../config/well-known/endpoints';
 import type { WellKnownClientData } from '../../config/well-known/types';
 import type {
@@ -100,24 +104,56 @@ function getWellKnownClientConfigMiddleware(
   };
 }
 
-/**
- * Returns an array of middleware functions that will handle routing to the
- * right micro-frontends for the provided configuration.
- *
- * @param config - The micro-frontends configuration object.
- * @param flagValues - An object that maps flag names to functions that return the flag value.
- */
-export function getMicrofrontendsMiddleware({
-  request,
-  flagValues,
-}: {
-  request: NextRequest;
-  flagValues: Record<string, () => Promise<boolean>>;
-}): MicrofrontendsMiddleware[] {
-  const microfrontends = MicrofrontendConfigIsomorphic.fromEnv({
-    cookies: request.cookies.getAll(),
-  });
-  const middlewares: MicrofrontendsMiddleware[] = [];
+const WELL_KNOWN_CLIENT_CONFIG_PATH =
+  '/.well-known/vercel/microfrontends/client-config';
+
+interface FlaggedPath {
+  application: ChildApplication;
+  flagName: string;
+  group: string | undefined;
+  pattern: RegExp;
+}
+
+interface MicrofrontendsRouting {
+  microfrontends: MicrofrontendConfigIsomorphic;
+  isDefaultApplication: boolean;
+  localProxyPort: number;
+  flaggedPaths: FlaggedPath[];
+}
+
+// Parsing and validating the config and compiling every routing path is
+// expensive for large configs, so this is reused across requests as long as
+// the env it is derived from is unchanged. Flag values are applied per
+// request, since callers may create a new `flagValues` object per request.
+// Override cookies aren't part of the key: they only change application
+// hosts, which the middleware doesn't use (the Vercel proxy and the local
+// proxy apply overrides).
+let cachedRouting: { key: string; routing: MicrofrontendsRouting } | undefined;
+
+let lastEnvValues: (string | undefined)[] | undefined;
+let lastEnvKey = '';
+
+function getEnvCacheKey(): string {
+  const envValues = [
+    process.env.MFE_CONFIG,
+    process.env.NEXT_PUBLIC_MFE_CURRENT_APPLICATION,
+    process.env[MFE_APP_PORT_ENV],
+    process.env[MFE_LOCAL_PROXY_PORT_ENV],
+  ];
+  // Reuse the same key string while the env is unchanged so that the cache
+  // lookup doesn't have to hash the full config string on every request
+  if (
+    !lastEnvValues ||
+    envValues.some((value, i) => value !== lastEnvValues?.[i])
+  ) {
+    lastEnvValues = envValues;
+    lastEnvKey = envValues.join('\0');
+  }
+  return lastEnvKey;
+}
+
+function buildMicrofrontendsRouting(): MicrofrontendsRouting {
+  const microfrontends = MicrofrontendConfigIsomorphic.fromEnv({});
 
   if (!process.env.NEXT_PUBLIC_MFE_CURRENT_APPLICATION) {
     throw new Error(
@@ -129,42 +165,95 @@ export function getMicrofrontendsMiddleware({
     process.env.NEXT_PUBLIC_MFE_CURRENT_APPLICATION,
   );
 
-  if (!currentApplication.isDefault()) {
+  const flaggedPaths: FlaggedPath[] = [];
+  const isDefaultApplication = currentApplication.isDefault();
+  if (isDefaultApplication) {
+    for (const application of microfrontends.getChildApplications()) {
+      for (const pathGroup of application.routing) {
+        const flagName = pathGroup.flag;
+        if (flagName) {
+          for (const path of pathGroup.paths) {
+            flaggedPaths.push({
+              application,
+              flagName,
+              group: pathGroup.group,
+              pattern: pathToRegexp(path),
+            });
+          }
+        }
+      }
+    }
+  }
+
+  return {
+    microfrontends,
+    isDefaultApplication,
+    localProxyPort: microfrontends.getLocalProxyPort(),
+    flaggedPaths,
+  };
+}
+
+function getMicrofrontendsRouting(): MicrofrontendsRouting {
+  const key = getEnvCacheKey();
+  if (cachedRouting?.key !== key) {
+    cachedRouting = { key, routing: buildMicrofrontendsRouting() };
+  }
+  return cachedRouting.routing;
+}
+
+function getFlagFn(
+  { application, flagName, group }: FlaggedPath,
+  flagValues: Record<string, () => Promise<boolean>>,
+): () => Promise<boolean> {
+  const flagFn = flagValues[flagName];
+  if (!flagFn) {
+    throw new Error(
+      `Flag "${flagName}" was specified to control routing for path group "${group}" in application ${application.name} but not found in provided flag values. See https://vercel.com/docs/microfrontends/path-routing#add-microfrontends-middleware for more information.`,
+    );
+  }
+  return flagFn;
+}
+
+/**
+ * Returns an array of middleware functions that will handle routing to the
+ * right micro-frontends for the provided configuration.
+ *
+ * @param config - The micro-frontends configuration object.
+ * @param flagValues - An object that maps flag names to functions that return the flag value.
+ */
+export function getMicrofrontendsMiddleware({
+  flagValues,
+}: {
+  // Kept for backwards compatibility, routing no longer depends on the request
+  request: NextRequest;
+  flagValues: Record<string, () => Promise<boolean>>;
+}): MicrofrontendsMiddleware[] {
+  const routing = getMicrofrontendsRouting();
+  const middlewares: MicrofrontendsMiddleware[] = [];
+
+  if (!routing.isDefaultApplication) {
     return middlewares;
   }
 
   middlewares.push({
-    src: '/.well-known/vercel/microfrontends/client-config',
-    fn: getWellKnownClientConfigMiddleware(microfrontends, flagValues),
+    src: WELL_KNOWN_CLIENT_CONFIG_PATH,
+    fn: getWellKnownClientConfigMiddleware(routing.microfrontends, flagValues),
   });
 
-  const localProxyPort = microfrontends.getLocalProxyPort();
-
-  for (const application of microfrontends.getChildApplications()) {
-    for (const pathGroup of application.routing) {
-      const flagName = pathGroup.flag;
-      if (flagName) {
-        const flagFn = flagValues[flagName];
-        if (!flagFn) {
-          throw new Error(
-            `Flag "${flagName}" was specified to control routing for path group "${pathGroup.group}" in application ${application.name} but not found in provided flag values. See https://vercel.com/docs/microfrontends/path-routing#add-microfrontends-middleware for more information.`,
-          );
-        }
-        for (const path of pathGroup.paths) {
-          const pattern = pathToRegexp(path);
-          middlewares.push({
-            src: pattern,
-            fn: getFlagHandler({
-              application,
-              flagFn,
-              flagName,
-              pattern,
-              localProxyPort,
-            }),
-          });
-        }
-      }
-    }
+  for (const flaggedPath of routing.flaggedPaths) {
+    const flagFn = getFlagFn(flaggedPath, flagValues);
+    // Copy the cached pattern so callers can't modify it
+    const pattern = new RegExp(flaggedPath.pattern);
+    middlewares.push({
+      src: pattern,
+      fn: getFlagHandler({
+        application: flaggedPath.application,
+        flagFn,
+        flagName: flaggedPath.flagName,
+        pattern,
+        localProxyPort: routing.localProxyPort,
+      }),
+    });
   }
 
   return middlewares;
