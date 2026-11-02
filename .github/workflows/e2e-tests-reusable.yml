@@ -42,7 +42,7 @@ jobs:
     steps:
       - name: Validate deployment SHA
         id: validate-sha
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         env:
           EVENT_NAME: ${{ github.event_name }}
           WORKFLOW_SHA: ${{ github.sha }}
@@ -162,7 +162,7 @@ jobs:
             }
 
       - name: Update E2E Status
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         env:
           GHA_RUN_ID: ${{ github.run_id }}
           SHA: ${{ steps.validate-sha.outputs.sha }}
@@ -180,12 +180,12 @@ jobs:
             });
 
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: ${{ steps.validate-sha.outputs.sha }}
           persist-credentials: false
 
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v5
         name: Install pnpm
         id: pnpm-setup
         with:
@@ -193,7 +193,7 @@ jobs:
           run_install: false
 
       - name: Install Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version-file: '.node-version'
 
@@ -216,7 +216,7 @@ jobs:
 
       - name: Update E2E Status
         if: ${{ always() && steps.validate-sha.outcome == 'success' }}
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         env:
           GHA_RUN_ID: ${{ github.run_id }}
           TESTS_OUTCOME: ${{ steps.e2e-tests.outcome }}
