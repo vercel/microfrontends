@@ -15,7 +15,7 @@ jobs:
     if: ${{ github.event.client_payload.project.id == 'prj_VpckqSodoXlv5Np8jvg4SfJ7wsH8' }}
     steps:
       - name: Update E2E Status
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
