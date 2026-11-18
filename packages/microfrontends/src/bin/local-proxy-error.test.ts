@@ -12,7 +12,8 @@ describe('localProxyErrorHtml', () => {
     expect(html).toContain(
       "Microfrontends can't reach <strong>vercel-site</strong> on port <strong>3024</strong>.",
     );
-    expect(html).toContain('The application may still be starting up.');
+    // The hint is its own paragraph, spaced from the first one.
+    expect(html).toContain('<p>The application may still be starting up.</p>');
     expect(html).toContain("<title>Can't reach vercel-site</title>");
   });
 

@@ -144,6 +144,10 @@ export function localProxyErrorHtml({
         text-wrap: balance;
       }
 
+      p + p {
+        margin-top: 12px;
+      }
+
       strong {
         font-weight: 500;
         color: var(--vbg-gray-1000, light-dark(#171717, #ededed));
@@ -153,7 +157,10 @@ export function localProxyErrorHtml({
   <body class="vbg-report">
     <main>
       <div class="icon">${MICROFRONTENDS_ICON}</div>
-      <p>Microfrontends can't reach ${target}. <br>${hint}</p>
+      <div>
+        <p>Microfrontends can't reach ${target}.</p>
+        <p>${hint}</p>
+      </div>
     </main>
   </body>
 </html>`;
