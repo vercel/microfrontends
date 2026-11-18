@@ -18,6 +18,12 @@ describe('localProxyErrorHtml', () => {
     expect(html).not.toContain('on port');
   });
 
+  it('embeds Geist instead of loading it from the network', () => {
+    const html = localProxyErrorHtml({ app: 'vercel-site', port: 3024 });
+    expect(html.match(/src: url\("data:font\/woff2;base64,/g)).toHaveLength(2);
+    expect(html).not.toContain('fonts.googleapis.com');
+  });
+
   it('escapes the application name', () => {
     const html = localProxyErrorHtml({ app: '<img src=x onerror=alert(1)>' });
     expect(html).not.toContain('<img src=x');

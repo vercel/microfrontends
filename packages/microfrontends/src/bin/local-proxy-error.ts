@@ -1,4 +1,5 @@
 import type { IncomingMessage } from 'node:http';
+import { GEIST_SANS_400, GEIST_SANS_500 } from './geist-font';
 
 /**
  * Geist "microfrontends" icon (14x14), drawn with `currentColor`.
@@ -30,9 +31,9 @@ export function acceptsHtml(req: Pick<IncomingMessage, 'headers'>): boolean {
  * Page shown when the local proxy can't connect to a locally running
  * application, for example because it is still starting or isn't running.
  *
- * Fonts and colors come from Geist (Google Fonts) and the Vercel brand
- * stylesheet. The page still renders with system fonts and the fallback
- * colors below when those can't be loaded, such as when offline.
+ * Geist is embedded in the page. Colors come from the Vercel brand
+ * stylesheet, with built-in fallbacks below for when it can't be loaded,
+ * such as when offline.
  */
 export function localProxyErrorHtml({
   app,
@@ -54,11 +55,22 @@ export function localProxyErrorHtml({
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="color-scheme" content="light dark">
     <title>Can't reach ${appName}</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500&display=swap">
     <link rel="stylesheet" href="https://vercel.com/geist/vercel-brand.css">
     <style>
+      @font-face {
+        font-family: "Geist";
+        src: url("${GEIST_SANS_400}") format("woff2");
+        font-weight: 400;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: "Geist";
+        src: url("${GEIST_SANS_500}") format("woff2");
+        font-weight: 500;
+        font-display: swap;
+      }
+
       html {
         color-scheme: light dark;
       }
