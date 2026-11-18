@@ -130,6 +130,7 @@
     "build": "tsup",
     "postbuild": "pnpm generate:exports",
     "generate:exports": "tsx scripts/generate-exports/index.ts",
+    "generate:geist-font": "tsx scripts/subset-geist-font.ts && biome format --write src/bin/geist-font.ts",
     "generate:schema": "tsx scripts/generate-json-schema.ts",
     "lint": "biome check",
     "prepublishOnly": "pnpm build && pnpm generate:exports && pnpm generate:schema",
@@ -164,6 +165,9 @@
     "@types/react": "18.3.1",
     "@types/react-dom": "18.3.0",
     "@types/semver": "^7.7.0",
+    "fontkit": "3.0.0",
+    "geist": "1.9.2",
+    "harfbuzzjs": "1.6.4",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "29.2.2",
     "next": "16.0.10",
@@ -176,6 +180,7 @@
     "tsx": "^4.6.2",
     "typescript": "5.7.3",
     "vite": "5.4.11",
+    "wawoff2": "2.0.1",
     "webpack": "5"
   },
   "peerDependencies": {

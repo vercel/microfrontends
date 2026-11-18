@@ -1,3 +1,4 @@
+import { GEIST_SANS } from './geist-font';
 import { acceptsHtml, localProxyErrorHtml } from './local-proxy-error';
 
 describe('localProxyErrorHtml', () => {
@@ -62,6 +63,56 @@ describe('localProxyErrorHtml', () => {
     });
     expect(html.match(/src: url\("data:font\/woff2;base64,/g)).toHaveLength(2);
     expect(html).not.toContain('fonts.googleapis.com');
+  });
+
+  it('embeds only the core Geist files for ASCII text', () => {
+    const variants = [
+      { ...local, app: 'vercel-site', port: 3024 },
+      { ...local, app: undefined },
+      {
+        app: 'docs',
+        isLocal: false,
+        hostname: 'staging.example.com',
+        port: 8080,
+      },
+      { app: undefined, isLocal: false, hostname: 'example.com' },
+    ];
+    for (const args of variants) {
+      const html = localProxyErrorHtml(args);
+      // The page's own text must fit in the core files. If this fails, add
+      // the new characters to CORE in scripts/subset-geist-font.ts and rerun
+      // `pnpm -F @vercel/microfrontends generate:geist-font`.
+      expect(html).toContain(`src: url("${GEIST_SANS[400].core.src}")`);
+      expect(html).toContain(`src: url("${GEIST_SANS[500].core.src}")`);
+      expect(html).not.toContain(GEIST_SANS[400].full.src);
+      expect(html).not.toContain(GEIST_SANS[500].full.src);
+      expect(html).toContain(
+        `unicode-range: ${GEIST_SANS[400].core.unicodeRange};`,
+      );
+    }
+  });
+
+  it('embeds the full Geist file only for the weight that needs it', () => {
+    // Application names and addresses render in <strong>, weight 500.
+    const html = localProxyErrorHtml({ ...local, app: 'café', port: 3000 });
+    expect(html).toContain(`src: url("${GEIST_SANS[500].full.src}")`);
+    expect(html).toContain(
+      `unicode-range: ${GEIST_SANS[500].full.unicodeRange};`,
+    );
+    expect(html).not.toContain(GEIST_SANS[500].core.src);
+    expect(html).toContain(`src: url("${GEIST_SANS[400].core.src}")`);
+  });
+
+  it('embeds the full Geist file for Cyrillic and Greek names', () => {
+    for (const app of ['документы', 'λambda']) {
+      const html = localProxyErrorHtml({ ...local, app, port: 3000 });
+      expect(html).toContain(`src: url("${GEIST_SANS[500].full.src}")`);
+    }
+  });
+
+  it('leaves characters Geist subsets lack to the system fonts', () => {
+    const html = localProxyErrorHtml({ ...local, app: '文档', port: 3000 });
+    expect(html).toContain(`src: url("${GEIST_SANS[500].core.src}")`);
   });
 
   it('escapes the application name and address', () => {
