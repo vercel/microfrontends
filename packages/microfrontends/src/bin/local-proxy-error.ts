@@ -28,8 +28,9 @@ export function acceptsHtml(req: Pick<IncomingMessage, 'headers'>): boolean {
 }
 
 /**
- * Page shown when the local proxy can't connect to a locally running
- * application, for example because it is still starting or isn't running.
+ * Page shown when the local proxy can't connect to an application: usually a
+ * locally running one that is still starting or isn't running, or (rarely)
+ * an http:// fallback.
  *
  * Geist is embedded in the page. Colors come from the Vercel brand
  * stylesheet, with built-in fallbacks below for when it can't be loaded,
@@ -37,16 +38,37 @@ export function acceptsHtml(req: Pick<IncomingMessage, 'headers'>): boolean {
  */
 export function localProxyErrorHtml({
   app,
+  isLocal,
+  hostname,
   port,
 }: {
-  app: string;
+  app: string | undefined;
+  /** false for a fallback, which can't be "starting up". */
+  isLocal: boolean;
+  hostname: string;
   port?: number;
 }): string {
-  const appName = escapeHtml(app);
-  const target =
-    port === undefined
-      ? `<strong>${appName}</strong>`
-      : `<strong>${appName}</strong> on port <strong>${port}</strong>`;
+  const appName = app?.trim() ? escapeHtml(app) : undefined;
+  const named = appName ? `<strong>${appName}</strong>` : 'the application';
+
+  let target: string;
+  let hint: string;
+  if (isLocal) {
+    target =
+      port === undefined ? named : `${named} on port <strong>${port}</strong>`;
+    hint = 'The application may still be starting up.';
+  } else {
+    const address = escapeHtml(
+      port === undefined ? hostname : `${hostname}:${port}`,
+    );
+    target = appName
+      ? `the fallback for ${named} at <strong>${address}</strong>`
+      : `the fallback at <strong>${address}</strong>`;
+    hint = 'Check that the application is running and reachable.';
+  }
+  const title = appName
+    ? `Can't reach ${appName}`
+    : "Can't reach the application";
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -54,7 +76,7 @@ export function localProxyErrorHtml({
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="color-scheme" content="light dark">
-    <title>Can't reach ${appName}</title>
+    <title>${title}</title>
     <link rel="stylesheet" href="https://vercel.com/geist/vercel-brand.css">
     <style>
       @font-face {
@@ -131,7 +153,7 @@ export function localProxyErrorHtml({
   <body class="vbg-report">
     <main>
       <div class="icon">${MICROFRONTENDS_ICON}</div>
-      <p>Microfrontends can't reach ${target}<br>The application may still be starting up</p>
+      <p>Microfrontends can't reach ${target}. <br>${hint}</p>
     </main>
   </body>
 </html>`;

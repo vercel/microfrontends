@@ -654,6 +654,8 @@ export class LocalProxy {
         res.end(
           localProxyErrorHtml({
             app: target.originalApplication ?? target.application,
+            isLocal: Boolean(target.isLocal),
+            hostname: target.hostname,
             port: target.port,
           }),
         );
