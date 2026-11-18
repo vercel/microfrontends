@@ -18,6 +18,7 @@ import {
   parseOverrides,
 } from '../config/overrides';
 import { localAuthHtml } from './local-auth';
+import { acceptsHtml, localProxyErrorHtml } from './local-proxy-error';
 import { logger } from './logger';
 import type { LocalProxyApplicationResponse, LocalProxyOptions } from './types';
 
@@ -642,17 +643,32 @@ export class LocalProxy {
           res.destroy(err);
           return;
         }
-
-        res.writeHead(500, {
-          'Content-Type': 'text/plain',
-        });
       }
 
       const target = this.router.getTarget(req);
 
-      res.end(
-        `Error proxying request to ${formatProxyTarget(target)}. Is the server running locally on port ${target.port}?`,
-      );
+      if (res instanceof http.ServerResponse && acceptsHtml(req)) {
+        res.writeHead(500, {
+          'Content-Type': 'text/html; charset=utf-8',
+        });
+        res.end(
+          localProxyErrorHtml({
+            app: target.originalApplication ?? target.application,
+            isLocal: Boolean(target.isLocal),
+            hostname: target.hostname,
+            port: target.port,
+          }),
+        );
+      } else {
+        if (res instanceof http.ServerResponse) {
+          res.writeHead(500, {
+            'Content-Type': 'text/plain',
+          });
+        }
+        res.end(
+          `Error proxying request to ${formatProxyTarget(target)}. Is the server running locally on port ${target.port}?`,
+        );
+      }
 
       logger.error(
         `Error proxying request for ${formatProxyTarget(target)}: `,
