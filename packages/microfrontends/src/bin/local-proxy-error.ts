@@ -1,5 +1,5 @@
 import type { IncomingMessage } from 'node:http';
-import { GEIST_SANS_400, GEIST_SANS_500 } from './geist-font';
+import { GEIST_EXTENDED_CHARACTERS, GEIST_SANS } from './geist-font';
 
 /**
  * Geist "microfrontends" icon (14x14), drawn with `currentColor`.
@@ -17,6 +17,25 @@ function escapeHtml(value: string): string {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;');
+}
+
+/**
+ * Embeds the small core Geist file for a weight, or the full one (core plus
+ * Latin-1, Latin Extended-A, Greek, and Cyrillic) when that weight's text
+ * needs it. One file per weight keeps kerning between accented and plain
+ * letters.
+ */
+function geistFontFace(weight: 400 | 500, text: string): string {
+  const file = GEIST_EXTENDED_CHARACTERS.test(text)
+    ? GEIST_SANS[weight].full
+    : GEIST_SANS[weight].core;
+  return `@font-face {
+        font-family: "Geist";
+        src: url("${file.src}") format("woff2");
+        font-weight: ${weight};
+        font-display: swap;
+        unicode-range: ${file.unicodeRange};
+      }`;
 }
 
 /**
@@ -69,6 +88,14 @@ export function localProxyErrorHtml({
   const title = appName
     ? `Can't reach ${appName}`
     : "Can't reach the application";
+  const message = `<p>Microfrontends can't reach ${target}.</p>
+        <p>${hint}</p>`;
+  // <strong> renders in 500, everything else in 400.
+  const strong = /<strong>(.*?)<\/strong>/g;
+  const mediumText = [...message.matchAll(strong)]
+    .map((match) => match[1])
+    .join('');
+  const regularText = message.replace(strong, '');
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -79,19 +106,9 @@ export function localProxyErrorHtml({
     <title>${title}</title>
     <link rel="stylesheet" href="https://vercel.com/geist/vercel-brand.css">
     <style>
-      @font-face {
-        font-family: "Geist";
-        src: url("${GEIST_SANS_400}") format("woff2");
-        font-weight: 400;
-        font-display: swap;
-      }
+      ${geistFontFace(400, regularText)}
 
-      @font-face {
-        font-family: "Geist";
-        src: url("${GEIST_SANS_500}") format("woff2");
-        font-weight: 500;
-        font-display: swap;
-      }
+      ${geistFontFace(500, mediumText)}
 
       html {
         color-scheme: light dark;
@@ -158,8 +175,7 @@ export function localProxyErrorHtml({
     <main>
       <div class="icon">${MICROFRONTENDS_ICON}</div>
       <div>
-        <p>Microfrontends can't reach ${target}.</p>
-        <p>${hint}</p>
+        ${message}
       </div>
     </main>
   </body>
