@@ -1,6 +1,4 @@
-import { existsSync } from 'node:fs';
-import { dirname, join } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { join } from 'node:path';
 import type { PlaywrightTestConfig } from '@playwright/test';
 import { devices } from '@playwright/test';
 import { bypassStorageStatePath } from './bypass-state';
@@ -13,26 +11,6 @@ if (!BASE_URL) {
 const baseURL = BASE_URL.replace(/\/$/, '');
 const protectionBypass = process.env.DEPLOYMENT_PROTECTION_BYPASS ?? '';
 
-function moduleDir(): string {
-  try {
-    if (typeof __dirname === 'string') return __dirname;
-  } catch {
-    // ESM has no __dirname.
-  }
-  return dirname(fileURLToPath(import.meta.url));
-}
-
-function globalSetupPath(): string {
-  const dir = moduleDir();
-  const found = ['global-setup.cjs', 'global-setup.js']
-    .map((name) => join(dir, name))
-    .find((path) => existsSync(path));
-  if (!found) {
-    throw new Error(`Cannot find global-setup in ${dir}`);
-  }
-  return found;
-}
-
 // Reference: https://playwright.dev/docs/test-configuration
 export const playwrightConfig: PlaywrightTestConfig = {
   testMatch: '*.e2e.ts',
@@ -43,7 +21,9 @@ export const playwrightConfig: PlaywrightTestConfig = {
   testDir: './',
   outputDir: 'e2e-test-results/',
   // Prefetches cannot send extraHTTPHeaders.
-  globalSetup: protectionBypass ? globalSetupPath() : undefined,
+  globalSetup: protectionBypass
+    ? join(__dirname, 'global-setup.cjs')
+    : undefined,
 
   use: {
     baseURL, // make sure there's no slash at the end

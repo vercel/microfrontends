@@ -4,10 +4,7 @@
   "private": true,
   "type": "module",
   "exports": {
-    ".": {
-      "import": "./dist/config.js",
-      "default": "./dist/config.cjs"
-    }
+    ".": "./dist/config.cjs"
   },
   "typesVersions": {
     "*": {
