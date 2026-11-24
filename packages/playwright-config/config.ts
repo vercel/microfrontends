@@ -21,6 +21,8 @@ export const playwrightConfig: PlaywrightTestConfig = {
     extraHTTPHeaders: {
       'x-vercel-protection-bypass':
         process.env.DEPLOYMENT_PROTECTION_BYPASS ?? '',
+      // Prefetches can't send extraHTTPHeaders, so give the browser a cookie.
+      'x-vercel-set-bypass-cookie': 'true',
     },
 
     // Retry a test if its failing with enabled tracing. This allows you to analyse the DOM, console logs, network traffic etc.
