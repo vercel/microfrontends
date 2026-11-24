@@ -22,10 +22,7 @@ export const playwrightConfig: PlaywrightTestConfig = {
     baseURL: BASE_URL.replace(/\/$/, ''), // make sure there's no slash at the end
     extraHTTPHeaders: {
       'x-vercel-protection-bypass': protectionBypass,
-      // Speculation-rules prefetches do not include extraHTTPHeaders. Without
-      // this cookie, hovering a cross-zone link on a protected preview follows
-      // the prefetch into Vercel SSO and the click never reaches "/".
-      // https://vercel.com/docs/deployment-protection/methods-to-bypass-deployment-protection/protection-bypass-automation
+      // Prefetches omit extraHTTPHeaders, so give them the bypass cookie.
       ...(protectionBypass ? { 'x-vercel-set-bypass-cookie': 'true' } : {}),
     },
 
