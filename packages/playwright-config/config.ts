@@ -6,6 +6,8 @@ if (!BASE_URL) {
   throw new Error('process.env.BASE_URL is not set');
 }
 
+const protectionBypass = process.env.DEPLOYMENT_PROTECTION_BYPASS ?? '';
+
 // Reference: https://playwright.dev/docs/test-configuration
 export const playwrightConfig: PlaywrightTestConfig = {
   testMatch: '*.e2e.ts',
@@ -19,8 +21,12 @@ export const playwrightConfig: PlaywrightTestConfig = {
   use: {
     baseURL: BASE_URL.replace(/\/$/, ''), // make sure there's no slash at the end
     extraHTTPHeaders: {
-      'x-vercel-protection-bypass':
-        process.env.DEPLOYMENT_PROTECTION_BYPASS ?? '',
+      'x-vercel-protection-bypass': protectionBypass,
+      // Speculation-rules prefetches do not include extraHTTPHeaders. Without
+      // this cookie, hovering a cross-zone link on a protected preview follows
+      // the prefetch into Vercel SSO and the click never reaches "/".
+      // https://vercel.com/docs/deployment-protection/methods-to-bypass-deployment-protection/protection-bypass-automation
+      ...(protectionBypass ? { 'x-vercel-set-bypass-cookie': 'true' } : {}),
     },
 
     // Retry a test if its failing with enabled tracing. This allows you to analyse the DOM, console logs, network traffic etc.
