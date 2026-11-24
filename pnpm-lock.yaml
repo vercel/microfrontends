@@ -46,7 +46,7 @@ importers:
         version: 1.1.1(@types/react@18.3.1)(react@19.0.0)
       '@vercel/analytics':
         specifier: ^1.5.0
-        version: 1.5.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(svelte@5.20.2)
+        version: 1.5.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(svelte@5.20.2)
       '@vercel/firewall':
         specifier: 1.1.1
         version: 1.1.1
@@ -55,10 +55,10 @@ importers:
         version: link:../../../packages/microfrontends
       '@vercel/speed-insights':
         specifier: ^1.2.0
-        version: 1.2.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(svelte@5.20.2)
+        version: 1.2.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(svelte@5.20.2)
       '@vercel/toolbar':
         specifier: 0.1.37
-        version: 0.1.37(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(@vercel/analytics@1.5.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(svelte@5.20.2))(@vercel/speed-insights@1.2.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(svelte@5.20.2))(next@16.0.10(@babel/core@7.26.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(vite@7.0.6(@types/node@20.11.30))
+        version: 0.1.37(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(@vercel/analytics@1.5.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(svelte@5.20.2))(@vercel/speed-insights@1.2.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(svelte@5.20.2))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(vite@7.0.6(@types/node@20.11.30))
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -67,13 +67,13 @@ importers:
         version: 2.1.1
       flags:
         specifier: ^3.2.0
-        version: 3.2.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+        version: 3.2.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       lucide-react:
         specifier: 0.542.0
         version: 0.542.0(react@19.0.0)
       next:
         specifier: 16.0.10
-        version: 16.0.10(@babel/core@7.26.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+        version: 16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       react:
         specifier: 19.0.0
         version: 19.0.0
@@ -119,16 +119,16 @@ importers:
         version: 1.1.1(@types/react@18.3.1)(react@19.0.0)
       '@vercel/analytics':
         specifier: ^1.5.0
-        version: 1.5.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.50.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(svelte@5.20.2)
+        version: 1.5.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(svelte@5.20.2)
       '@vercel/microfrontends':
         specifier: workspace:*
         version: link:../../../packages/microfrontends
       '@vercel/speed-insights':
         specifier: ^1.2.0
-        version: 1.2.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.50.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(svelte@5.20.2)
+        version: 1.2.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(svelte@5.20.2)
       '@vercel/toolbar':
         specifier: 0.1.37
-        version: 0.1.37(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(@vercel/analytics@1.5.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.50.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(svelte@5.20.2))(@vercel/speed-insights@1.2.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.50.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(svelte@5.20.2))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.50.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(vite@7.0.6(@types/node@20.11.30))
+        version: 0.1.37(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(@vercel/analytics@1.5.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(svelte@5.20.2))(@vercel/speed-insights@1.2.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(svelte@5.20.2))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(vite@7.0.6(@types/node@20.11.30))
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -137,13 +137,13 @@ importers:
         version: 2.1.1
       flags:
         specifier: ^3.2.0
-        version: 3.2.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.50.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+        version: 3.2.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       lucide-react:
         specifier: 0.542.0
         version: 0.542.0(react@19.0.0)
       next:
         specifier: 16.0.10
-        version: 16.0.10(@babel/core@7.26.7)(@playwright/test@1.50.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+        version: 16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       react:
         specifier: 19.0.0
         version: 19.0.0
@@ -161,8 +161,8 @@ importers:
         specifier: 16.0.10
         version: 16.0.10
       '@playwright/test':
-        specifier: 1.50.1
-        version: 1.50.1
+        specifier: 1.65.1
+        version: 1.65.1
       '@types/jest':
         specifier: ^29.2.0
         version: 29.5.14
@@ -207,7 +207,7 @@ importers:
         version: link:../../../packages/microfrontends
       '@vercel/toolbar':
         specifier: 0.1.37
-        version: 0.1.37(@sveltejs/kit@2.17.2(vite@7.0.6(@types/node@20.11.30)))(@vercel/analytics@1.5.0(@sveltejs/kit@2.17.2(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))(@vercel/speed-insights@1.2.0(@sveltejs/kit@2.17.2(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))(next@16.0.10(@babel/core@7.26.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(vite@7.0.6(@types/node@20.11.30))
+        version: 0.1.37(@sveltejs/kit@2.17.2(vite@7.0.6(@types/node@20.11.30)))(@vercel/analytics@1.5.0(@sveltejs/kit@2.17.2(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))(@vercel/speed-insights@1.2.0(@sveltejs/kit@2.17.2(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(vite@7.0.6(@types/node@20.11.30))
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -219,7 +219,7 @@ importers:
         version: 0.542.0(react@19.0.0)
       next:
         specifier: 16.0.10
-        version: 16.0.10(@babel/core@7.26.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+        version: 16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       react:
         specifier: 19.0.0
         version: 19.0.0
@@ -265,7 +265,7 @@ importers:
         version: link:../../../packages/microfrontends
       '@vercel/toolbar':
         specifier: 0.1.37
-        version: 0.1.37(@sveltejs/kit@2.17.2(vite@7.0.6(@types/node@20.11.30)))(@vercel/analytics@1.5.0(@sveltejs/kit@2.17.2(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))(@vercel/speed-insights@1.2.0(@sveltejs/kit@2.17.2(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))(next@16.0.10(@babel/core@7.26.7)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(vite@7.0.6(@types/node@20.11.30))
+        version: 0.1.37(@sveltejs/kit@2.17.2(vite@7.0.6(@types/node@20.11.30)))(@vercel/analytics@1.5.0(@sveltejs/kit@2.17.2(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))(@vercel/speed-insights@1.2.0(@sveltejs/kit@2.17.2(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(vite@7.0.6(@types/node@20.11.30))
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -277,7 +277,7 @@ importers:
         version: 0.542.0(react@19.0.0)
       next:
         specifier: 16.0.10
-        version: 16.0.10(@babel/core@7.26.7)(@playwright/test@1.50.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+        version: 16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       react:
         specifier: 19.0.0
         version: 19.0.0
@@ -338,7 +338,7 @@ importers:
         version: 1.1.0(@react-router/dev@7.3.0(@react-router/serve@7.3.0(react-router@7.3.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(typescript@5.7.3))(@types/node@20.11.30)(babel-plugin-macros@3.1.0)(lightningcss@1.29.1)(react-router@7.3.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(terser@5.37.0)(typescript@5.7.3)(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0)))(@react-router/node@7.3.0(react-router@7.3.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(typescript@5.7.3))(isbot@5.1.23)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@vercel/toolbar':
         specifier: 0.1.37
-        version: 0.1.37(@sveltejs/kit@2.17.2(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0)))(@vercel/analytics@1.5.0(@sveltejs/kit@2.17.2(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.50.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))(@vercel/speed-insights@1.2.0(@sveltejs/kit@2.17.2(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.50.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.50.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0))
+        version: 0.1.37(@sveltejs/kit@2.17.2(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0)))(@vercel/analytics@1.5.0(@sveltejs/kit@2.17.2(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))(@vercel/speed-insights@1.2.0(@sveltejs/kit@2.17.2(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0))
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -368,8 +368,8 @@ importers:
         version: 1.0.7(tailwindcss@4.0.12)
     devDependencies:
       '@playwright/test':
-        specifier: 1.50.1
-        version: 1.50.1
+        specifier: 1.65.1
+        version: 1.65.1
       '@react-router/dev':
         specifier: ^7.3.0
         version: 7.3.0(@react-router/serve@7.3.0(react-router@7.3.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(typescript@5.7.3))(@types/node@20.11.30)(babel-plugin-macros@3.1.0)(lightningcss@1.29.1)(react-router@7.3.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(terser@5.37.0)(typescript@5.7.3)(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0))
@@ -463,7 +463,7 @@ importers:
         version: 1.1.0(@react-router/dev@7.3.0(@react-router/serve@7.3.0(react-router@7.3.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(typescript@5.7.3))(@types/node@20.11.30)(babel-plugin-macros@3.1.0)(lightningcss@1.29.1)(react-router@7.3.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(terser@5.37.0)(typescript@5.7.3)(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0)))(@react-router/node@7.3.0(react-router@7.3.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(typescript@5.7.3))(isbot@5.1.23)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@vercel/toolbar':
         specifier: 0.1.37
-        version: 0.1.37(@sveltejs/kit@2.17.2(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0)))(@vercel/analytics@1.5.0(@sveltejs/kit@2.17.2(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.50.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))(@vercel/speed-insights@1.2.0(@sveltejs/kit@2.17.2(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.50.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.50.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0))
+        version: 0.1.37(@sveltejs/kit@2.17.2(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0)))(@vercel/analytics@1.5.0(@sveltejs/kit@2.17.2(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))(@vercel/speed-insights@1.2.0(@sveltejs/kit@2.17.2(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0))
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -493,8 +493,8 @@ importers:
         version: 1.0.7(tailwindcss@4.0.9)
     devDependencies:
       '@playwright/test':
-        specifier: 1.50.1
-        version: 1.50.1
+        specifier: 1.65.1
+        version: 1.65.1
       '@react-router/dev':
         specifier: ^7.3.0
         version: 7.3.0(@react-router/serve@7.3.0(react-router@7.3.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(typescript@5.7.3))(@types/node@20.11.30)(babel-plugin-macros@3.1.0)(lightningcss@1.29.1)(react-router@7.3.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(terser@5.37.0)(typescript@5.7.3)(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0))
@@ -866,7 +866,7 @@ importers:
         version: 29.2.2
       next:
         specifier: 16.0.10
-        version: 16.0.10(@babel/core@7.26.7)(@playwright/test@1.50.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+        version: 16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       react:
         specifier: 19.0.0
         version: 19.0.0
@@ -901,8 +901,8 @@ importers:
   packages/playwright-config:
     devDependencies:
       '@playwright/test':
-        specifier: 1.50.1
-        version: 1.50.1
+        specifier: 1.65.1
+        version: 1.65.1
       '@types/node':
         specifier: 20.11.30
         version: 20.11.30
@@ -2474,9 +2474,9 @@ packages:
     resolution: {integrity: sha512-cq8o4cWH0ibXh9VGi5P20Tu9XF/0fFXl9EUinr9QfTM7a7p0oTA4iJRCQWppXR1Pg8dSM0UCItCkPwsk9qWWYA==}
     engines: {node: ^12.20.0 || ^14.18.0 || >=16.0.0}
 
-  '@playwright/test@1.50.1':
-    resolution: {integrity: sha512-Jii3aBg+CEDpgnuDxEp/h7BimHcUTDlpEtce89xEumlJ5ef2hqepZ+PWp1DDpYC/VO9fmWVI1IlEaoI5fK9FXQ==}
-    engines: {node: '>=18'}
+  '@playwright/test@1.65.1':
+    resolution: {integrity: sha512-y+NCIRm2LvY4slUVWvGh1nujJ8RF/hEisIsq2mtUPgdQC4L701bq5hZGMhrpeXjACvwvO9tj5dJqhvM6TP9lbw==}
+    engines: {node: '>=20'}
     hasBin: true
 
   '@polka/url@1.0.0-next.28':
@@ -5078,11 +5078,6 @@ packages:
   fs.realpath@1.0.0:
     resolution: {integrity: sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw==}
 
-  fsevents@2.3.2:
-    resolution: {integrity: sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==}
-    engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
-    os: [darwin]
-
   fsevents@2.3.3:
     resolution: {integrity: sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==}
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
@@ -6459,14 +6454,14 @@ packages:
     resolution: {integrity: sha512-HRDzbaKjC+AOWVXxAU/x54COGeIv9eb+6CkDSQoNTt4XyWoIJvuPsXizxu/Fr23EiekbtZwmh1IcIG/l/a10GQ==}
     engines: {node: '>=8'}
 
-  playwright-core@1.50.1:
-    resolution: {integrity: sha512-ra9fsNWayuYumt+NiM069M6OkcRb1FZSK8bgi66AtpFoWkg2+y0bJSNmkFrWhMbEBbVKC/EruAHH3g0zmtwGmQ==}
-    engines: {node: '>=18'}
+  playwright-core@1.65.1:
+    resolution: {integrity: sha512-hqPpz7blSMPxWVdoeE1yiBSzXsKiVOd2k+kjCvmUywD2GPO2Dd9HfcWnq9NN0GHbNZDFgZ9JfBFr+X5/BLo0qw==}
+    engines: {node: '>=20'}
     hasBin: true
 
-  playwright@1.50.1:
-    resolution: {integrity: sha512-G8rwsOQJ63XG6BbKj2w5rHeavFjy5zynBA9zsJMMtBoe/Uf757oG12NXz6e6OirF7RCrTVAKFXbLmn1RbL7Qaw==}
-    engines: {node: '>=18'}
+  playwright@1.65.1:
+    resolution: {integrity: sha512-vJ1FuoOrNwOKHUIVEvSt3jT1L+wjjDpwhwIstKtfvTh8XIG4FG4bIFuvNdMxi81LGfAhUgUZleVFaOLY4RIUUw==}
+    engines: {node: '>=20'}
     hasBin: true
 
   pluralize@8.0.0:
@@ -9372,9 +9367,9 @@ snapshots:
 
   '@pkgr/core@0.1.1': {}
 
-  '@playwright/test@1.50.1':
+  '@playwright/test@1.65.1':
     dependencies:
-      playwright: 1.50.1
+      playwright: 1.65.1
 
   '@polka/url@1.0.0-next.28': {}
 
@@ -10458,44 +10453,44 @@ snapshots:
       '@typescript-eslint/types': 7.18.0
       eslint-visitor-keys: 3.4.3
 
-  '@vercel/analytics@1.5.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.50.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(svelte@5.20.2)':
+  '@vercel/analytics@1.5.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(svelte@5.20.2)':
     optionalDependencies:
       '@sveltejs/kit': 2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30))
-      next: 16.0.10(@babel/core@7.26.7)(@playwright/test@1.50.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      next: 16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       react: 19.0.0
       svelte: 5.20.2
 
-  '@vercel/analytics@1.5.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(svelte@5.20.2)':
+  '@vercel/analytics@1.5.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(svelte@5.20.2)':
     optionalDependencies:
       '@sveltejs/kit': 2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30))
-      next: 16.0.10(@babel/core@7.26.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      next: 16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       react: 19.0.0
       svelte: 5.20.2
 
-  '@vercel/analytics@1.5.0(@sveltejs/kit@2.17.2(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.50.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)':
+  '@vercel/analytics@1.5.0(@sveltejs/kit@2.17.2(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)':
     optionalDependencies:
       '@sveltejs/kit': 2.17.2(@sveltejs/vite-plugin-svelte@3.1.2(svelte@5.20.2)(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0)))(svelte@5.20.2)(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0))
-      next: 16.0.10(@babel/core@7.26.7)(@playwright/test@1.50.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      next: 16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       react: 19.0.0
     optional: true
 
   '@vercel/analytics@1.5.0(@sveltejs/kit@2.17.2(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0)))(next@16.0.10(@babel/core@7.26.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)':
     optionalDependencies:
       '@sveltejs/kit': 2.17.2(@sveltejs/vite-plugin-svelte@3.1.2(svelte@5.20.2)(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0)))(svelte@5.20.2)(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0))
-      next: 16.0.10(@babel/core@7.26.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      next: 16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       react: 19.0.0
     optional: true
 
   '@vercel/analytics@1.5.0(@sveltejs/kit@2.17.2(vite@7.0.6(@types/node@20.11.30)(jiti@2.4.2)(lightningcss@1.29.1)(terser@5.37.0)(tsx@4.19.2)(yaml@2.7.0)))(next@16.0.10(@babel/core@7.26.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)':
     optionalDependencies:
       '@sveltejs/kit': 2.17.2(vite@7.0.6(@types/node@20.11.30)(jiti@2.4.2)(lightningcss@1.29.1)(terser@5.37.0)(tsx@4.19.2)(yaml@2.7.0))
-      next: 16.0.10(@babel/core@7.26.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      next: 16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       react: 19.0.0
     optional: true
 
   '@vercel/firewall@1.1.1': {}
 
-  '@vercel/microfrontends@1.2.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(@vercel/analytics@1.5.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.50.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(svelte@5.20.2))(@vercel/speed-insights@1.2.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.50.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(svelte@5.20.2))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.50.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(vite@7.0.6(@types/node@20.11.30))':
+  '@vercel/microfrontends@1.2.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(@vercel/analytics@1.5.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(svelte@5.20.2))(@vercel/speed-insights@1.2.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(svelte@5.20.2))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(vite@7.0.6(@types/node@20.11.30))':
     dependencies:
       '@next/env': 15.1.6
       ajv: 8.17.1
@@ -10508,16 +10503,16 @@ snapshots:
       path-to-regexp: 6.2.1
     optionalDependencies:
       '@sveltejs/kit': 2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30))
-      '@vercel/analytics': 1.5.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.50.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(svelte@5.20.2)
-      '@vercel/speed-insights': 1.2.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.50.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(svelte@5.20.2)
-      next: 16.0.10(@babel/core@7.26.7)(@playwright/test@1.50.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@vercel/analytics': 1.5.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(svelte@5.20.2)
+      '@vercel/speed-insights': 1.2.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(svelte@5.20.2)
+      next: 16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       react: 19.0.0
       react-dom: 19.0.0(react@19.0.0)
       vite: 7.0.6(@types/node@20.11.30)(jiti@2.4.2)(lightningcss@1.29.1)(terser@5.37.0)(tsx@4.19.2)(yaml@2.7.0)
     transitivePeerDependencies:
       - debug
 
-  '@vercel/microfrontends@1.2.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(@vercel/analytics@1.5.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(svelte@5.20.2))(@vercel/speed-insights@1.2.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(svelte@5.20.2))(next@16.0.10(@babel/core@7.26.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(vite@7.0.6(@types/node@20.11.30))':
+  '@vercel/microfrontends@1.2.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(@vercel/analytics@1.5.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(svelte@5.20.2))(@vercel/speed-insights@1.2.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(svelte@5.20.2))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(vite@7.0.6(@types/node@20.11.30))':
     dependencies:
       '@next/env': 15.1.6
       ajv: 8.17.1
@@ -10530,16 +10525,16 @@ snapshots:
       path-to-regexp: 6.2.1
     optionalDependencies:
       '@sveltejs/kit': 2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30))
-      '@vercel/analytics': 1.5.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(svelte@5.20.2)
-      '@vercel/speed-insights': 1.2.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(svelte@5.20.2)
-      next: 16.0.10(@babel/core@7.26.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@vercel/analytics': 1.5.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(svelte@5.20.2)
+      '@vercel/speed-insights': 1.2.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(svelte@5.20.2)
+      next: 16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       react: 19.0.0
       react-dom: 19.0.0(react@19.0.0)
       vite: 7.0.6(@types/node@20.11.30)(jiti@2.4.2)(lightningcss@1.29.1)(terser@5.37.0)(tsx@4.19.2)(yaml@2.7.0)
     transitivePeerDependencies:
       - debug
 
-  '@vercel/microfrontends@1.2.0(@sveltejs/kit@2.17.2(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0)))(@vercel/analytics@1.5.0(@sveltejs/kit@2.17.2(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.50.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))(@vercel/speed-insights@1.2.0(@sveltejs/kit@2.17.2(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.50.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.50.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0))':
+  '@vercel/microfrontends@1.2.0(@sveltejs/kit@2.17.2(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0)))(@vercel/analytics@1.5.0(@sveltejs/kit@2.17.2(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))(@vercel/speed-insights@1.2.0(@sveltejs/kit@2.17.2(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0))':
     dependencies:
       '@next/env': 15.1.6
       ajv: 8.17.1
@@ -10552,9 +10547,9 @@ snapshots:
       path-to-regexp: 6.2.1
     optionalDependencies:
       '@sveltejs/kit': 2.17.2(@sveltejs/vite-plugin-svelte@3.1.2(svelte@5.20.2)(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0)))(svelte@5.20.2)(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0))
-      '@vercel/analytics': 1.5.0(@sveltejs/kit@2.17.2(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.50.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)
-      '@vercel/speed-insights': 1.2.0(@sveltejs/kit@2.17.2(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.50.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)
-      next: 16.0.10(@babel/core@7.26.7)(@playwright/test@1.50.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@vercel/analytics': 1.5.0(@sveltejs/kit@2.17.2(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)
+      '@vercel/speed-insights': 1.2.0(@sveltejs/kit@2.17.2(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)
+      next: 16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       react: 19.0.0
       react-dom: 19.0.0(react@19.0.0)
       vite: 5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0)
@@ -10576,7 +10571,7 @@ snapshots:
       '@sveltejs/kit': 2.17.2(@sveltejs/vite-plugin-svelte@3.1.2(svelte@5.20.2)(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0)))(svelte@5.20.2)(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0))
       '@vercel/analytics': 1.5.0(@sveltejs/kit@2.17.2(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0)))(next@16.0.10(@babel/core@7.26.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)
       '@vercel/speed-insights': 1.2.0(@sveltejs/kit@2.17.2(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0)))(next@16.0.10(@babel/core@7.26.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)
-      next: 16.0.10(@babel/core@7.26.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      next: 16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       react: 19.0.0
       react-dom: 19.0.0(react@19.0.0)
       vite: 5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0)
@@ -10598,14 +10593,14 @@ snapshots:
       '@sveltejs/kit': 2.17.2(vite@7.0.6(@types/node@20.11.30)(jiti@2.4.2)(lightningcss@1.29.1)(terser@5.37.0)(tsx@4.19.2)(yaml@2.7.0))
       '@vercel/analytics': 1.5.0(@sveltejs/kit@2.17.2(vite@7.0.6(@types/node@20.11.30)(jiti@2.4.2)(lightningcss@1.29.1)(terser@5.37.0)(tsx@4.19.2)(yaml@2.7.0)))(next@16.0.10(@babel/core@7.26.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)
       '@vercel/speed-insights': 1.2.0(@sveltejs/kit@2.17.2(vite@7.0.6(@types/node@20.11.30)(jiti@2.4.2)(lightningcss@1.29.1)(terser@5.37.0)(tsx@4.19.2)(yaml@2.7.0)))(next@16.0.10(@babel/core@7.26.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)
-      next: 16.0.10(@babel/core@7.26.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      next: 16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       react: 19.0.0
       react-dom: 19.0.0(react@19.0.0)
       vite: 7.0.6(@types/node@20.11.30)(jiti@2.4.2)(lightningcss@1.29.1)(terser@5.37.0)(tsx@4.19.2)(yaml@2.7.0)
     transitivePeerDependencies:
       - debug
 
-  '@vercel/microfrontends@1.2.0(@sveltejs/kit@2.17.2(vite@7.0.6(@types/node@20.11.30)))(@vercel/analytics@1.5.0(@sveltejs/kit@2.17.2(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))(@vercel/speed-insights@1.2.0(@sveltejs/kit@2.17.2(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))(next@16.0.10(@babel/core@7.26.7)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(vite@7.0.6(@types/node@20.11.30))':
+  '@vercel/microfrontends@1.2.0(@sveltejs/kit@2.17.2(vite@7.0.6(@types/node@20.11.30)))(@vercel/analytics@1.5.0(@sveltejs/kit@2.17.2(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))(@vercel/speed-insights@1.2.0(@sveltejs/kit@2.17.2(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(vite@7.0.6(@types/node@20.11.30))':
     dependencies:
       '@next/env': 15.1.6
       ajv: 8.17.1
@@ -10618,16 +10613,16 @@ snapshots:
       path-to-regexp: 6.2.1
     optionalDependencies:
       '@sveltejs/kit': 2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30))
-      '@vercel/analytics': 1.5.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.50.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(svelte@5.20.2)
-      '@vercel/speed-insights': 1.2.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.50.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(svelte@5.20.2)
-      next: 16.0.10(@babel/core@7.26.7)(@playwright/test@1.50.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@vercel/analytics': 1.5.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(svelte@5.20.2)
+      '@vercel/speed-insights': 1.2.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(svelte@5.20.2)
+      next: 16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       react: 19.0.0
       react-dom: 19.0.0(react@19.0.0)
       vite: 7.0.6(@types/node@20.11.30)(jiti@2.4.2)(lightningcss@1.29.1)(terser@5.37.0)(tsx@4.19.2)(yaml@2.7.0)
     transitivePeerDependencies:
       - debug
 
-  '@vercel/microfrontends@1.2.0(@sveltejs/kit@2.17.2(vite@7.0.6(@types/node@20.11.30)))(@vercel/analytics@1.5.0(@sveltejs/kit@2.17.2(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))(@vercel/speed-insights@1.2.0(@sveltejs/kit@2.17.2(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))(next@16.0.10(@babel/core@7.26.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(vite@7.0.6(@types/node@20.11.30))':
+  '@vercel/microfrontends@1.2.0(@sveltejs/kit@2.17.2(vite@7.0.6(@types/node@20.11.30)))(@vercel/analytics@1.5.0(@sveltejs/kit@2.17.2(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))(@vercel/speed-insights@1.2.0(@sveltejs/kit@2.17.2(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(vite@7.0.6(@types/node@20.11.30))':
     dependencies:
       '@next/env': 15.1.6
       ajv: 8.17.1
@@ -10640,9 +10635,9 @@ snapshots:
       path-to-regexp: 6.2.1
     optionalDependencies:
       '@sveltejs/kit': 2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30))
-      '@vercel/analytics': 1.5.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(svelte@5.20.2)
-      '@vercel/speed-insights': 1.2.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(svelte@5.20.2)
-      next: 16.0.10(@babel/core@7.26.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@vercel/analytics': 1.5.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(svelte@5.20.2)
+      '@vercel/speed-insights': 1.2.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(svelte@5.20.2)
+      next: 16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       react: 19.0.0
       react-dom: 19.0.0(react@19.0.0)
       vite: 7.0.6(@types/node@20.11.30)(jiti@2.4.2)(lightningcss@1.29.1)(terser@5.37.0)(tsx@4.19.2)(yaml@2.7.0)
@@ -10678,38 +10673,38 @@ snapshots:
       react-dom: 19.0.0(react@19.0.0)
       ts-morph: 12.0.0
 
-  '@vercel/speed-insights@1.2.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.50.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(svelte@5.20.2)':
+  '@vercel/speed-insights@1.2.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(svelte@5.20.2)':
     optionalDependencies:
       '@sveltejs/kit': 2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30))
-      next: 16.0.10(@babel/core@7.26.7)(@playwright/test@1.50.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      next: 16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       react: 19.0.0
       svelte: 5.20.2
 
-  '@vercel/speed-insights@1.2.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(svelte@5.20.2)':
+  '@vercel/speed-insights@1.2.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(svelte@5.20.2)':
     optionalDependencies:
       '@sveltejs/kit': 2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30))
-      next: 16.0.10(@babel/core@7.26.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      next: 16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       react: 19.0.0
       svelte: 5.20.2
 
-  '@vercel/speed-insights@1.2.0(@sveltejs/kit@2.17.2(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.50.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)':
+  '@vercel/speed-insights@1.2.0(@sveltejs/kit@2.17.2(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)':
     optionalDependencies:
       '@sveltejs/kit': 2.17.2(@sveltejs/vite-plugin-svelte@3.1.2(svelte@5.20.2)(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0)))(svelte@5.20.2)(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0))
-      next: 16.0.10(@babel/core@7.26.7)(@playwright/test@1.50.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      next: 16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       react: 19.0.0
     optional: true
 
   '@vercel/speed-insights@1.2.0(@sveltejs/kit@2.17.2(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0)))(next@16.0.10(@babel/core@7.26.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)':
     optionalDependencies:
       '@sveltejs/kit': 2.17.2(@sveltejs/vite-plugin-svelte@3.1.2(svelte@5.20.2)(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0)))(svelte@5.20.2)(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0))
-      next: 16.0.10(@babel/core@7.26.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      next: 16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       react: 19.0.0
     optional: true
 
   '@vercel/speed-insights@1.2.0(@sveltejs/kit@2.17.2(vite@7.0.6(@types/node@20.11.30)(jiti@2.4.2)(lightningcss@1.29.1)(terser@5.37.0)(tsx@4.19.2)(yaml@2.7.0)))(next@16.0.10(@babel/core@7.26.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)':
     optionalDependencies:
       '@sveltejs/kit': 2.17.2(vite@7.0.6(@types/node@20.11.30)(jiti@2.4.2)(lightningcss@1.29.1)(terser@5.37.0)(tsx@4.19.2)(yaml@2.7.0))
-      next: 16.0.10(@babel/core@7.26.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      next: 16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       react: 19.0.0
     optional: true
 
@@ -10779,10 +10774,10 @@ snapshots:
       - supports-color
       - vitest
 
-  '@vercel/toolbar@0.1.37(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(@vercel/analytics@1.5.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.50.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(svelte@5.20.2))(@vercel/speed-insights@1.2.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.50.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(svelte@5.20.2))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.50.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(vite@7.0.6(@types/node@20.11.30))':
+  '@vercel/toolbar@0.1.37(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(@vercel/analytics@1.5.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(svelte@5.20.2))(@vercel/speed-insights@1.2.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(svelte@5.20.2))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(vite@7.0.6(@types/node@20.11.30))':
     dependencies:
       '@tinyhttp/app': 1.3.0
-      '@vercel/microfrontends': 1.2.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(@vercel/analytics@1.5.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.50.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(svelte@5.20.2))(@vercel/speed-insights@1.2.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.50.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(svelte@5.20.2))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.50.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(vite@7.0.6(@types/node@20.11.30))
+      '@vercel/microfrontends': 1.2.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(@vercel/analytics@1.5.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(svelte@5.20.2))(@vercel/speed-insights@1.2.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(svelte@5.20.2))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(vite@7.0.6(@types/node@20.11.30))
       chokidar: 3.6.0
       execa: 5.1.1
       fast-glob: 3.3.3
@@ -10791,7 +10786,7 @@ snapshots:
       jsonc-parser: 3.3.1
       strip-ansi: 6.0.1
     optionalDependencies:
-      next: 16.0.10(@babel/core@7.26.7)(@playwright/test@1.50.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      next: 16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       react: 19.0.0
       vite: 7.0.6(@types/node@20.11.30)(jiti@2.4.2)(lightningcss@1.29.1)(terser@5.37.0)(tsx@4.19.2)(yaml@2.7.0)
     transitivePeerDependencies:
@@ -10801,10 +10796,10 @@ snapshots:
       - debug
       - react-dom
 
-  '@vercel/toolbar@0.1.37(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(@vercel/analytics@1.5.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(svelte@5.20.2))(@vercel/speed-insights@1.2.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(svelte@5.20.2))(next@16.0.10(@babel/core@7.26.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(vite@7.0.6(@types/node@20.11.30))':
+  '@vercel/toolbar@0.1.37(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(@vercel/analytics@1.5.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(svelte@5.20.2))(@vercel/speed-insights@1.2.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(svelte@5.20.2))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(vite@7.0.6(@types/node@20.11.30))':
     dependencies:
       '@tinyhttp/app': 1.3.0
-      '@vercel/microfrontends': 1.2.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(@vercel/analytics@1.5.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(svelte@5.20.2))(@vercel/speed-insights@1.2.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(svelte@5.20.2))(next@16.0.10(@babel/core@7.26.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(vite@7.0.6(@types/node@20.11.30))
+      '@vercel/microfrontends': 1.2.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(@vercel/analytics@1.5.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(svelte@5.20.2))(@vercel/speed-insights@1.2.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(svelte@5.20.2))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(vite@7.0.6(@types/node@20.11.30))
       chokidar: 3.6.0
       execa: 5.1.1
       fast-glob: 3.3.3
@@ -10813,7 +10808,7 @@ snapshots:
       jsonc-parser: 3.3.1
       strip-ansi: 6.0.1
     optionalDependencies:
-      next: 16.0.10(@babel/core@7.26.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      next: 16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       react: 19.0.0
       vite: 7.0.6(@types/node@20.11.30)(jiti@2.4.2)(lightningcss@1.29.1)(terser@5.37.0)(tsx@4.19.2)(yaml@2.7.0)
     transitivePeerDependencies:
@@ -10823,10 +10818,10 @@ snapshots:
       - debug
       - react-dom
 
-  '@vercel/toolbar@0.1.37(@sveltejs/kit@2.17.2(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0)))(@vercel/analytics@1.5.0(@sveltejs/kit@2.17.2(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.50.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))(@vercel/speed-insights@1.2.0(@sveltejs/kit@2.17.2(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.50.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.50.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0))':
+  '@vercel/toolbar@0.1.37(@sveltejs/kit@2.17.2(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0)))(@vercel/analytics@1.5.0(@sveltejs/kit@2.17.2(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))(@vercel/speed-insights@1.2.0(@sveltejs/kit@2.17.2(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0))':
     dependencies:
       '@tinyhttp/app': 1.3.0
-      '@vercel/microfrontends': 1.2.0(@sveltejs/kit@2.17.2(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0)))(@vercel/analytics@1.5.0(@sveltejs/kit@2.17.2(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.50.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))(@vercel/speed-insights@1.2.0(@sveltejs/kit@2.17.2(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.50.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.50.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0))
+      '@vercel/microfrontends': 1.2.0(@sveltejs/kit@2.17.2(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0)))(@vercel/analytics@1.5.0(@sveltejs/kit@2.17.2(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))(@vercel/speed-insights@1.2.0(@sveltejs/kit@2.17.2(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(vite@5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0))
       chokidar: 3.6.0
       execa: 5.1.1
       fast-glob: 3.3.3
@@ -10835,7 +10830,7 @@ snapshots:
       jsonc-parser: 3.3.1
       strip-ansi: 6.0.1
     optionalDependencies:
-      next: 16.0.10(@babel/core@7.26.7)(@playwright/test@1.50.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      next: 16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       react: 19.0.0
       vite: 5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0)
     transitivePeerDependencies:
@@ -10857,7 +10852,7 @@ snapshots:
       jsonc-parser: 3.3.1
       strip-ansi: 6.0.1
     optionalDependencies:
-      next: 16.0.10(@babel/core@7.26.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      next: 16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       react: 19.0.0
       vite: 5.4.11(@types/node@20.11.30)(lightningcss@1.29.1)(terser@5.37.0)
     transitivePeerDependencies:
@@ -10879,7 +10874,7 @@ snapshots:
       jsonc-parser: 3.3.1
       strip-ansi: 6.0.1
     optionalDependencies:
-      next: 16.0.10(@babel/core@7.26.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      next: 16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       react: 19.0.0
       vite: 7.0.6(@types/node@20.11.30)(jiti@2.4.2)(lightningcss@1.29.1)(terser@5.37.0)(tsx@4.19.2)(yaml@2.7.0)
     transitivePeerDependencies:
@@ -10889,10 +10884,10 @@ snapshots:
       - debug
       - react-dom
 
-  '@vercel/toolbar@0.1.37(@sveltejs/kit@2.17.2(vite@7.0.6(@types/node@20.11.30)))(@vercel/analytics@1.5.0(@sveltejs/kit@2.17.2(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))(@vercel/speed-insights@1.2.0(@sveltejs/kit@2.17.2(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))(next@16.0.10(@babel/core@7.26.7)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(vite@7.0.6(@types/node@20.11.30))':
+  '@vercel/toolbar@0.1.37(@sveltejs/kit@2.17.2(vite@7.0.6(@types/node@20.11.30)))(@vercel/analytics@1.5.0(@sveltejs/kit@2.17.2(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))(@vercel/speed-insights@1.2.0(@sveltejs/kit@2.17.2(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(vite@7.0.6(@types/node@20.11.30))':
     dependencies:
       '@tinyhttp/app': 1.3.0
-      '@vercel/microfrontends': 1.2.0(@sveltejs/kit@2.17.2(vite@7.0.6(@types/node@20.11.30)))(@vercel/analytics@1.5.0(@sveltejs/kit@2.17.2(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))(@vercel/speed-insights@1.2.0(@sveltejs/kit@2.17.2(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))(next@16.0.10(@babel/core@7.26.7)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(vite@7.0.6(@types/node@20.11.30))
+      '@vercel/microfrontends': 1.2.0(@sveltejs/kit@2.17.2(vite@7.0.6(@types/node@20.11.30)))(@vercel/analytics@1.5.0(@sveltejs/kit@2.17.2(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))(@vercel/speed-insights@1.2.0(@sveltejs/kit@2.17.2(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(vite@7.0.6(@types/node@20.11.30))
       chokidar: 3.6.0
       execa: 5.1.1
       fast-glob: 3.3.3
@@ -10901,7 +10896,7 @@ snapshots:
       jsonc-parser: 3.3.1
       strip-ansi: 6.0.1
     optionalDependencies:
-      next: 16.0.10(@babel/core@7.26.7)(@playwright/test@1.50.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      next: 16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       react: 19.0.0
       vite: 7.0.6(@types/node@20.11.30)(jiti@2.4.2)(lightningcss@1.29.1)(terser@5.37.0)(tsx@4.19.2)(yaml@2.7.0)
     transitivePeerDependencies:
@@ -10911,10 +10906,10 @@ snapshots:
       - debug
       - react-dom
 
-  '@vercel/toolbar@0.1.37(@sveltejs/kit@2.17.2(vite@7.0.6(@types/node@20.11.30)))(@vercel/analytics@1.5.0(@sveltejs/kit@2.17.2(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))(@vercel/speed-insights@1.2.0(@sveltejs/kit@2.17.2(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))(next@16.0.10(@babel/core@7.26.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(vite@7.0.6(@types/node@20.11.30))':
+  '@vercel/toolbar@0.1.37(@sveltejs/kit@2.17.2(vite@7.0.6(@types/node@20.11.30)))(@vercel/analytics@1.5.0(@sveltejs/kit@2.17.2(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))(@vercel/speed-insights@1.2.0(@sveltejs/kit@2.17.2(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(vite@7.0.6(@types/node@20.11.30))':
     dependencies:
       '@tinyhttp/app': 1.3.0
-      '@vercel/microfrontends': 1.2.0(@sveltejs/kit@2.17.2(vite@7.0.6(@types/node@20.11.30)))(@vercel/analytics@1.5.0(@sveltejs/kit@2.17.2(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))(@vercel/speed-insights@1.2.0(@sveltejs/kit@2.17.2(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))(next@16.0.10(@babel/core@7.26.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(vite@7.0.6(@types/node@20.11.30))
+      '@vercel/microfrontends': 1.2.0(@sveltejs/kit@2.17.2(vite@7.0.6(@types/node@20.11.30)))(@vercel/analytics@1.5.0(@sveltejs/kit@2.17.2(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))(@vercel/speed-insights@1.2.0(@sveltejs/kit@2.17.2(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(vite@7.0.6(@types/node@20.11.30))
       chokidar: 3.6.0
       execa: 5.1.1
       fast-glob: 3.3.3
@@ -10923,7 +10918,7 @@ snapshots:
       jsonc-parser: 3.3.1
       strip-ansi: 6.0.1
     optionalDependencies:
-      next: 16.0.10(@babel/core@7.26.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      next: 16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       react: 19.0.0
       vite: 7.0.6(@types/node@20.11.30)(jiti@2.4.2)(lightningcss@1.29.1)(terser@5.37.0)(tsx@4.19.2)(yaml@2.7.0)
     transitivePeerDependencies:
@@ -12610,23 +12605,23 @@ snapshots:
       locate-path: 6.0.0
       path-exists: 4.0.0
 
-  flags@3.2.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.50.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0):
+  flags@3.2.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0):
     dependencies:
       '@edge-runtime/cookies': 5.0.2
       jose: 5.2.1
     optionalDependencies:
       '@sveltejs/kit': 2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30))
-      next: 16.0.10(@babel/core@7.26.7)(@playwright/test@1.50.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      next: 16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       react: 19.0.0
       react-dom: 19.0.0(react@19.0.0)
 
-  flags@3.2.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0):
+  flags@3.2.0(@sveltejs/kit@2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30)))(next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0):
     dependencies:
       '@edge-runtime/cookies': 5.0.2
       jose: 5.2.1
     optionalDependencies:
       '@sveltejs/kit': 2.17.2(svelte@5.20.2)(vite@7.0.6(@types/node@20.11.30))
-      next: 16.0.10(@babel/core@7.26.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      next: 16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       react: 19.0.0
       react-dom: 19.0.0(react@19.0.0)
 
@@ -12681,9 +12676,6 @@ snapshots:
       universalify: 0.1.2
 
   fs.realpath@1.0.0: {}
-
-  fsevents@2.3.2:
-    optional: true
 
   fsevents@2.3.3:
     optional: true
@@ -13972,7 +13964,7 @@ snapshots:
 
   neo-async@2.6.2: {}
 
-  next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.50.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0):
+  next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0):
     dependencies:
       '@next/env': 16.0.10
       '@swc/helpers': 0.5.15
@@ -13990,13 +13982,13 @@ snapshots:
       '@next/swc-linux-x64-musl': 16.0.10
       '@next/swc-win32-arm64-msvc': 16.0.10
       '@next/swc-win32-x64-msvc': 16.0.10
-      '@playwright/test': 1.50.1
+      '@playwright/test': 1.65.1
       sharp: 0.34.1
     transitivePeerDependencies:
       - '@babel/core'
       - babel-plugin-macros
 
-  next@16.0.10(@babel/core@7.26.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0):
+  next@16.0.10(@babel/core@7.26.7)(@playwright/test@1.65.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0):
     dependencies:
       '@next/env': 16.0.10
       '@swc/helpers': 0.5.15
@@ -14014,6 +14006,7 @@ snapshots:
       '@next/swc-linux-x64-musl': 16.0.10
       '@next/swc-win32-arm64-msvc': 16.0.10
       '@next/swc-win32-x64-msvc': 16.0.10
+      '@playwright/test': 1.65.1
       sharp: 0.34.1
     transitivePeerDependencies:
       - '@babel/core'
@@ -14277,13 +14270,11 @@ snapshots:
     dependencies:
       find-up: 4.1.0
 
-  playwright-core@1.50.1: {}
+  playwright-core@1.65.1: {}
 
-  playwright@1.50.1:
+  playwright@1.65.1:
     dependencies:
-      playwright-core: 1.50.1
-    optionalDependencies:
-      fsevents: 2.3.2
+      playwright-core: 1.65.1
 
   pluralize@8.0.0: {}
 
