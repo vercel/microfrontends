@@ -2,4 +2,4 @@
 "@vercel/microfrontends": patch
 ---
 
-Add the MIT `license` field to package.json so npm shows the license.
+Declare the package license as `SEE LICENSE IN LICENSE` so npm shows the repository license file.
