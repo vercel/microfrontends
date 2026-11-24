@@ -1,4 +1,5 @@
 import { existsSync } from 'node:fs';
+import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import type { PlaywrightTestConfig } from '@playwright/test';
 import { devices } from '@playwright/test';
@@ -12,11 +13,24 @@ if (!BASE_URL) {
 const baseURL = BASE_URL.replace(/\/$/, '');
 const protectionBypass = process.env.DEPLOYMENT_PROTECTION_BYPASS ?? '';
 
+function moduleDir(): string {
+  try {
+    if (typeof __dirname === 'string') return __dirname;
+  } catch {
+    // ESM has no __dirname.
+  }
+  return dirname(fileURLToPath(import.meta.url));
+}
+
 function globalSetupPath(): string {
-  const esm = fileURLToPath(new URL('./global-setup.js', import.meta.url));
-  return existsSync(esm)
-    ? esm
-    : fileURLToPath(new URL('./global-setup.cjs', import.meta.url));
+  const dir = moduleDir();
+  const found = ['global-setup.cjs', 'global-setup.js']
+    .map((name) => join(dir, name))
+    .find((path) => existsSync(path));
+  if (!found) {
+    throw new Error(`Cannot find global-setup in ${dir}`);
+  }
+  return found;
 }
 
 // Reference: https://playwright.dev/docs/test-configuration
