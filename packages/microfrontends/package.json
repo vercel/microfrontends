@@ -13,7 +13,7 @@
     "React"
   ],
   "homepage": "https://vercel.com/docs/microfrontends",
-  "license": "SEE LICENSE IN LICENSE",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/vercel/microfrontends.git",
