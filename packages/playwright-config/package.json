@@ -4,7 +4,10 @@
   "private": true,
   "type": "module",
   "exports": {
-    ".": "./dist/config.cjs"
+    ".": {
+      "types": "./dist/config.d.ts",
+      "default": "./dist/config.cjs"
+    }
   },
   "typesVersions": {
     "*": {
