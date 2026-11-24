@@ -1,11 +1,15 @@
-import { createHash } from 'node:crypto';
+import { mkdtempSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
-export function bypassStorageStatePath(baseURL: string): string {
-  const id = createHash('sha256')
-    .update(baseURL.replace(/\/$/, ''))
-    .digest('hex')
-    .slice(0, 16);
-  return join(tmpdir(), `mfe-playwright-bypass-${id}.json`);
+const DIR_ENV = 'MFE_PLAYWRIGHT_BYPASS_DIR';
+
+// Workers inherit this env var, so they share the runner's private directory.
+export function bypassStorageStatePath(): string {
+  let dir = process.env[DIR_ENV];
+  if (!dir) {
+    dir = mkdtempSync(join(tmpdir(), 'mfe-playwright-'));
+    process.env[DIR_ENV] = dir;
+  }
+  return join(dir, 'storage-state.json');
 }

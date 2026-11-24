@@ -27,9 +27,7 @@ export const playwrightConfig: PlaywrightTestConfig = {
 
   use: {
     baseURL, // make sure there's no slash at the end
-    storageState: protectionBypass
-      ? bypassStorageStatePath(baseURL)
-      : undefined,
+    storageState: protectionBypass ? bypassStorageStatePath() : undefined,
     extraHTTPHeaders: {
       'x-vercel-protection-bypass': protectionBypass,
     },

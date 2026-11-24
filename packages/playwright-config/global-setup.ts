@@ -1,17 +1,19 @@
-import { writeFileSync } from 'node:fs';
+import { mkdirSync, rmSync, writeFileSync } from 'node:fs';
+import { dirname } from 'node:path';
 import type { FullConfig } from '@playwright/test';
-import { bypassStorageStatePath } from './bypass-state';
 
 type SameSite = 'Lax' | 'None' | 'Strict';
 
-export default async function globalSetup(config: FullConfig): Promise<void> {
+export default async function globalSetup(
+  config: FullConfig,
+): Promise<(() => void) | undefined> {
   const bypass = process.env.DEPLOYMENT_PROTECTION_BYPASS;
   if (!bypass) return;
 
-  const baseURL = config.projects.find((project) => project.use.baseURL)?.use
-    .baseURL;
-  if (!baseURL) {
-    throw new Error('BASE_URL is not set');
+  const { baseURL, storageState } =
+    config.projects.find((project) => project.use.baseURL)?.use ?? {};
+  if (!baseURL || typeof storageState !== 'string') {
+    throw new Error('baseURL and storageState must be set');
   }
 
   const response = await fetch(baseURL, {
@@ -27,10 +29,13 @@ export default async function globalSetup(config: FullConfig): Promise<void> {
     return cookie ? [cookie] : [];
   });
 
-  writeFileSync(
-    bypassStorageStatePath(baseURL),
-    JSON.stringify({ cookies, origins: [] }),
-  );
+  const dir = dirname(storageState);
+  mkdirSync(dir, { recursive: true, mode: 0o700 });
+  writeFileSync(storageState, JSON.stringify({ cookies, origins: [] }), {
+    mode: 0o600,
+  });
+
+  return () => rmSync(dir, { recursive: true, force: true });
 }
 
 function parseSetCookie(header: string, hostname: string) {
