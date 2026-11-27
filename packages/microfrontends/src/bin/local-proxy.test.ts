@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import type { IncomingMessage, ServerResponse } from 'node:http';
 import * as http from 'node:http';
 import * as https from 'node:https';
+import { Socket } from 'node:net';
 import { join } from 'node:path';
 import { PassThrough } from 'node:stream';
 import { parse } from 'jsonc-parser';
@@ -991,6 +992,65 @@ describe('class LocalProxy', () => {
             proxyPort: 6720,
           }),
       ).toThrow('Invalid origin "not-a-valid-origin"');
+    });
+  });
+
+  describe('errors reaching a local application', () => {
+    function emitProxyError(accept?: string): {
+      writeHead: jest.SpyInstance;
+      end: jest.SpyInstance;
+    } {
+      jest.spyOn(logger, 'error').mockImplementation(() => undefined);
+      const proxy = new LocalProxy(simpleConfig(), {
+        localApps: ['vercel-site'],
+        proxyPort: 6720,
+      });
+      // Unmatched paths go to the default application, running locally here.
+      const req = mockRequest(
+        '/a-path-that-surely-does-not-match-any-routes',
+        accept ? { accept } : {},
+      );
+      const res = new http.ServerResponse(
+        new http.IncomingMessage(new Socket()),
+      );
+      const writeHead = jest
+        .spyOn(res, 'writeHead')
+        .mockImplementation(() => res);
+      const end = jest.spyOn(res, 'end').mockImplementation(() => res);
+
+      proxy.proxy.emit(
+        'error',
+        new Error('connect ECONNREFUSED 127.0.0.1:3331'),
+        req,
+        res,
+      );
+      return { writeHead, end };
+    }
+
+    it('shows an HTML page to browsers', () => {
+      const { writeHead, end } = emitProxyError(
+        'text/html,application/xhtml+xml,*/*;q=0.8',
+      );
+
+      expect(writeHead).toHaveBeenCalledWith(500, {
+        'Content-Type': 'text/html; charset=utf-8',
+      });
+      expect(end).toHaveBeenCalledWith(
+        expect.stringContaining(
+          "Microfrontends can't reach <strong>vercel-site</strong> on port <strong>3331</strong>",
+        ),
+      );
+    });
+
+    it('keeps the plain text error for other requests', () => {
+      const { writeHead, end } = emitProxyError('*/*');
+
+      expect(writeHead).toHaveBeenCalledWith(500, {
+        'Content-Type': 'text/plain',
+      });
+      expect(end).toHaveBeenCalledWith(
+        'Error proxying request to vercel-site (local). Is the server running locally on port 3331?',
+      );
     });
   });
 
